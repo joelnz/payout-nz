@@ -5,11 +5,11 @@
     --card-shine: rgba(255, 255, 255, 0.12);
     
     --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
     
-    --accent-primary: #14b8a6; /* Teal */
-    --accent-secondary: #0284c7; /* Ocean Blue */
+    --accent-primary: #2dd4bf; /* Teal */
+    --accent-secondary: #38bdf8; /* Light Blue */
     --accent-glow: rgba(20, 184, 166, 0.4);
     
     --input-bg: rgba(0, 0, 0, 0.3);
@@ -68,7 +68,6 @@ body {
     width: 100%;
     margin: 0 auto;
     z-index: 1;
-    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes fadeIn {
@@ -449,13 +448,14 @@ select {
 
 .disclaimers a {
     color: var(--accent-primary);
-    text-decoration: none;
-    transition: color 0.2s ease;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: all 0.2s ease;
 }
 
 .disclaimers a:hover {
     color: var(--accent-secondary);
-    text-decoration: underline;
+    text-decoration-color: var(--accent-secondary);
 }
 
 @media (max-width: 480px) {
@@ -563,7 +563,8 @@ footer p {
 
 .footer-links a {
     color: var(--text-secondary);
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 2px;
     font-size: 0.85rem;
     transition: color 0.2s ease;
 }
@@ -592,6 +593,7 @@ footer p {
     color: #fff;
     background: linear-gradient(135deg, #ccfbf1, #5eead4);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
