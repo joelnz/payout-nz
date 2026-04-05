@@ -766,6 +766,86 @@ footer p {
     line-height: 1.5;
 }
 
+/* FAQ Section */
+.faq-section {
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+    animation: fadeIn 0.8s ease both;
+    animation-delay: 0.4s;
+}
+
+.faq-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.faq-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #ccfbf1, #5eead4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.faq-header p {
+    color: var(--text-secondary);
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.faq-item {
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6));
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    border-color: rgba(20, 184, 166, 0.4);
+}
+
+.faq-item summary {
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-primary);
+    list-style: none; /* Hide default arrow */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::after {
+    content: '+';
+    color: var(--accent-primary);
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: transform 0.3s ease;
+}
+
+.faq-item[open] summary::after {
+    transform: rotate(45deg);
+}
+
+.faq-content {
+    padding: 0 1.5rem 1.25rem 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
 </style>
 
     <!-- Google tag (gtag.js) -->
@@ -963,6 +1043,43 @@ footer p {
                     <p>Download expert templates to stand out in the current job market.</p>
                 </div>
             </a>
+        </div>
+
+        <div class="faq-section">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common questions about final pay and leave entitlements in NZ.</p>
+            </div>
+            
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>How is final pay calculated in NZ?</summary>
+                    <div class="faq-content">
+                        <p>Under the Holidays Act 2003, your final pay must include any standard pay owed for days worked, payout for any alternative holidays (days in lieu) you've earned, your unused annual leave balance, and an additional 8% of your gross earnings since your last employment anniversary (which covers the leave you've accrued but haven't been formally entitled to yet).</p>
+                    </div>
+                </details>
+                
+                <details class="faq-item">
+                    <summary>Do I get paid out annual leave when I resign?</summary>
+                    <div class="faq-content">
+                        <p>Yes. By law, any annual leave that you are entitled to (i.e., you have passed an anniversary date) but haven't taken must be paid out to you at the higher of your ordinary weekly pay or your average weekly earnings over the last 12 months.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Do I get paid for public holidays after I leave?</summary>
+                    <div class="faq-content">
+                        <p>Sometimes. If you take all of your unused annual leave as a continuous period of time off right after your employment ends, and a public holiday falls on a day you would usually work during that period, you are entitled to be paid for that public holiday.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Is my final pay taxed heavily?</summary>
+                    <div class="faq-content">
+                        <p>Final payouts, such as accrued annual leave, are treated as "extra pay" by the IRD. This means they are generally taxed at a flat rate based on your estimated annual income bracket (such as 30% or 33%), which can sometimes feel heavier than your standard PAYE deduction, but it ensures you don't end up with a massive tax bill at the end of the year.</p>
+                    </div>
+                </details>
+            </div>
         </div>
 
         <footer>
