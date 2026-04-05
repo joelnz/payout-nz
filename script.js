@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const payRateInput = document.getElementById('payRate');
     const labelPayRate = document.getElementById('label-pay-rate');
     const groupHourlyDetails = document.getElementById('group-hourly-details');
+    const groupSalaryDetails = document.getElementById('group-salary-details');
     const hoursPerDayInput = document.getElementById('hoursPerDay');
+    const daysPerWeekInput = document.getElementById('daysPerWeek');
     const annualLeaveInput = document.getElementById('annualLeave');
     const grossEarningsInput = document.getElementById('grossEarnings');
     const altLeaveInput = document.getElementById('altLeave');
@@ -40,22 +42,22 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Determine daily rate
         let dailyRate = 0;
         if (isSalary) {
-            dailyRate = payRate / 260; // Standard working days in a year (52 weeks * 5 days)
+            const daysPerWeek = parseFloat(daysPerWeekInput.value) || 5;
+            dailyRate = payRate / (52 * daysPerWeek); // Yearly salary / days worked per year
         } else {
-            const hoursPerDay = parseFloat(hoursPerDayInput.value) || 8; // default 8
+            const hoursPerDay = parseFloat(hoursPerDayInput.value) || 0;
             dailyRate = payRate * hoursPerDay;
         }
 
         // 3. Calculate components according to NZ Holidays Act 2003
         // Entitled Leave is paid at the daily rate (at the time the leave is taken/paid)
         const entitledLeaveVal = annualLeave * dailyRate;
-        
-        // Accrued Leave is paid at 8% of gross earnings since the last anniversary
-        // (Note: This is the standard simplified calculation for current-year holiday pay)
-        const accruedLeaveVal = grossEarnings * 0.08;
-
         const altLeaveVal = altLeave * dailyRate;
         const publicHolidaysVal = publicHolidays * dailyRate;
+        
+        // Accrued Leave is paid at 8% of gross earnings since the last anniversary PLUS the payout for legally entitled leave
+        // (Section 24 of the Holidays Act 2003)
+        const accruedLeaveVal = (grossEarnings + entitledLeaveVal + altLeaveVal + publicHolidaysVal) * 0.08;
 
         const grossTotal = entitledLeaveVal + accruedLeaveVal + altLeaveVal + publicHolidaysVal;
         const taxEstimated = grossTotal * taxRate;
@@ -137,12 +139,14 @@ Estimate only. Powered by NZ Final Pay Calculator.`;
         const isSalary = document.getElementById('type-salary').checked;
         if (isSalary) {
             labelPayRate.innerHTML = 'Yearly Salary (NZD) * <span class="tooltip-icon" data-tip="Your usual yearly pay before any tax is taken out (gross pay).">?</span>';
-            payRateInput.placeholder = 'e.g. 70000';
+            payRateInput.placeholder = '0';
             groupHourlyDetails.style.display = 'none';
+            if (groupSalaryDetails) groupSalaryDetails.style.display = 'flex';
         } else {
             labelPayRate.innerHTML = 'Hourly Rate (NZD) * <span class="tooltip-icon" data-tip="How much you are paid per hour, before any tax is taken out.">?</span>';
-            payRateInput.placeholder = 'e.g. 25.50';
+            payRateInput.placeholder = '0';
             groupHourlyDetails.style.display = 'flex';
+            if (groupSalaryDetails) groupSalaryDetails.style.display = 'none';
         }
         calculate();
     }
@@ -151,7 +155,7 @@ Estimate only. Powered by NZ Final Pay Calculator.`;
     radiosType.forEach(radio => radio.addEventListener('change', toggleEmploymentType));
     
     const allInputs = [
-        payRateInput, hoursPerDayInput, annualLeaveInput, 
+        payRateInput, hoursPerDayInput, daysPerWeekInput, annualLeaveInput, 
         grossEarningsInput, altLeaveInput, publicHolidaysInput, taxRateSelect
     ];
 

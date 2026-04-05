@@ -458,6 +458,31 @@ select {
     text-decoration-color: var(--accent-secondary);
 }
 
+.disclaimer-details summary {
+    cursor: pointer;
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    display: inline-block;
+}
+
+.disclaimer-details summary:hover {
+    color: var(--accent-primary);
+}
+
+.disclaimer-expanded {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    border-left: 2px solid var(--accent-glow);
+}
+
 @media (max-width: 480px) {
     .card { padding: 1.75rem; }
     .input-row { grid-template-columns: 1fr; gap: 0rem; }
