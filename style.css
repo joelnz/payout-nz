@@ -666,6 +666,25 @@ footer p {
     font-size: 1.15rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.lead-content h3 span {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color: var(--accent-primary);
+    font-size: 1.25rem;
+}
+
+.lead-card:hover .lead-content h3 {
+    color: var(--accent-primary);
+}
+
+.lead-card:hover .lead-content h3 span {
+    transform: translateX(4px);
 }
 
 .lead-content p {
