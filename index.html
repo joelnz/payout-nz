@@ -13,6 +13,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-95V0NXHCS7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-95V0NXHCS7');
+    </script>
 </head>
 <body>
     <div class="background-effects"></div>
@@ -20,7 +30,7 @@
     <main class="container">
         <header>
             <h1>NZ Final Pay Calculator</h1>
-            <p class="subtitle">When you leave a job in New Zealand, your boss has to pay you for any leave you haven't taken yet. Use this simple tool to get an idea of how much extra money you might get in your very last pay.</p>
+            <p class="subtitle">Estimate your final pay when leaving a job in New Zealand. See how much you're owed for unused leave and public holidays.</p>
             <div class="header-actions">
                 <div class="assurance-badge">
                     💡 Based on standard provisions of the <strong>NZ Holidays Act 2003</strong>
@@ -50,13 +60,13 @@
                         <label id="label-pay-rate" for="payRate">Yearly Salary (NZD) *</label>
                         <div class="input-wrapper">
                             <span class="prefix">$</span>
-                            <input type="number" id="payRate" placeholder="e.g. 70000" min="0" step="0.01">
+                            <input type="number" id="payRate" placeholder="0" min="0" step="0.01">
                         </div>
                     </div>
 
                     <div class="form-group" id="group-hourly-details" style="display: none;">
                         <label for="hoursPerDay">Average Hours per Day <span class="tooltip-icon" data-tip="How many hours you usually work in a standard shift. This helps calculate the value of a single 'day' of leave.">?</span></label>
-                        <input type="number" id="hoursPerDay" placeholder="e.g. 8" min="0" max="24" step="0.5">
+                        <input type="number" id="hoursPerDay" placeholder="0" min="0" max="24" step="0.5">
                     </div>
 
                     <div class="input-row">
@@ -68,7 +78,7 @@
                             <label for="grossEarnings">Pay Since Last Holiday Top-up (NZD) <span class="tooltip-icon" data-tip="Every year you work, you get a new batch of holidays. What is your total pay (before tax) since your last top-up? You legally get 8% of this amount added to your final pay.">?</span></label>
                             <div class="input-wrapper">
                                 <span class="prefix">$</span>
-                                <input type="number" id="grossEarnings" placeholder="e.g. 15000" min="0" step="1">
+                                <input type="number" id="grossEarnings" placeholder="0" min="0" step="1">
                             </div>
                             <small class="hint">Your 8% holiday pay relies on this (plus your unused leave)</small>
                         </div>
