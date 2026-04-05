@@ -466,6 +466,7 @@ select {
     font-weight: 500;
     transition: color 0.2s ease;
     display: inline-block;
+    padding: 0.5rem 0; /* Increase tap target size */
 }
 
 .disclaimer-details summary:hover {
@@ -612,6 +613,8 @@ footer p {
     text-underline-offset: 2px;
     font-size: 0.85rem;
     transition: color 0.2s ease;
+    display: inline-block;
+    padding: 0.5rem; /* Increase tap target size */
 }
 
 .footer-links a:hover {
