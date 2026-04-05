@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NZ Final Pay Calculator (New Zealand Leave Payout Estimate)</title>
+    <meta name="description" content="Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.">
+    <meta name="keywords" content="New Zealand, NZ, Final Pay, Leave Payout, Calculator, Holidays Act, Resignation, PAYE">
+    <meta property="og:title" content="NZ Final Pay Calculator">
+    <meta property="og:description" content="Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-effects"></div>
+
+    <main class="container">
+        <header>
+            <h1>NZ Final Pay Calculator</h1>
+            <p class="subtitle">When you leave a job in New Zealand, your boss has to pay you for any leave you haven't taken yet. Use this simple tool to get an idea of how much extra money you might get in your very last pay.</p>
+            <div class="header-actions">
+                <div class="assurance-badge">
+                    💡 Based on standard provisions of the <strong>NZ Holidays Act 2003</strong>
+                </div>
+                <button id="share-btn" class="icon-btn" title="Share Calculator">
+                    <span class="icon">🔗</span> Share
+                </button>
+            </div>
+        </header>
+
+        <div class="calculator-grid">
+            <section class="card input-section">
+                <form id="calculator-form" onsubmit="event.preventDefault();">
+                    
+                    <div class="form-group">
+                        <label>Employment Type</label>
+                        <div class="segmented-control">
+                            <input type="radio" id="type-salary" name="employmentType" value="salary" checked>
+                            <label for="type-salary">Salary</label>
+                            
+                            <input type="radio" id="type-hourly" name="employmentType" value="hourly">
+                            <label for="type-hourly">Hourly</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="group-pay-rate">
+                        <label id="label-pay-rate" for="payRate">Yearly Salary (NZD) *</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">$</span>
+                            <input type="number" id="payRate" placeholder="e.g. 70000" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="group-hourly-details" style="display: none;">
+                        <label for="hoursPerDay">Average Hours per Day <span class="tooltip-icon" data-tip="How many hours you usually work in a standard shift. This helps calculate the value of a single 'day' of leave.">?</span></label>
+                        <input type="number" id="hoursPerDay" placeholder="e.g. 8" min="0" max="24" step="0.5">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label for="annualLeave">Unused Annual Leave (Days) <span class="tooltip-icon" data-tip="Holiday time you have been given but haven't taken yet. You can usually find this on your latest payslip.">?</span></label>
+                            <input type="number" id="annualLeave" placeholder="0" min="0" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="grossEarnings">Pay Since Last Holiday Top-up (NZD) <span class="tooltip-icon" data-tip="Every year you work, you get a new batch of holidays. What is your total pay (before tax) since your last top-up? You legally get 8% of this amount added to your final pay.">?</span></label>
+                            <div class="input-wrapper">
+                                <span class="prefix">$</span>
+                                <input type="number" id="grossEarnings" placeholder="e.g. 15000" min="0" step="1">
+                            </div>
+                            <small class="hint">Your 8% holiday pay relies on this (plus your unused leave)</small>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label for="altLeave">Days in Lieu (Alternative Leave) <span class="tooltip-icon" data-tip="Did you work on a public holiday and get promised a paid day off later? If you haven't taken it yet, those days go here.">?</span></label>
+                            <input type="number" id="altLeave" placeholder="0" min="0" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="publicHolidays">Upcoming Public Holidays <span class="tooltip-icon" data-tip="If you took all your unused holiday right now as time off, would a public holiday fall on one of those days? If yes, count how many here.">?</span></label>
+                            <input type="number" id="publicHolidays" placeholder="0" min="0" step="0.5">
+                            <small class="hint">During your paid-out holiday time</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taxRate">What's Your Main Tax Bracket? <span class="tooltip-icon" data-tip="Final payouts usually get taxed at your highest regular tax rate. 17.5% (you earn $14k–$48k a year), 30% ($48k–$70k), 33% ($70k–$180k), 39% ($180k+).">?</span></label>
+                        <div class="select-wrapper">
+                            <select id="taxRate">
+                                <option value="0.105">10.5%</option>
+                                <option value="0.175">17.5%</option>
+                                <option value="0.30" selected>30%</option>
+                                <option value="0.33">33%</option>
+                                <option value="0.39">39%</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <section class="card results-section">
+                <h2>Estimated Breakdown</h2>
+                
+                <div class="result-list">
+                    <div class="result-item">
+                        <span class="result-label">Unused Annual Leave</span>
+                        <span class="result-value" id="res-annual-leave">$0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">8% Holiday Pay</span>
+                        <span class="result-value" id="res-accrued-leave">$0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Days in Lieu (Alt Leave)</span>
+                        <span class="result-value" id="res-alt-leave">$0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Public Holidays</span>
+                        <span class="result-value" id="res-public-holidays">$0.00</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="result-item gross-total">
+                        <span class="result-label">Total Final Pay (Before Tax)</span>
+                        <span class="result-value" id="res-gross">$0.00</span>
+                    </div>
+                    <div class="result-item tax-deduction">
+                        <span class="result-label">Estimated Tax (PAYE)</span>
+                        <span class="result-value" id="res-tax">-$0.00</span>
+                    </div>
+                </div>
+
+                <div class="net-total-box">
+                    <span class="net-label">Estimated Net Final Pay</span>
+                    <span class="net-value" id="res-net">$0.00</span>
+                </div>
+
+                <button id="copy-results-btn" class="secondary-btn">
+                    <span>📋</span> Copy Breakdown to Clipboard
+                </button>
+
+                <div class="disclaimers">
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute financial, tax, or legal advice.</p>
+                    <p>While we strive to align with the standard provisions of the NZ Holidays Act 2003, this calculator cannot account for every unique employment agreement, complex leave history, or precise IRD tax logic (including exact KiwiSaver and Student Loan thresholds).</p>
+                    <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of or reliance on this calculator. Always verify your final payout with your payroll department, <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a>, or a qualified professional.</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="lead-gen-header">
+            <h2>Next Steps ✨</h2>
+            <p>Make the most of your transition with these popular New Zealand resources.</p>
+        </div>
+        
+        <div class="lead-gen-grid">
+            <a href="https://www.trademe.co.nz/a/jobs" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon">🔍</div>
+                <div class="lead-content">
+                    <h3>Find Your Next Role</h3>
+                    <p>Browse thousands of new opportunities across New Zealand on Trade Me Jobs.</p>
+                </div>
+            </a>
+
+            <a href="https://simplicity.kiwi/kiwisaver/" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon">📈</div>
+                <div class="lead-content">
+                    <h3>Sort Your KiwiSaver</h3>
+                    <p>Getting a lump sum? Ensure your KiwiSaver is with a low-fee, high-performing provider.</p>
+                </div>
+            </a>
+
+            <a href="https://www.careers.govt.nz/job-hunting/cvs-and-cover-letters/templates/" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon">📄</div>
+                <div class="lead-content">
+                    <h3>Stand Out to Employers</h3>
+                    <p>Get free templates and expert advice to get your CV ready for the current job market.</p>
+                </div>
+            </a>
+
+            <a href="https://www.interest.co.nz/saving/call-account" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon">💰</div>
+                <div class="lead-content">
+                    <h3>Park Your Payout</h3>
+                    <p>Check the best high-interest savings rates in NZ to make your final pay work harder.</p>
+                </div>
+            </a>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 NZ Final Pay Calculator. Dedicated to helping Kiwis understand their entitlements.</p>
+            <div class="footer-links">
+                <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
+                <span class="sep">•</span>
+                <a href="https://www.employment.govt.nz/leave-and-holidays" target="_blank" rel="noopener">Official Guidance</a>
+            </div>
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
