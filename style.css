@@ -37,6 +37,11 @@
     top: -1px; /* Subtle adjustment for better visual centering with text */
 }
 
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-primary);
@@ -46,7 +51,6 @@ body {
     align-items: center;
     padding: 0 0 3rem;
     position: relative;
-    overflow-x: hidden;
 }
 
 /* ─── Top Navigation ─── */
@@ -73,6 +77,19 @@ body {
 
 .logo {
     z-index: 1001; /* Stay above mobile menu */
+}
+
+.input-row {
+    display: flex;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .input-row {
+        flex-direction: column;
+        gap: 0;
+    }
 }
 
 .nav-links {
@@ -214,16 +231,23 @@ main.container {
 header {
     text-align: center;
     margin-bottom: 3rem;
-    padding: 3rem 2rem;
+    padding: 2.5rem 1.25rem;
     border-bottom: 3px solid var(--accent-secondary);
 }
 
+@media (max-width: 480px) {
+    header {
+        padding: 2rem 1rem;
+    }
+}
+
 h1 {
-    font-size: 2.75rem;
+    font-size: clamp(1.75rem, 8vw, 2.75rem);
     font-weight: 800;
     letter-spacing: -0.04em;
     margin-bottom: 1rem;
     color: var(--accent-primary);
+    overflow-wrap: break-word;
 }
 
 .subtitle {
@@ -237,15 +261,16 @@ h1 {
 .assurance-badge {
     display: inline-block;
     vertical-align: middle;
-    margin-top: 2rem;
-    padding: 0.75rem 1.5rem;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1rem;
     background: #f1f5f9;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: var(--accent-primary);
     text-align: center;
+    max-width: 100%;
 }
 
 .header-actions {
@@ -254,6 +279,20 @@ h1 {
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+    .header-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+    }
+    
+    .assurance-badge, .icon-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 .primary-btn {
@@ -1355,10 +1394,21 @@ footer p {
 .segmented-control {
     display: flex;
     background: #f1f5f9;
-    padding: 0.3rem;
-    border-radius: 10px;
-    margin-top: 0.5rem;
-    gap: 0.2rem;
+    padding: 0.25rem;
+    border-radius: 8px;
+    gap: 0.25rem;
+    flex-wrap: wrap; /* Added for mobile safety */
+}
+
+@media (max-width: 400px) {
+    .segmented-control {
+        flex-direction: column;
+    }
+    
+    .segmented-control label {
+        text-align: center;
+        padding: 0.75rem 1rem !important;
+    }
 }
 
 .segmented-control input[type="radio"] {
