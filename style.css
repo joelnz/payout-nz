@@ -26,6 +26,17 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.material-symbols-outlined {
+    vertical-align: middle;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25em;
+    position: relative;
+    top: -1px; /* Subtle adjustment for better visual centering with text */
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-primary);
@@ -484,14 +495,13 @@ select {
 }
 
 .net-value {
-    font-size: clamp(2rem, 10vw, 3.5rem);
+    font-size: clamp(1.5rem, 9vw, 3.5rem);
     font-weight: 900;
     color: #ffffff;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     max-width: 100%;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    line-height: 1.1;
+    white-space: nowrap;
+    line-height: 1;
 }
 
 .secondary-btn {
@@ -617,6 +627,20 @@ footer p {
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.9rem;
     margin-bottom: 1.5rem;
+}
+
+footer p a {
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(255, 255, 255, 0.3);
+    transition: all 0.2s ease;
+}
+
+footer p a:hover {
+    color: var(--accent-secondary);
+    text-decoration-color: var(--accent-secondary);
 }
 
 .footer-links a {
