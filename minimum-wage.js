@@ -1,16 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const hourlyRateInput = document.getElementById('hourlyRate');
-    const wageTypeSelect = document.getElementById('wageType');
+    const hourlyRateInput   = document.getElementById('hourlyRate');
     const hoursPerWeekInput = document.getElementById('hoursPerWeek');
+    const taxCodeSelect     = document.getElementById('taxCode');
+    const studentLoanCheck  = document.getElementById('studentLoan');
+    const kiwiSaverSelect   = document.getElementById('kiwiSaver');
+    const presetBtns        = document.querySelectorAll('.preset-btn');
 
-    const resMinRate = document.getElementById('res-min-rate');
-    const resDiff = document.getElementById('res-diff');
-    const resWeekly = document.getElementById('res-weekly');
-    const resAnnual = document.getElementById('res-annual');
-    
-    const statusBox = document.getElementById('status-box');
-    const statusLabel = document.getElementById('status-label');
-    const statusIcon = document.getElementById('status-icon');
+    const resWeeklyNet      = document.getElementById('res-weekly-net');
+    const resWeeklyGross    = document.getElementById('res-weekly-gross');
+    const resAnnualNet      = document.getElementById('res-annual-net');
+    const resPAYE           = document.getElementById('res-paye');
+    const resACC            = document.getElementById('res-acc');
+    const resSL             = document.getElementById('res-sl');
+    const resKS             = document.getElementById('res-ks');
+    const resIETC           = document.getElementById('res-ietc');
+
+    const slRow             = document.getElementById('sl-row');
+    const ietcRow           = document.getElementById('ietc-row');
+    const ietcAlert         = document.getElementById('ietc-alert');
+    const wageBadge         = document.getElementById('wage-badge');
+    const payStatusCard     = document.getElementById('pay-status-card');
 
     function formatCurrency(amount) {
         return new Intl.NumberFormat('en-NZ', {
@@ -19,54 +28,125 @@ document.addEventListener('DOMContentLoaded', () => {
         }).format(amount);
     }
 
-    function calculate() {
-        const rate = parseFloat(hourlyRateInput.value) || 0;
-        const type = wageTypeSelect.value;
-        const hours = parseFloat(hoursPerWeekInput.value) || 0;
+    function calcAnnualPAYE(gross) {
+        let tax = 0;
+        const brackets = [
+            { thresh: 180000, rate: 0.39 },
+            { thresh: 78100,  rate: 0.33 },
+            { thresh: 53500,  rate: 0.30 },
+            { thresh: 15600,  rate: 0.175 },
+            { thresh: 0,      rate: 0.105 }
+        ];
 
-        let legalMin = 23.95; // Adult rate 2026
-        if (type === 'starting' || type === 'training') {
-            legalMin = 19.16; // 80% of adult rate 2026
+        let remaining = gross;
+        for (const b of brackets) {
+            if (remaining > b.thresh) {
+                const taxableAtThisLevel = remaining - b.thresh;
+                tax += taxableAtThisLevel * b.rate;
+                remaining = b.thresh;
+            }
         }
+        return tax;
+    }
 
-        resMinRate.textContent = formatCurrency(legalMin) + ' / hr';
+    function calculate() {
+        const rate      = parseFloat(hourlyRateInput.value) || 0;
+        const hours     = parseFloat(hoursPerWeekInput.value) || 0;
+        const taxCode   = taxCodeSelect.value;
+        const hasSL     = studentLoanCheck.checked;
+        const ksPercent = parseFloat(kiwiSaverSelect.value) || 0;
 
-        if (rate <= 0) {
-            resDiff.textContent = '$0.00 / hr';
-            resWeekly.textContent = '$0.00';
-            resAnnual.textContent = '$0.00';
-            statusLabel.textContent = 'Enter your rate';
-            statusIcon.textContent = '➖';
-            statusBox.style.background = '';
-            statusBox.style.borderColor = '';
+        const weeklyGross = rate * hours;
+        const annualGross = weeklyGross * 52;
+
+        if (annualGross <= 0) {
+            [resWeeklyNet, resWeeklyGross, resAnnualNet, resPAYE, resACC, resSL, resKS, resIETC].forEach(el => el.textContent = '-');
+            wageBadge.style.display = 'none';
+            ietcAlert.style.display = 'none';
             return;
         }
 
-        const diff = rate - legalMin;
-        const isUnderpaid = diff < 0;
+        // 1. KiwiSaver (on Gross)
+        const weeklyKS = weeklyGross * ksPercent;
+        const annualKS = weeklyKS * 52;
 
-        resDiff.textContent = (isUnderpaid ? '-' : '+') + formatCurrency(Math.abs(diff)) + ' / hr';
-        resDiff.style.color = isUnderpaid ? '#f43f5e' : '#2dd4bf'; // Red if underpaid, teal if overpaid
-        
-        resWeekly.textContent = formatCurrency(rate * hours);
-        resAnnual.textContent = formatCurrency(rate * hours * 52);
+        // 2. ACC Levy (1.75% for 2026, max liable $156,641)
+        const liableACC = Math.min(annualGross, 156641);
+        const annualACC = liableACC * 0.0175;
+        const weeklyACC = annualACC / 52;
 
-        if (isUnderpaid) {
-            statusLabel.textContent = 'Under Minimum Wage!';
-            statusLabel.style.color = '#f43f5e';
-            statusIcon.textContent = '⚠️';
-            statusBox.style.background = 'linear-gradient(135deg, rgba(244, 63, 94, 0.08), rgba(244, 63, 94, 0.03))';
-            statusBox.style.borderColor = 'rgba(244, 63, 94, 0.3)';
+        // 3. PAYE Tax
+        const annualPAYE = calcAnnualPAYE(annualGross);
+        const weeklyPAYE = annualPAYE / 52;
+
+        // 4. Student Loan (12% on income over $24,128)
+        let weeklySL = 0;
+        const slWeeklyThreshold = 464; // $24,128 / 52
+        if (hasSL && weeklyGross > slWeeklyThreshold) {
+            weeklySL = (weeklyGross - slWeeklyThreshold) * 0.12;
+        }
+        slRow.style.display = hasSL ? 'flex' : 'none';
+
+        // 5. IETC (Independent Earner Tax Credit)
+        // Full $10/week if $24k - $66k. Abates to $70k.
+        let annualIETC = 0;
+        if (annualGross >= 24000 && annualGross <= 70000) {
+            if (annualGross <= 66000) {
+                annualIETC = 520;
+            } else {
+                // Abatement: 13c per $1 over $66,000
+                annualIETC = 520 - ((annualGross - 66000) * 0.13);
+                if (annualIETC < 0) annualIETC = 0;
+            }
+        }
+
+        // Only apply IETC if taxCode is 'ME', otherwise show alert
+        const weeklyIETC = annualIETC / 52;
+        const applyingIETC = (taxCode === 'ME' && weeklyIETC > 0);
+        ietcRow.style.display   = applyingIETC ? 'flex' : 'none';
+        ietcAlert.style.display = (taxCode === 'M' && weeklyIETC > 9) ? 'block' : 'none';
+
+        // Net Calculation
+        const weeklyNet = weeklyGross - weeklyPAYE - weeklyACC - weeklySL - weeklyKS + (applyingIETC ? weeklyIETC : 0);
+        const annualNet = weeklyNet * 52;
+        const monthlyNet = annualNet / 12;
+
+        // Update UI
+        resWeeklyNet.textContent   = formatCurrency(weeklyNet);
+        resWeeklyGross.textContent = formatCurrency(weeklyGross);
+        resPAYE.textContent        = '-' + formatCurrency(weeklyPAYE);
+        resACC.textContent         = '-' + formatCurrency(weeklyACC);
+        resSL.textContent          = '-' + formatCurrency(weeklySL);
+        resKS.textContent          = '-' + formatCurrency(weeklyKS);
+        resIETC.textContent        = '+' + formatCurrency(weeklyIETC);
+        resAnnualNet.textContent   = formatCurrency(annualNet);
+        document.getElementById('res-monthly-net').textContent = formatCurrency(monthlyNet);
+
+        // Update Wage Badge Status
+        wageBadge.style.display = 'inline-block';
+        if (rate >= 27.80) {
+            wageBadge.textContent = 'Living Wage';
+            wageBadge.className = 'badge-tag badge-living-wage';
+        } else if (rate >= 23.95) {
+            wageBadge.textContent = 'Adult Min Wage';
+            wageBadge.className = 'badge-tag badge-min-wage';
+        } else if (rate > 0) {
+            wageBadge.textContent = 'Underpaid?';
+            wageBadge.className = 'badge-tag badge-min-wage';
         } else {
-            statusLabel.textContent = 'Legally Compliant';
-            statusLabel.style.color = '#2dd4bf';
-            statusIcon.textContent = '✅';
-            statusBox.style.background = 'linear-gradient(135deg, rgba(20, 184, 166, 0.08), rgba(2, 132, 199, 0.03))';
-            statusBox.style.borderColor = 'rgba(20, 184, 166, 0.3)';
+            wageBadge.style.display = 'none';
         }
     }
 
-    [hourlyRateInput, wageTypeSelect, hoursPerWeekInput].forEach(el => {
+    // Preset Button Handlers
+    presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            hourlyRateInput.value = btn.dataset.rate;
+            calculate();
+        });
+    });
+
+    [hourlyRateInput, hoursPerWeekInput, taxCodeSelect, studentLoanCheck, kiwiSaverSelect].forEach(el => {
         el.addEventListener('input', calculate);
         el.addEventListener('change', calculate);
     });

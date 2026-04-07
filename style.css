@@ -1417,3 +1417,74 @@ input:checked + .toggle-slider:before {
         margin-bottom: 1rem;
     }
 }
+
+/* Preset Buttons (Quick Select) */
+.preset-btn {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: var(--text-secondary);
+    padding: 0.5rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.preset-btn:hover {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+    transform: translateY(-1px);
+}
+
+.preset-btn:active {
+    transform: translateY(0);
+}
+
+/* Status Badges */
+.badge-tag {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-min-wage {
+    background: rgba(244, 63, 94, 0.1);
+    color: #f43f5e;
+    border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.badge-living-wage {
+    background: rgba(45, 212, 191, 0.1);
+    color: #0d9488;
+    border: 1px solid rgba(45, 212, 191, 0.2);
+}
+
+.badge-above {
+    background: rgba(2, 132, 199, 0.1);
+    color: #0284c7;
+    border: 1px solid rgba(2, 132, 199, 0.2);
+}
+
+/* Deduction & Entitlement List Styling */
+.result-item.deduction .result-value {
+    color: #ef4444;
+    font-family: var(--font-mono);
+}
+
+.result-item.entitlement .result-value {
+    color: #10b981;
+    font-family: var(--font-mono);
+}
+
+/* Dividers in Results */
+.divider {
+    height: 1px;
+    background: #f1f5f9;
+    margin: 1rem 0;
+}

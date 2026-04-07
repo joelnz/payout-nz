@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NZ Minimum Wage Checker 2026</title>
-    <meta name="description" content="Check if you are being paid the correct New Zealand minimum wage (Adult, Training, or Starting-out), and see your weekly/annual equivalent. Updated for April 2026 rates.">
-    <meta name="keywords" content="New Zealand, NZ, Final Pay, Leave Payout, Calculator, Holidays Act, Resignation, PAYE, Minimum Wage 2026">
-    <meta property="og:title" content="NZ Minimum Wage Checker 2026">
-    <meta property="og:description" content="Quickly check if your hourly rate meets New Zealand minimum wage laws (Updated for April 2026 rates).">
+    <title>NZ Take-Home Pay & Entitlements Calculator</title>
+    <meta name="description" content="Calculate your NZ weekly take-home pay for 2026. Includes PAYE tax, ACC, Student Loans, and IETC tax credits. Updated for April 2026 rates.">
+    <meta name="keywords" content="New Zealand, NZ, Final Pay, Take-Home Pay, Calculator, Student Loan, IETC, PAYE, Minimum Wage 2026">
+    <meta property="og:title" content="NZ Take-Home Pay & Entitlements Calculator">
+    <meta property="og:description" content="Calculate exactly how much lands in your bank account after NZ taxes and student loans.">
     <meta property="og:type" content="website">
     <link rel="canonical" href="https://payout.nz/">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -53,7 +53,7 @@
             <div class="logo" style="font-weight: 800; color: var(--accent-primary); letter-spacing: -0.05em; font-size: 1.25rem;">PAYOUT<span style="color: var(--accent-secondary);">.NZ</span></div>
             <div class="nav-links" id="nav-links">
                 <a href="index.html" class="nav-pill">Final Pay</a>
-                <a href="minimum-wage.html" class="nav-pill active">Minimum Wage</a>
+                <a href="minimum-wage.html" class="nav-pill active">Take-Home Pay</a>
                 <a href="leave-entitlement.html" class="nav-pill">Annual Leave</a>
                 <a href="kiwisaver.html" class="nav-pill">KiwiSaver</a>
             </div>
@@ -67,11 +67,11 @@
 
     <main class="container">
         <header>
-            <h1>Minimum Wage Checker 2026</h1>
-            <p class="subtitle">Quickly check if your hourly rate meets New Zealand minimum wage laws (Updated for April 2026 rates).</p>
+            <h1>Take-Home Pay & Entitlements</h1>
+            <p class="subtitle">See exactly how much lands in your bank account after PAYE, ACC, and student loans. Updated for 2026 rates.</p>
             <div class="header-actions">
                 <div class="assurance-badge">
-                    💡 Based on the <strong>NZ Minimum Wage Act 1983</strong>
+                    💸 Includes <strong>IETC Tax Credit</strong> calculations
                 </div>
                 <button id="share-btn" class="icon-btn" title="Share Calculator">
                     <span class="icon">🔗</span> Share
@@ -83,56 +83,103 @@
             <section class="card input-section">
                 <form id="minimum-wage-form" onsubmit="event.preventDefault();">
                     <div class="form-group">
-                        <label for="wageType">Minimum Wage Category</label>
-                        <div class="select-wrapper">
-                            <select id="wageType">
-                                <option value="adult" selected>Adult ($23.95/hr) - 16 yrs or over</option>
-                                <option value="starting">Starting-out ($19.16/hr) - 16/17 yrs</option>
-                                <option value="training">Training ($19.16/hr) - Apprentices</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="hourlyRate">Your Hourly Rate (NZD) *</label>
+                        <label for="hourlyRate">Hourly Rate (NZD) *</label>
                         <div class="input-wrapper">
                             <span class="prefix">$</span>
-                            <input type="number" id="hourlyRate" class="has-prefix" placeholder="0" min="0" step="0.01">
+                            <input type="number" id="hourlyRate" class="has-prefix" placeholder="23.95" min="0" step="0.01">
+                        </div>
+                        <div class="quick-presets" style="display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
+                            <button type="button" class="preset-btn" data-rate="23.95">Min Wage</button>
+                            <button type="button" class="preset-btn" data-rate="27.80">Living Wage</button>
+                            <button type="button" class="preset-btn" data-rate="30.00">$30/hr</button>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="hoursPerWeek">Hours Worked per Week <span class="tooltip-icon" data-tip="Used to calculate your total weekly and annual earnings.">?</span></label>
+                        <label for="hoursPerWeek">Hours Worked per Week</label>
                         <input type="number" id="hoursPerWeek" value="40" min="0" max="168" step="0.5">
+                    </div>
+
+                    <div class="divider" style="margin: 2rem 0;"></div>
+
+                    <div class="form-group">
+                        <label for="taxCode">Tax Code <span class="tooltip-icon" data-tip="M is standard. ME applies if you earn $24k-$70k, have no student loan, and don't receive Working for Families or other benefits.">?</span></label>
+                        <div class="select-wrapper">
+                            <select id="taxCode">
+                                <option value="M">M (Main Job)</option>
+                                <option value="ME">ME (Main Job + IETC Credit)</option>
+                            </select>
+                        </div>
+                        <small class="hint" style="display: block; margin-top: 0.5rem; color: var(--text-muted);">You can update your code by submitting an IR330 form to your employer.</small>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        <input type="checkbox" id="studentLoan" style="width: auto; margin: 0;">
+                        <label for="studentLoan" style="margin: 0; font-size: 0.95rem;">I have a Student Loan <span class="tooltip-icon" data-tip="You only pay 12% on income over the threshold ($24,128/yr or $464/week). If you earn less than this, nothing is deducted.">?</span></label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kiwiSaver">KiwiSaver Contribution</label>
+                        <div class="select-wrapper">
+                            <select id="kiwiSaver">
+                                <option value="0">Opt Out (0%)</option>
+                                <option value="0.03" selected>3%</option>
+                                <option value="0.04">4%</option>
+                                <option value="0.06">6%</option>
+                                <option value="0.08">8%</option>
+                                <option value="0.10">10%</option>
+                            </select>
+                        </div>
                     </div>
                 </form>
             </section>
 
             <section class="card results-section">
-                <h2>Wage Assessment</h2>
-                
-                <div class="net-total-box" id="status-box" style="padding: 1.5rem;">
-                    <span class="net-label" id="status-label">Enter your rate</span>
-                    <span class="net-value" id="status-icon" style="font-size: 2.5rem; margin-top: 0.5rem;">➖</span>
+                <div class="net-total-box" id="pay-status-card" style="padding: 2.5rem;">
+                    <span class="net-label">Weekly Take-Home Pay</span>
+                    <span class="net-value" id="res-weekly-net">$0.00</span>
+                    <div id="wage-badge" class="badge-tag" style="margin-top: 1rem; display: none;">Adult Min Wage</div>
                 </div>
 
+                <!-- IETC Warning -->
+                <div id="ietc-alert" class="page-note" style="display: none; background: #fff1f2; border-left-color: #f43f5e; color: #9f1239; margin-bottom: 2rem;">
+                    <p><strong>💡 Money Hack:</strong> You qualify for the <strong>$10/week</strong> Tax Credit! Ensure your tax code is set to <strong>ME</strong> on your payslip.</p>
+                </div>
+                
                 <div class="result-list">
                     <div class="result-item">
-                        <span class="result-label">Legal Minimum Rate</span>
-                        <span class="result-value" id="res-min-rate">$0.00 / hr</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Difference</span>
-                        <span class="result-value" id="res-diff">$0.00 / hr</span>
+                        <span class="result-label">Gross Weekly</span>
+                        <span class="result-value" id="res-weekly-gross">$0.00</span>
                     </div>
                     <div class="divider"></div>
-                    <div class="result-item gross-total">
-                        <span class="result-label">Weekly Equivalent (Gross)</span>
-                        <span class="result-value" id="res-weekly">$0.00</span>
+                    <div class="result-item deduction">
+                        <span class="result-label">PAYE Tax</span>
+                        <span class="result-value" id="res-paye">-$0.00</span>
                     </div>
+                    <div class="result-item deduction">
+                        <span class="result-label">ACC Levy (1.75%)</span>
+                        <span class="result-value" id="res-acc">-$0.00</span>
+                    </div>
+                    <div id="sl-row" class="result-item deduction" style="display: none;">
+                        <span class="result-label">Student Loan (12%)</span>
+                        <span class="result-value" id="res-sl">-$0.00</span>
+                    </div>
+                    <div class="result-item deduction">
+                        <span class="result-label">KiwiSaver</span>
+                        <span class="result-value" id="res-ks">-$0.00</span>
+                    </div>
+                    <div id="ietc-row" class="result-item entitlement" style="display: none;">
+                        <span class="result-label">IETC Tax Credit</span>
+                        <span class="result-value" id="res-ietc" style="color: #2dd4bf;">+$10.00</span>
+                    </div>
+                    <div class="divider"></div>
                     <div class="result-item">
-                        <span class="result-label">Annual Equivalent (Gross)</span>
-                        <span class="result-value" id="res-annual">$0.00</span>
+                        <span class="result-label">Monthly Take-Home</span>
+                        <span class="result-value" id="res-monthly-net">$0.00 / mo</span>
+                    </div>
+                    <div class="result-item gross-total">
+                        <span class="result-label">Annual Take-Home</span>
+                        <span class="result-value" id="res-annual-net">$0.00</span>
                     </div>
                 </div>
 
@@ -227,7 +274,7 @@
             <div class="footer-links">
                 <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
                 <span class="sep">•</span>
-                <a href="https://www.employment.govt.nz/leave-and-holidays" target="_blank" rel="noopener">Holiday Guidance</a>
+                <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay/calculating-holiday-and-leave-pay" target="_blank" rel="noopener">Holiday Pay Guidance</a>
             </div>
         </footer>
 
