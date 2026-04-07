@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NZ Minimum Wage Checker 2026</title>
+    <meta name="description" content="Check if you are being paid the correct New Zealand minimum wage (Adult, Training, or Starting-out), and see your weekly/annual equivalent. Updated for April 2026 rates.">
+    <meta name="keywords" content="New Zealand, NZ, Final Pay, Leave Payout, Calculator, Holidays Act, Resignation, PAYE, Minimum Wage 2026">
+    <meta property="og:title" content="NZ Minimum Wage Checker 2026">
+    <meta property="og:description" content="Quickly check if your hourly rate meets New Zealand minimum wage laws (Updated for April 2026 rates).">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://payout.nz/">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    </noscript>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-95V0NXHCS7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-95V0NXHCS7');
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "NZ Final Pay Calculator",
+      "description": "Estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.",
+      "url": "https://payout.nz/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All"
+    }
+    </script>
+</head>
+<body>
+    <div class="background-effects"></div>
+
+    
+    <nav class="top-nav">
+        <div class="nav-scroller container">
+            <div class="logo" style="font-weight: 800; color: var(--accent-primary); letter-spacing: -0.05em; font-size: 1.25rem;">PAYOUT<span style="color: var(--accent-secondary);">.NZ</span></div>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html" class="nav-pill">Final Pay</a>
+                <a href="minimum-wage.html" class="nav-pill active">Minimum Wage</a>
+                <a href="leave-entitlement.html" class="nav-pill">Annual Leave</a>
+                <a href="kiwisaver.html" class="nav-pill">KiwiSaver</a>
+            </div>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header>
+            <h1>Minimum Wage Checker 2026</h1>
+            <p class="subtitle">Quickly check if your hourly rate meets New Zealand minimum wage laws (Updated for April 2026 rates).</p>
+            <div class="header-actions">
+                <div class="assurance-badge">
+                    💡 Based on the <strong>NZ Minimum Wage Act 1983</strong>
+                </div>
+                <button id="share-btn" class="icon-btn" title="Share Calculator">
+                    <span class="icon">🔗</span> Share
+                </button>
+            </div>
+        </header>
+
+        <div class="calculator-grid">
+            <section class="card input-section">
+                <form id="minimum-wage-form" onsubmit="event.preventDefault();">
+                    <div class="form-group">
+                        <label for="wageType">Minimum Wage Category</label>
+                        <div class="select-wrapper">
+                            <select id="wageType">
+                                <option value="adult" selected>Adult ($23.95/hr) - 16 yrs or over</option>
+                                <option value="starting">Starting-out ($19.16/hr) - 16/17 yrs</option>
+                                <option value="training">Training ($19.16/hr) - Apprentices</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hourlyRate">Your Hourly Rate (NZD) *</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">$</span>
+                            <input type="number" id="hourlyRate" class="has-prefix" placeholder="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hoursPerWeek">Hours Worked per Week <span class="tooltip-icon" data-tip="Used to calculate your total weekly and annual earnings.">?</span></label>
+                        <input type="number" id="hoursPerWeek" value="40" min="0" max="168" step="0.5">
+                    </div>
+                </form>
+            </section>
+
+            <section class="card results-section">
+                <h2>Wage Assessment</h2>
+                
+                <div class="net-total-box" id="status-box" style="padding: 1.5rem;">
+                    <span class="net-label" id="status-label">Enter your rate</span>
+                    <span class="net-value" id="status-icon" style="font-size: 2.5rem; margin-top: 0.5rem;">➖</span>
+                </div>
+
+                <div class="result-list">
+                    <div class="result-item">
+                        <span class="result-label">Legal Minimum Rate</span>
+                        <span class="result-value" id="res-min-rate">$0.00 / hr</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Difference</span>
+                        <span class="result-value" id="res-diff">$0.00 / hr</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="result-item gross-total">
+                        <span class="result-label">Weekly Equivalent (Gross)</span>
+                        <span class="result-value" id="res-weekly">$0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Annual Equivalent (Gross)</span>
+                        <span class="result-value" id="res-annual">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="page-note">
+                    <p><strong>Note:</strong> Estimates are based on the new 2026 minimum wage figures. Rates typically increase every April.</p>
+                </div>
+
+                <div class="disclaimers">
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute financial, tax, or legal advice.</p>
+                    <details class="disclaimer-details">
+                        <summary>Read full disclaimer</summary>
+                        <div class="disclaimer-expanded">
+                            <p>While we strive to align with the standard provisions of the NZ Holidays Act 2003 (and other relevant legislation), this calculator cannot account for every unique employment agreement, complex leave history, or precise IRD tax logic (including exact KiwiSaver and Student Loan thresholds).</p>
+                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of or reliance on this calculator. Always verify your calculations with your payroll department, <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a>, or a qualified professional.</p>
+                        </div>
+                    </details>
+                </div>
+            </section>
+        </div>
+        <div class="lead-gen-header">
+            <h2>Next Steps ✨</h2>
+            <p>Make the most of your transition with these popular New Zealand resources.</p>
+        </div>
+        
+        <div class="lead-gen-grid">
+            <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/minimum-wage-rates-and-types" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon">🔍</div>
+                <div class="lead-content">
+                    <h3>Official 2026 Wage Rates <span>→</span></h3>
+                    <p>View the current Adult, Starting-out, and Training rates on Employment NZ.</p>
+                </div>
+            </a>
+
+            <a href="https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon">📈</div>
+                <div class="lead-content">
+                    <h3>Current Income Tax Rates <span>→</span></h3>
+                    <p>Check the IRD tax brackets to see how much of your wage goes to PAYE.</p>
+                </div>
+            </a>
+
+            <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon">📄</div>
+                <div class="lead-content">
+                    <h3>Minimum Wage Rights <span>→</span></h3>
+                    <p>Understand who is covered by the Minimum Wage Act and your legal protections.</p>
+                </div>
+            </a>
+        </div>
+
+        <section class="card faq-section">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common questions about minimum wage entitlements in New Zealand.</p>
+            </div>
+            
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What are the current minimum wage rates in NZ?</summary>
+                    <div class="faq-content">
+                        <p>As of April 1, 2026, the Adult minimum wage is $23.95 per hour. The Starting-out and Training rates are $19.16 per hour (which is 80% of the adult rate).</p>
+                    </div>
+                </details>
+                
+                <details class="faq-item">
+                    <summary>Who is eligible for the 'Starting-out' rate?</summary>
+                    <div class="faq-content">
+                        <p>Starting-out workers are typically 16 or 17 year olds who have worked for their current employer for less than 6 months, or 18 and 19 year olds who have been on a social security benefit for 6 months or more and haven't completed 6 months with a new employer.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Does the minimum wage apply to salary earners?</summary>
+                    <div class="faq-content">
+                        <p>Yes. If you are on a salary, your total pay divided by the hours you work must not be lower than the minimum wage for any given pay period. Employers cannot use a salary to bypass minimum wage protections.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Is the minimum wage before or after tax?</summary>
+                    <div class="faq-content">
+                        <p>The minimum wage is the "gross" amount—this is the amount you earn before any PAYE tax, Student Loan repayments, or KiwiSaver contributions are deducted from your pay.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        
+
+        <footer>
+            <p>For official government guidance, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">employment.govt.nz</a>.</p>
+            <div class="footer-links">
+                <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
+                <span class="sep">•</span>
+                <a href="https://www.employment.govt.nz/leave-and-holidays" target="_blank" rel="noopener">Holiday Guidance</a>
+            </div>
+        </footer>
+
+    </main>
+
+    <script src="common.js" defer></script>
+    <script src="minimum-wage.js" defer></script>
+</body>
+</html>

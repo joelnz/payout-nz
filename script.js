@@ -1,172 +1,305 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Inputs
-    const radiosType = document.querySelectorAll('input[name="employmentType"]');
-    const payRateInput = document.getElementById('payRate');
-    const labelPayRate = document.getElementById('label-pay-rate');
-    const groupHourlyDetails = document.getElementById('group-hourly-details');
-    const groupSalaryDetails = document.getElementById('group-salary-details');
-    const hoursPerDayInput = document.getElementById('hoursPerDay');
-    const daysPerWeekInput = document.getElementById('daysPerWeek');
-    const annualLeaveInput = document.getElementById('annualLeave');
-    const grossEarningsInput = document.getElementById('grossEarnings');
-    const altLeaveInput = document.getElementById('altLeave');
+
+    // ── Input elements ────────────────────────────────────────────────────────
+    const radiosType    = document.querySelectorAll('input[name="employmentType"]');
+    const radiosTenure  = document.querySelectorAll('input[name="employmentTenure"]');
+    const payRateInput  = document.getElementById('payRate');
+    const labelPayRate  = document.getElementById('label-pay-rate');
+    const groupHourly   = document.getElementById('group-hourly-details');
+    const groupSalary   = document.getElementById('group-salary-details');
+    const groupAnnual   = document.getElementById('group-annual-leave');
+    const groupLastDay  = document.getElementById('group-last-day');
+    const groupManualPH = document.getElementById('group-manual-public-holidays');
+    const hoursPerDayInput    = document.getElementById('hoursPerDay');
+    const daysPerWeekInput    = document.getElementById('daysPerWeek');
+    const annualLeaveInput    = document.getElementById('annualLeave');
+    const grossEarningsInput  = document.getElementById('grossEarnings');
+    const labelGrossEarnings  = document.getElementById('label-gross-earnings');
+    const hintGrossEarnings   = document.getElementById('hint-gross-earnings');
+    const altLeaveInput       = document.getElementById('altLeave');
     const publicHolidaysInput = document.getElementById('publicHolidays');
-    const taxRateSelect = document.getElementById('taxRate');
+    const lastDayInput        = document.getElementById('lastDayInput');
+    const taxRateSelect       = document.getElementById('taxRate');
 
-    // Outputs
-    const resAnnualLeave = document.getElementById('res-annual-leave');
-    const resAccruedLeave = document.getElementById('res-accrued-leave');
-    const resAltLeave = document.getElementById('res-alt-leave');
-    const resPublicHolidays = document.getElementById('res-public-holidays');
-    const resGross = document.getElementById('res-gross');
-    const resTax = document.getElementById('res-tax');
-    const resNet = document.getElementById('res-net');
+    // ── Output elements ───────────────────────────────────────────────────────
+    const resAnnualRow   = document.getElementById('res-annual-leave-row');
+    const resAnnual      = document.getElementById('res-annual-leave');
+    const resAccrued     = document.getElementById('res-accrued-leave');
+    const resAlt         = document.getElementById('res-alt-leave');
+    const resPH          = document.getElementById('res-public-holidays');
+    const resPHDetail    = document.getElementById('res-public-holidays-detail');
+    const resGross       = document.getElementById('res-gross');
+    const resTax         = document.getElementById('res-tax');
+    const resNet         = document.getElementById('res-net');
+    const holidayCallout = document.getElementById('holiday-callout');
 
-    function formatCurrency(amount) {
-        return new Intl.NumberFormat('en-NZ', {
-            style: 'currency',
-            currency: 'NZD',
-        }).format(amount);
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function fmt(amount) {
+        return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD' }).format(amount);
     }
 
-    function calculate() {
-        // 1. Get values
-        const isSalary = document.getElementById('type-salary').checked;
-        const payRate = parseFloat(payRateInput.value) || 0;
-        const annualLeave = parseFloat(annualLeaveInput.value) || 0;
-        const grossEarnings = parseFloat(grossEarningsInput.value) || 0;
-        const altLeave = parseFloat(altLeaveInput.value) || 0;
-        const publicHolidays = parseFloat(publicHolidaysInput.value) || 0;
-        const taxRate = parseFloat(taxRateSelect.value) || 0.3;
+    function parseLocalDate(str) {
+        if (!str) return null;
+        const [y, m, d] = str.split('-').map(Number);
+        return new Date(y, m - 1, d);
+    }
 
-        // 2. Determine daily rate
+    function formatDate(date) {
+        return date.toLocaleDateString('en-NZ', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function isOver12() { return document.getElementById('tenure-over').checked; }
+    function isSalary()  { return document.getElementById('type-salary').checked; }
+
+    function formatCurrencyInput(input) {
+        // Remove all non-numeric characters except one decimal point
+        let value = input.value.replace(/[^0-9.]/g, '');
+        
+        // Split decimal part if it exists
+        const parts = value.split('.');
+        if (parts.length > 2) value = parts[0] + '.' + parts.slice(1).join('');
+        
+        // Add commas to the integer part
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        
+        // Reassemble value
+        input.value = parts.length > 1 ? parts.join('.') : parts[0];
+    }
+
+    function parseFormattedValue(value) {
+        if (!value) return 0;
+        return parseFloat(value.toString().replace(/,/g, '')) || 0;
+    }
+
+    // ── Main calculation ──────────────────────────────────────────────────────
+    function calculate() {
+        const over12     = isOver12();
+        const salary     = isSalary();
+        const payRate    = parseFormattedValue(payRateInput.value);
+        const annualDays = over12 ? (parseFloat(annualLeaveInput.value) || 0) : 0;
+        const grossBase  = parseFormattedValue(grossEarningsInput.value);
+        const altDays    = parseFloat(altLeaveInput.value) || 0;
+        const taxRate    = parseFloat(taxRateSelect.value) || 0.30;
+
+        // Daily rate
         let dailyRate = 0;
-        if (isSalary) {
-            const daysPerWeek = parseFloat(daysPerWeekInput.value) || 5;
-            dailyRate = payRate / (52 * daysPerWeek); // Yearly salary / days worked per year
+        if (salary) {
+            const dpw = parseFloat(daysPerWeekInput.value) || 5;
+            dailyRate = payRate / (52 * dpw);
         } else {
-            const hoursPerDay = parseFloat(hoursPerDayInput.value) || 0;
-            dailyRate = payRate * hoursPerDay;
+            const hpd = parseFloat(hoursPerDayInput.value) || 0;
+            dailyRate = payRate * hpd;
         }
 
-        // 3. Calculate components according to NZ Holidays Act 2003
-        // Entitled Leave is paid at the daily rate (at the time the leave is taken/paid)
-        const entitledLeaveVal = annualLeave * dailyRate;
-        const altLeaveVal = altLeave * dailyRate;
-        const publicHolidaysVal = publicHolidays * dailyRate;
-        
-        // Accrued Leave is paid at 8% of gross earnings since the last anniversary PLUS the payout for legally entitled leave
-        // (Section 24 of the Holidays Act 2003)
-        const accruedLeaveVal = (grossEarnings + entitledLeaveVal + altLeaveVal + publicHolidaysVal) * 0.08;
+        // Determine public holidays to charge
+        let phCount = 0;
+        let phHolidays = [];
+        const lastDay = parseLocalDate(lastDayInput ? lastDayInput.value : '');
+        if (over12 && lastDay && annualDays > 0) {
+            const dpw = parseFloat(daysPerWeekInput.value) || 5;
+            const result = calculatePublicHolidaysInWindow(lastDay, annualDays, dpw);
+            phCount    = result.count;
+            phHolidays = result.holidays;
+        } else if (over12) {
+            phCount = parseFloat(publicHolidaysInput.value) || 0;
+        }
 
-        const grossTotal = entitledLeaveVal + accruedLeaveVal + altLeaveVal + publicHolidaysVal;
-        const taxEstimated = grossTotal * taxRate;
-        const netTotal = grossTotal - taxEstimated;
+        // Monetary values
+        const entitledLeaveVal = annualDays * dailyRate;
+        const altLeaveVal      = altDays    * dailyRate;
+        const phVal            = phCount    * dailyRate;
 
-        // 4. Update UI
+        // 8% holiday bonus — applied to gross base + all other final pay items
+        const accruedVal = (grossBase + entitledLeaveVal + altLeaveVal + phVal) * 0.08;
+
+        const grossTotal = entitledLeaveVal + accruedVal + altLeaveVal + phVal;
+        const taxAmt     = grossTotal * taxRate;
+        const netTotal   = grossTotal - taxAmt;
+
+        // ── Update holiday callout ────────────────────────────────────────────
+        if (holidayCallout) {
+            if (over12 && lastDay && annualDays > 0) {
+                if (phCount === 0) {
+                    holidayCallout.innerHTML = '<span class="callout-icon">✅</span> No public holidays fall within your paid leave window — none extra owed.';
+                    holidayCallout.className = 'holiday-callout callout-none';
+                } else {
+                    const list = phHolidays.map(h =>
+                        `<span class="holiday-chip">${h.name} (${formatDate(h.date)})</span>`
+                    ).join('');
+                    holidayCallout.innerHTML = `<span class="callout-icon">🎉</span> <strong>${phCount} public holiday${phCount > 1 ? 's' : ''} found</strong> — you're owed pay for:<br>${list}`;
+                    holidayCallout.className = 'holiday-callout callout-found';
+                }
+                holidayCallout.style.display = 'block';
+            } else {
+                holidayCallout.style.display = 'none';
+            }
+        }
+
+        // ── Update public holiday detail in results ───────────────────────────
+        if (resPHDetail) {
+            if (phHolidays.length > 0) {
+                resPHDetail.textContent = phHolidays.map(h => h.name).join(', ');
+                resPHDetail.style.display = 'block';
+            } else {
+                resPHDetail.style.display = 'none';
+            }
+        }
+
+        // ── UI reset when no pay rate ─────────────────────────────────────────
         if (payRate <= 0) {
-            resAnnualLeave.textContent = '-';
-            resAccruedLeave.textContent = '-';
-            resAltLeave.textContent = '-';
-            resPublicHolidays.textContent = '-';
-            resGross.textContent = '-';
-            resTax.textContent = '-';
-            resNet.style.fontSize = '1.2rem';
-            resNet.style.background = 'none';
-            resNet.style.webkitTextFillColor = '#94a3b8';
-            resNet.style.filter = 'none';
+            [resAnnual, resAccrued, resAlt, resPH, resGross, resTax].forEach(el => {
+                if (el) el.textContent = '-';
+            });
+            resNet.style.cssText = 'font-size:1.2rem;background:none;-webkit-text-fill-color:#94a3b8;filter:none;';
             resNet.textContent = 'Enter pay rate to calculate';
             return;
         }
 
-        resNet.style.fontSize = '';
-        resNet.style.background = '';
-        resNet.style.webkitTextFillColor = '';
-        resNet.style.filter = '';
-
-        resAnnualLeave.textContent = formatCurrency(entitledLeaveVal);
-        resAccruedLeave.textContent = formatCurrency(accruedLeaveVal);
-        resAltLeave.textContent = formatCurrency(altLeaveVal);
-        resPublicHolidays.textContent = formatCurrency(publicHolidaysVal);
-        resGross.textContent = formatCurrency(grossTotal);
-        resTax.textContent = '-' + formatCurrency(taxEstimated);
-        resNet.textContent = formatCurrency(netTotal);
+        resNet.style.cssText = '';
+        if (resAnnual)  resAnnual.textContent  = fmt(entitledLeaveVal);
+        if (resAccrued) resAccrued.textContent  = fmt(accruedVal);
+        if (resAlt)     resAlt.textContent      = fmt(altLeaveVal);
+        if (resPH)      resPH.textContent       = fmt(phVal);
+        if (resGross)   resGross.textContent    = fmt(grossTotal);
+        if (resTax)     resTax.textContent      = '-' + fmt(taxAmt);
+        if (resNet)     resNet.textContent      = fmt(netTotal);
     }
 
-    // Share and Copy functionality
-    function shareCalculator() {
-        const url = window.location.href;
-        navigator.clipboard.writeText(url).then(() => {
-            const btn = document.getElementById('share-btn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<span>✅</span> Copied!';
-            setTimeout(() => btn.innerHTML = originalText, 2000);
-        });
+    // ── Toggle: Employment length ─────────────────────────────────────────────
+    function toggleTenure() {
+        const over12 = isOver12();
+
+        if (groupAnnual)   groupAnnual.style.display   = over12 ? '' : 'none';
+        if (groupLastDay)  groupLastDay.style.display  = over12 ? '' : 'none';
+        if (resAnnualRow)  resAnnualRow.style.display  = over12 ? '' : 'none';
+
+        // Show manual public holidays only if 12+ months AND no date entered
+        updatePublicHolidayInputVisibility();
+
+        // Relabel gross earnings based on tenure
+        if (labelGrossEarnings) {
+            if (over12) {
+                labelGrossEarnings.innerHTML = 'Your Pay Since Your Last Work Anniversary (NZD) <span class="tooltip-icon" data-tip="Each year on the anniversary of when you started, your holiday balance resets. Enter your total gross (before-tax) pay since that last anniversary date. Your 8% bonus is calculated on this plus any leave being paid out.">?</span>';
+                if (hintGrossEarnings) hintGrossEarnings.textContent = 'Add up your payslips from your work anniversary until now';
+            } else {
+                labelGrossEarnings.innerHTML = 'Total Pay You\'ve Earned Since You Started (NZD) <span class="tooltip-icon" data-tip="Because you\'ve worked here less than a year, your 8% holiday bonus is based on your total gross pay since day one. Add up all your before-tax wages since you started — check your payslips.">?</span>';
+                if (hintGrossEarnings) hintGrossEarnings.textContent = 'Your total before-tax wages since your very first day';
+            }
+        }
+
+        calculate();
     }
 
-    function copyBreakdown() {
-        const annual = resAnnualLeave.textContent;
-        const accrued = resAccruedLeave.textContent;
-        const alt = resAltLeave.textContent;
-        const holidays = resPublicHolidays.textContent;
-        const gross = resGross.textContent;
-        const tax = resTax.textContent;
-        const net = resNet.textContent;
+    // ── Toggle: Show/hide manual public holidays input ────────────────────────
+    function updatePublicHolidayInputVisibility() {
+        if (!groupManualPH) return;
+        const over12  = isOver12();
+        const hasDate = lastDayInput && lastDayInput.value;
+        const hasAnnual = annualLeaveInput && (parseFloat(annualLeaveInput.value) || 0) > 0;
 
-        const text = `NZ Final Pay Estimate Breakdown
--------------------------------
-Unused Annual Leave: ${annual}
-8% Accrued Holiday Pay: ${accrued}
-Days in Lieu (Alt Leave): ${alt}
-Public Holidays: ${holidays}
--------------------------------
-Total Gross Pay: ${gross}
-Estimated Tax: ${tax}
-Estimated Net Payout: ${net}
--------------------------------
-Estimate only. Powered by NZ Final Pay Calculator.`;
-
-        navigator.clipboard.writeText(text).then(() => {
-            const btn = document.getElementById('copy-results-btn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<span>✅</span> Breakdown Copied!';
-            setTimeout(() => btn.innerHTML = originalText, 2000);
-        });
+        // Show manual input only if: 12+ months, no date entered (or no annual leave to form a window)
+        if (over12 && (!hasDate || !hasAnnual)) {
+            groupManualPH.style.display = '';
+        } else {
+            groupManualPH.style.display = 'none';
+        }
     }
 
-    // Toggle fields based on employment type
+    // ── Toggle: Employment type (salary/hourly) ───────────────────────────────
     function toggleEmploymentType() {
-        const isSalary = document.getElementById('type-salary').checked;
-        if (isSalary) {
-            labelPayRate.innerHTML = 'Yearly Salary (NZD) * <span class="tooltip-icon" data-tip="Your usual yearly pay before any tax is taken out (gross pay).">?</span>';
-            payRateInput.placeholder = '0';
-            groupHourlyDetails.style.display = 'none';
-            if (groupSalaryDetails) groupSalaryDetails.style.display = 'flex';
+        const salary = isSalary();
+        if (salary) {
+            labelPayRate.innerHTML = 'Yearly Salary (NZD) * <span class="tooltip-icon" data-tip="Your annual salary before tax (gross pay).">?</span>';
+            if (groupHourly) groupHourly.style.display = 'none';
+            if (groupSalary) groupSalary.style.display = 'flex';
         } else {
             labelPayRate.innerHTML = 'Hourly Rate (NZD) * <span class="tooltip-icon" data-tip="How much you are paid per hour, before any tax is taken out.">?</span>';
-            payRateInput.placeholder = '0';
-            groupHourlyDetails.style.display = 'flex';
-            if (groupSalaryDetails) groupSalaryDetails.style.display = 'none';
+            if (groupHourly) groupHourly.style.display = 'flex';
+            if (groupSalary) groupSalary.style.display = 'none';
         }
         calculate();
     }
 
-    // Event Listeners
-    radiosType.forEach(radio => radio.addEventListener('change', toggleEmploymentType));
-    
-    const allInputs = [
-        payRateInput, hoursPerDayInput, daysPerWeekInput, annualLeaveInput, 
-        grossEarningsInput, altLeaveInput, publicHolidaysInput, taxRateSelect
-    ];
+    // ── Copy breakdown ────────────────────────────────────────────────────────
+    function copyBreakdown() {
+        const over12   = isOver12();
+        const annual   = resAnnual ? resAnnual.textContent : '-';
+        const accrued  = resAccrued ? resAccrued.textContent : '-';
+        const alt      = resAlt ? resAlt.textContent : '-';
+        const ph       = resPH ? resPH.textContent : '-';
+        const gross    = resGross ? resGross.textContent : '-';
+        const tax      = resTax ? resTax.textContent : '-';
+        const net      = resNet ? resNet.textContent : '-';
 
-    allInputs.forEach(input => {
-        input.addEventListener('input', calculate);
-        input.addEventListener('change', calculate); // For select
+        const annualLine = over12 ? `Unused Holiday Days:   ${annual}\n` : '';
+        const text = [
+            'NZ Final Pay Estimate',
+            '─────────────────────────────',
+            annualLine + `8% Holiday Bonus:      ${accrued}`,
+            `Days in Lieu Owed:     ${alt}`,
+            `Public Holidays:       ${ph}`,
+            '─────────────────────────────',
+            `Total (Before Tax):    ${gross}`,
+            `Estimated Tax (PAYE):  ${tax}`,
+            `Estimated Net Pay:     ${net}`,
+            '─────────────────────────────',
+            'Estimate only — verify with your employer.',
+            'Based on NZ Holidays Act 2003 | payout.nz',
+        ].join('\n');
+
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.getElementById('copy-results-btn');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<span>✅</span> Copied!';
+            setTimeout(() => btn.innerHTML = orig, 2000);
+        });
+    }
+
+    // ── Event listeners ───────────────────────────────────────────────────────
+    radiosType.forEach(r  => r.addEventListener('change', toggleEmploymentType));
+    radiosTenure.forEach(r => r.addEventListener('change', toggleTenure));
+
+    if (lastDayInput) {
+        flatpickr(lastDayInput, {
+            altInput: true,
+            altFormat: "d/m/Y",
+            dateFormat: "Y-m-d",
+            disableMobile: "true",
+            onChange: function() {
+                updatePublicHolidayInputVisibility();
+                calculate();
+            }
+        });
+    }
+
+    if (annualLeaveInput) {
+        annualLeaveInput.addEventListener('input', () => {
+            updatePublicHolidayInputVisibility();
+            calculate();
+        });
+    }
+
+    [payRateInput, grossEarningsInput].forEach(el => {
+        if (el) {
+            el.addEventListener('input', (e) => {
+                formatCurrencyInput(e.target);
+                calculate();
+            });
+        }
     });
 
-    document.getElementById('share-btn').addEventListener('click', shareCalculator);
+    [hoursPerDayInput, daysPerWeekInput,
+     altLeaveInput, publicHolidaysInput, taxRateSelect
+    ].forEach(el => {
+        if (el) {
+            el.addEventListener('input',  calculate);
+            el.addEventListener('change', calculate);
+        }
+    });
+
     document.getElementById('copy-results-btn').addEventListener('click', copyBreakdown);
 
-    // Initial compute
-    calculate();
+    // ── Initialise ────────────────────────────────────────────────────────────
+    toggleTenure();
+    toggleEmploymentType();
 });

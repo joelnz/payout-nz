@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NZ Annual Leave Entitlement Calculator</title>
+    <meta name="description" content="Calculate your annual leave true entitlement date under NZ law and see how much leave you currently own.">
+    <meta name="keywords" content="New Zealand, NZ, Final Pay, Leave Payout, Calculator, Holidays Act, Resignation, PAYE">
+    <meta property="og:title" content="NZ Final Pay Calculator">
+    <meta property="og:description" content="Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://payout.nz/">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    </noscript>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Flatpickr Dark Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-95V0NXHCS7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-95V0NXHCS7');
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "NZ Final Pay Calculator",
+      "description": "Estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.",
+      "url": "https://payout.nz/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All"
+    }
+    </script>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-scroller container">
+            <div class="logo" style="font-weight: 800; color: var(--accent-primary); letter-spacing: -0.05em; font-size: 1.25rem;">PAYOUT<span style="color: var(--accent-secondary);">.NZ</span></div>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html" class="nav-pill">Final Pay</a>
+                <a href="minimum-wage.html" class="nav-pill">Minimum Wage</a>
+                <a href="leave-entitlement.html" class="nav-pill active">Annual Leave</a>
+                <a href="kiwisaver.html" class="nav-pill">KiwiSaver</a>
+            </div>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+    <main class="container">
+        <header>
+            <h1>Annual Leave Entitlement Calculator</h1>
+            <p class="subtitle">Find out exactly when you become legally entitled to your 4 weeks of paid annual leave.</p>
+            <div class="header-actions">
+                <div class="assurance-badge">
+                    💡 Based on standard provisions of the <strong>NZ Holidays Act 2003</strong>
+                </div>
+                <button id="share-btn" class="icon-btn" title="Share Calculator">
+                    <span class="icon">🔗</span> Share
+                </button>
+            </div>
+        </header>
+
+        <div class="calculator-grid">
+            <section class="card input-section">
+                <form id="leave-form" onsubmit="event.preventDefault();">
+                    <div class="form-group">
+                        <label for="empType">Employment Type</label>
+                        <div class="select-wrapper">
+                            <select id="empType">
+                                <option value="permanent" selected>Permanent (Full/Part-time) or Fixed-Term</option>
+                                <option value="casual">Casual</option>
+                            </select>
+                        </div>
+                        <small class="hint">Casual workers typically receive 8% holiday pay "pay-as-you-go" instead of 4 weeks leave.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="startDate">Your Start Date *</label>
+                        <input type="text" id="startDate" placeholder="dd/mm/yyyy" required>
+                    </div>
+                </form>
+            </section>
+
+            <section class="card results-section">
+                <h2>Your Entitlement</h2>
+                
+                <div class="net-total-box" id="status-box" style="padding: 1.5rem;">
+                    <span class="net-label" id="status-label">Enter Start Date</span>
+                    <span class="net-value" id="status-date" style="font-size: 2rem; margin-top: 0.5rem;">➖</span>
+                </div>
+
+                <div class="result-list">
+                    <div class="result-item">
+                        <span class="result-label">Status</span>
+                        <span class="result-value" id="res-status">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Next Anniversary</span>
+                        <span class="result-value" id="res-anniv">-</span>
+                    </div>
+                </div>
+
+                <div class="page-note">
+                    <p><strong>Note:</strong> You only become formally entitled to 4 weeks paid leave upon reaching 12 continuous months of employment. Before then, you are accumulating it, but the employer does not legally have to let you take it unless agreed.</p>
+                </div>
+
+                <div class="disclaimers">
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute financial, tax, or legal advice.</p>
+                    <details class="disclaimer-details">
+                        <summary>Read full disclaimer</summary>
+                        <div class="disclaimer-expanded">
+                            <p>While we strive to align with the standard provisions of the NZ Holidays Act 2003 (and other relevant legislation), this calculator cannot account for every unique employment agreement, complex leave history, or precise IRD tax logic (including exact KiwiSaver and Student Loan thresholds).</p>
+                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of or reliance on this calculator. Always verify your calculations with your payroll department, <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a>, or a qualified professional.</p>
+                        </div>
+                    </details>
+                </div>
+            </section>
+        </div>
+        <div class="lead-gen-header">
+            <h2>Next Steps ✨</h2>
+            <p>Make the most of your transition with these popular New Zealand resources.</p>
+        </div>
+        
+        <div class="lead-gen-grid">
+            <a href="https://www.employment.govt.nz/leave-and-holidays/annual-holidays/" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon">🔍</div>
+                <div class="lead-content">
+                    <h3>Annual Holidays Guide <span>→</span></h3>
+                    <p>Official rules on the 4-week entitlement and how leave is accrued in New Zealand.</p>
+                </div>
+            </a>
+
+            <a href="https://www.employment.govt.nz/leave-and-holidays/public-holidays/" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon">📈</div>
+                <div class="lead-content">
+                    <h3>Public Holiday Rights <span>→</span></h3>
+                    <p>Learn about your entitlements for public holidays and alternative holidays (days in lieu).</p>
+                </div>
+            </a>
+
+            <a href="https://www.employment.govt.nz/leave-and-holidays/calculating-public-holiday-pay/" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon">📄</div>
+                <div class="lead-content">
+                    <h3>Calculating Holiday Pay <span>→</span></h3>
+                    <p>Technical guidance on using Ordinary Weekly Pay vs Average Weekly Earnings.</p>
+                </div>
+            </a>
+        </div>
+
+        <section class="card faq-section">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common questions about annual leave and holiday entitlements in NZ.</p>
+            </div>
+            
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>How much annual leave am I entitled to?</summary>
+                    <div class="faq-content">
+                        <p>After 12 months of continuous employment, most employees are entitled to at least 4 weeks of paid annual holidays per year under the Holidays Act 2003.</p>
+                    </div>
+                </details>
+                
+                <details class="faq-item">
+                    <summary>Can I cash up my annual leave?</summary>
+                    <div class="faq-content">
+                        <p>Yes, you can request to cash up to one week of your 4 weeks' annual holiday entitlement per year. This must be a written request, and your employer can decline the request.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What if I'm a casual employee?</summary>
+                    <div class="faq-content">
+                        <p>Casual employees (or those on fixed-term contracts under 12 months) can be paid an extra 8% of their gross earnings "as they go" instead of accruing leave, provided this is clearly stated in their employment agreement.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What happens if a public holiday falls during my leave?</summary>
+                    <div class="faq-content">
+                        <p>If a public holiday falls on a day you would otherwise work during your annual leave, the day is paid as a public holiday and doesn't count as a day of annual leave. This effectively extends your holiday without using more leave days.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        
+
+        <footer>
+            <p>For official government guidance, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">employment.govt.nz</a>.</p>
+            <div class="footer-links">
+                <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
+                <span class="sep">•</span>
+                <a href="https://www.employment.govt.nz/leave-and-holidays" target="_blank" rel="noopener">Holiday Guidance</a>
+            </div>
+        </footer>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="common.js" defer></script>
+    <script src="leave-entitlement.js" defer></script>
+</body>
+</html>

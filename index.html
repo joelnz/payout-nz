@@ -16,838 +16,15 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-    <link rel="preload" as="image" href="bg.jpg">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     </noscript>
-    <style>
-:root {
-    --bg-color: #050505;
-    --card-bg: rgba(14, 18, 25, 0.75);
-    --card-border: rgba(255, 255, 255, 0.06);
-    --card-shine: rgba(255, 255, 255, 0.12);
-    
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
-    
-    --accent-primary: #2dd4bf; /* Teal */
-    --accent-secondary: #38bdf8; /* Light Blue */
-    --accent-glow: rgba(20, 184, 166, 0.4);
-    
-    --input-bg: rgba(0, 0, 0, 0.3);
-    --input-border: rgba(255, 255, 255, 0.08);
-}
+    <link rel="stylesheet" href="style.css">
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 3rem 1rem;
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* Stunning Photography Background with Fade Overlay */
-.background-effects {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
-    background-image: url('bg.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-/* Gradient overlay to ensure text is perfectly readable */
-.background-effects::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(5,5,5,0.4) 0%, rgba(5,5,5,0.8) 100%);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-}
-
-.container {
-    max-width: 900px;
-    width: 100%;
-    margin: 0 auto;
-    z-index: 1;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Premium Glassmorphism Cards */
-.card, header {
-    background: var(--card-bg);
-    backdrop-filter: blur(36px);
-    -webkit-backdrop-filter: blur(36px);
-    border: 1px solid var(--card-border);
-    border-top: 1px solid var(--card-shine); /* Top specular highlight */
-    border-radius: 8px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255,255,255,0.02);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-}
-
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(20, 184, 166, 0.05), inset 0 0 0 1px rgba(255,255,255,0.02);
-}
-
-header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-    padding: 2.5rem 2rem;
-}
-
-h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    margin-bottom: 0.75rem;
-    background: linear-gradient(135deg, #ffffff 10%, #ccfbf1 50%, #5eead4 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 10px rgba(20, 184, 166, 0.2));
-}
-
-.subtitle {
-    color: var(--text-secondary);
-    font-size: 1.05rem;
-    line-height: 1.6;
-    max-width: 540px;
-    margin: 0 auto;
-}
-
-.assurance-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-    padding: 0.6rem 1.2rem;
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(2, 132, 199, 0.05));
-    border: 1px solid rgba(20, 184, 166, 0.2);
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #ccfbf1;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.header-actions {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.icon-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-    transition: all 0.2s ease;
-}
-
-.icon-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--accent-primary);
-    transform: translateY(-1px);
-}
-
-.calculator-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-}
-
-@media (max-width: 768px) {
-    .calculator-grid { grid-template-columns: 1fr; }
-}
-
-.card { padding: 2.5rem; }
-
-.form-group {
-    margin-bottom: 1.75rem;
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.6rem;
-    display: flex;
-    align-items: center;
-}
-
-.hint {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-top: 0.4rem;
-    font-weight: 500;
-}
-
-.input-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
-}
-
-/* Beautiful Inputs */
-input[type="number"], select {
-    width: 100%;
-    background: var(--input-bg);
-    border: 1px solid var(--input-border);
-    border-bottom: 2px solid rgba(20, 184, 166, 0.2);
-    color: var(--text-primary);
-    padding: 0.85rem 1rem;
-    border-radius: 6px;
-    font-size: 1rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-    -moz-appearance: textfield;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type="number"]:focus, select:focus {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: var(--input-border);
-    border-bottom-color: var(--accent-primary);
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 4px 12px var(--accent-glow);
-}
-
-.input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.input-wrapper .prefix {
-    position: absolute;
-    left: 1rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-    pointer-events: none;
-}
-
-.input-wrapper input { padding-left: 2.2rem; }
-
-.select-wrapper { position: relative; }
-.select-wrapper::after {
-    content: "";
-    width: 10px;
-    height: 10px;
-    border-right: 2px solid var(--text-secondary);
-    border-bottom: 2px solid var(--text-secondary);
-    position: absolute;
-    right: 1.2rem;
-    top: 45%;
-    transform: translateY(-50%) rotate(45deg);
-    pointer-events: none;
-    transition: transform 0.2s ease;
-}
-.select-wrapper:focus-within::after {
-    transform: translateY(-10%) rotate(225deg);
-    border-color: var(--accent-primary);
-}
-select {
-    appearance: none;
-    padding-right: 2.5rem;
-    cursor: pointer;
-}
-
-/* Premium Segmented Control */
-.segmented-control {
-    display: flex;
-    gap: 0.5rem;
-    background: var(--input-bg);
-    border: 1px solid var(--input-border);
-    border-radius: 6px;
-    padding: 0.3rem;
-    position: relative;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.segmented-control input[type="radio"] { display: none; }
-
-.segmented-control label {
-    flex: 1;
-    text-align: center;
-    padding: 0.7rem 1rem;
-    margin: 0;
-    cursor: pointer;
-    color: var(--text-secondary);
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1;
-    border-radius: 4px;
-}
-
-.segmented-control input[type="radio"]:checked + label {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-/* Results Section Overhaul */
-.results-section h2 {
-    font-size: 1.35rem;
-    font-weight: 700;
-    margin-bottom: 1.75rem;
-    color: #fff;
-    letter-spacing: -0.02em;
-}
-
-.result-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-    margin-bottom: 2.5rem;
-}
-
-.result-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.result-label {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    font-weight: 500;
-}
-
-.result-value {
-    font-weight: 600;
-    color: #e2e8f0;
-    font-variant-numeric: tabular-nums;
-}
-
-.divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--card-border) 20%, var(--card-border) 80%, transparent);
-    margin: 0.5rem 0;
-}
-
-.gross-total .result-label { color: #fff; font-weight: 600; }
-.gross-total .result-value { color: #fff; font-weight: 700; font-size: 1.1rem; }
-
-.tax-deduction .result-value { color: #f43f5e; } /* Rose */
-
-/* Stunning Glowing Net Total Box */
-.net-total-box {
-    position: relative;
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.08), rgba(2, 132, 199, 0.03));
-    border: 1px solid rgba(20, 184, 166, 0.3);
-    border-radius: 12px;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2rem;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(20, 184, 166, 0.05);
-}
-
-.secondary-btn {
-    width: 100%;
-    background: rgba(20, 184, 166, 0.05);
-    border: 1px solid rgba(20, 184, 166, 0.2);
-    color: var(--accent-primary);
-    padding: 1rem;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 2rem;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.secondary-btn:hover {
-    background: rgba(20, 184, 166, 0.1);
-    border-color: var(--accent-primary);
-    box-shadow: 0 4px 15px var(--accent-glow);
-}
-
-/* Subtle moving glow inside the box */
-.net-total-box::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(20,184,166,0.1) 0%, transparent 60%);
-    animation: rotateGlow 10s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes rotateGlow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.net-label {
-    color: var(--accent-primary);
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    position: relative;
-}
-
-.net-value {
-    font-size: 3rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #ccfbf1, #5eead4, #38bdf8);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.02em;
-    filter: drop-shadow(0 2px 10px rgba(20, 184, 166, 0.3));
-    position: relative;
-}
-
-.disclaimers {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    line-height: 1.5;
-}
-
-.disclaimers p {
-    display: block;
-}
-
-.disclaimers a {
-    color: var(--accent-primary);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    transition: all 0.2s ease;
-}
-
-.disclaimers a:hover {
-    color: var(--accent-secondary);
-    text-decoration-color: var(--accent-secondary);
-}
-
-.disclaimer-details summary {
-    cursor: pointer;
-    color: var(--text-secondary);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    font-weight: 500;
-    transition: color 0.2s ease;
-    display: inline-block;
-    padding: 0.5rem 0; /* Increase tap target size */
-}
-
-.disclaimer-details summary:hover {
-    color: var(--accent-primary);
-}
-
-.disclaimer-expanded {
-    margin-top: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    border-left: 2px solid var(--accent-glow);
-}
-
-@media (max-width: 480px) {
-    .card { padding: 1.75rem; }
-    .input-row { grid-template-columns: 1fr; gap: 0rem; }
-    h1 { font-size: 2rem; }
-    .net-value { font-size: 2.5rem; }
-    
-    .header-actions {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .assurance-badge {
-        width: 100%;
-        justify-content: center;
-        text-align: center;
-        margin-top: 1rem;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .icon-btn {
-        margin-top: 0;
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-/* Evolved Tooltips */
-.tooltip-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    color: var(--text-secondary);
-    font-size: 11px;
-    margin-left: 8px;
-    cursor: help;
-    position: relative;
-    font-weight: 700;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.2s ease;
-}
-
-.tooltip-icon:hover {
-    background: var(--accent-primary);
-    color: #000;
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 10px var(--accent-glow);
-}
-
-.tooltip-icon::after {
-    content: attr(data-tip);
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%) translateY(5px) scale(0.95);
-    width: max-content;
-    max-width: 260px;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #f8fafc;
-    padding: 0.85rem 1rem;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.5;
-    white-space: pre-wrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
-    z-index: 100;
-    text-align: left;
-}
-
-/* Tooltip Arrow */
-.tooltip-icon::before {
-    content: "";
-    position: absolute;
-    bottom: calc(100% + 5px);
-    left: 50%;
-    transform: translateX(-50%) translateY(5px);
-    border-width: 6px;
-    border-style: solid;
-    border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 100;
-}
-
-.tooltip-icon:hover::after,
-.tooltip-icon:hover::before {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0) scale(1);
-}
-
-/* Footer Styling */
-footer {
-    text-align: center;
-    margin-top: 2rem;
-    margin-bottom: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--card-border);
-}
-
-footer p {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin-bottom: 0.75rem;
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.footer-links a {
-    color: var(--text-secondary);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    font-size: 0.85rem;
-    transition: color 0.2s ease;
-    display: inline-block;
-    padding: 0.5rem; /* Increase tap target size */
-}
-
-.footer-links a:hover {
-    color: var(--accent-primary);
-}
-
-.sep {
-    color: var(--card-border);
-}
-
-/* Lead Generation Cards */
-.lead-gen-header {
-    text-align: center;
-    margin-top: 4rem;
-    margin-bottom: 2rem;
-    animation: fadeIn 0.8s ease both;
-    animation-delay: 0.2s;
-}
-
-.lead-gen-header h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: #fff;
-    background: linear-gradient(135deg, #ccfbf1, #5eead4);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.lead-gen-header p {
-    color: var(--text-secondary);
-    font-size: 1rem;
-}
-
-.lead-gen-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 4rem;
-    animation: fadeIn 0.8s ease both;
-    animation-delay: 0.3s;
-}
-
-.lead-card {
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6));
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-    position: relative;
-    overflow: hidden;
-}
-
-.lead-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at top right, rgba(20, 184, 166, 0.1), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.lead-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(20, 184, 166, 0.4);
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7), 0 0 20px var(--accent-glow);
-}
-
-.lead-card:hover::before {
-    opacity: 1;
-}
-
-.lead-icon {
-    font-size: 2rem;
-    background: rgba(20, 184, 166, 0.1);
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    border: 1px solid rgba(20, 184, 166, 0.2);
-    margin-bottom: 0.5rem;
-}
-
-.lead-content h3 {
-    color: var(--text-primary);
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    transition: color 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.lead-content h3 span {
-    display: inline-block;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    color: var(--accent-primary);
-    font-size: 1.25rem;
-}
-
-.lead-card:hover .lead-content h3 {
-    color: var(--accent-primary);
-}
-
-.lead-card:hover .lead-content h3 span {
-    transform: translateX(4px);
-}
-
-.lead-content p {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-/* FAQ Section */
-.faq-section {
-    margin-top: 2rem;
-    margin-bottom: 4rem;
-    animation: fadeIn 0.8s ease both;
-    animation-delay: 0.4s;
-}
-
-.faq-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.faq-header h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #fff;
-    background: linear-gradient(135deg, #ccfbf1, #5eead4);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
-}
-
-.faq-header p {
-    color: var(--text-secondary);
-}
-
-.faq-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.faq-item {
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6));
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.faq-item:hover {
-    border-color: rgba(20, 184, 166, 0.4);
-}
-
-.faq-item summary {
-    padding: 1.25rem 1.5rem;
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--text-primary);
-    list-style: none; /* Hide default arrow */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.faq-item summary::-webkit-details-marker {
-    display: none;
-}
-
-.faq-item summary::after {
-    content: '+';
-    color: var(--accent-primary);
-    font-size: 1.5rem;
-    line-height: 1;
-    transition: transform 0.3s ease;
-}
-
-.faq-item[open] summary::after {
-    transform: rotate(45deg);
-}
-
-.faq-content {
-    padding: 0 1.5rem 1.25rem 1.5rem;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
-
-</style>
-
+    <!-- Flatpickr Dark Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-95V0NXHCS7"></script>
     <script>
@@ -871,7 +48,22 @@ footer p {
 </head>
 <body>
     <div class="background-effects"></div>
-
+    <nav class="top-nav">
+        <div class="nav-scroller container">
+            <div class="logo" style="font-weight: 800; color: var(--accent-primary); letter-spacing: -0.05em; font-size: 1.25rem;">PAYOUT<span style="color: var(--accent-secondary);">.NZ</span></div>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html" class="nav-pill active">Final Pay</a>
+                <a href="minimum-wage.html" class="nav-pill">Minimum Wage</a>
+                <a href="leave-entitlement.html" class="nav-pill">Annual Leave</a>
+                <a href="kiwisaver.html" class="nav-pill">KiwiSaver</a>
+            </div>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
     <main class="container">
         <header>
             <h1>NZ Final Pay Calculator</h1>
@@ -901,11 +93,21 @@ footer p {
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label>How long have you worked there? <span class="tooltip-icon" data-tip="This changes how your holiday pay is worked out under NZ law. Under 1 year: there are no entitled holiday days to pay out — instead you get 8% of all your wages as a bonus. 1 year or more: you get your unused holiday days paid out at your normal rate, PLUS 8% of pay since your last work anniversary.">?</span></label>
+                        <div class="segmented-control">
+                            <input type="radio" id="tenure-under" name="employmentTenure" value="under12" checked>
+                            <label for="tenure-under">Less than 1 year</label>
+                            <input type="radio" id="tenure-over" name="employmentTenure" value="over12">
+                            <label for="tenure-over">1 year or more</label>
+                        </div>
+                    </div>
+
                     <div class="form-group" id="group-pay-rate">
                         <label id="label-pay-rate" for="payRate">Yearly Salary (NZD) *</label>
                         <div class="input-wrapper">
                             <span class="prefix">$</span>
-                            <input type="number" id="payRate" placeholder="0" min="0" step="0.01">
+                            <input type="text" id="payRate" class="has-prefix" placeholder="0" min="0">
                         </div>
                     </div>
 
@@ -920,29 +122,38 @@ footer p {
                     </div>
 
                     <div class="input-row">
-                        <div class="form-group">
-                            <label for="annualLeave">Unused Annual Leave (Days) <span class="tooltip-icon" data-tip="Holiday time you have been given but haven't taken yet. You can usually find this on your latest payslip.">?</span></label>
+                        <div class="form-group" id="group-annual-leave">
+                            <label for="annualLeave">Unused Holiday Days <span class="tooltip-icon" data-tip="The number of holiday days you've earned but haven't taken yet. Check your latest payslip — it's usually listed there. Standard NZ entitlement is 4 weeks (20 days if you work 5 days a week).">?</span></label>
                             <input type="number" id="annualLeave" placeholder="0" min="0" step="0.5">
+                            <small class="hint">Usually shown on your payslip</small>
                         </div>
                         <div class="form-group">
-                            <label for="grossEarnings">Pay Since Last Holiday Top-up (NZD) <span class="tooltip-icon" data-tip="Every year you work, you get a new batch of holidays. What is your total pay (before tax) since your last top-up? You legally get 8% of this amount added to your final pay.">?</span></label>
+                            <label id="label-gross-earnings" for="grossEarnings">Total Pay Earned Since You Started (NZD) <span class="tooltip-icon" data-tip="Because you've been here less than a year, your 8% holiday bonus is based on your total before-tax pay since day one. Add up all your wages since you started — you'll find these on your payslips.">?</span></label>
                             <div class="input-wrapper">
                                 <span class="prefix">$</span>
-                                <input type="number" id="grossEarnings" placeholder="0" min="0" step="1">
+                                <input type="text" id="grossEarnings" class="has-prefix" placeholder="0" min="0">
                             </div>
-                            <small class="hint">Your 8% holiday pay relies on this (plus your unused leave)</small>
+                            <small class="hint" id="hint-gross-earnings">All before-tax wages since your first day — your 8% bonus is based on this</small>
                         </div>
+                    </div>
+
+                    <div class="form-group" id="group-last-day" style="display:none;">
+                        <label for="lastDayInput">Your last day of employment <span class="tooltip-icon" data-tip="Enter the last official day you are employed. If you gave the correct amount of notice, this is the last day of your notice period — even if you stopped coming into work before then. We use this to automatically find any public holidays you're owed.">?</span></label>
+                        <input type="text" id="lastDayInput" placeholder="dd/mm/yyyy">
+                        <small class="hint">Usually the last day of your notice period, even if you stopped working earlier</small>
+                        <div id="holiday-callout" class="holiday-callout" style="display:none;"></div>
                     </div>
 
                     <div class="input-row">
                         <div class="form-group">
-                            <label for="altLeave">Days in Lieu (Alternative Leave) <span class="tooltip-icon" data-tip="Did you work on a public holiday and get promised a paid day off later? If you haven't taken it yet, those days go here.">?</span></label>
+                            <label for="altLeave">Days in Lieu Owed <span class="tooltip-icon" data-tip="Did you work on a public holiday and your employer owes you a paid day off in return? If you haven't taken any of those days yet, enter how many you're owed. These are sometimes called 'alternative holidays'.">?</span></label>
                             <input type="number" id="altLeave" placeholder="0" min="0" step="0.5">
+                            <small class="hint">From working on public holidays (not yet taken)</small>
                         </div>
-                        <div class="form-group">
-                            <label for="publicHolidays">Upcoming Public Holidays <span class="tooltip-icon" data-tip="If you took all your unused holiday right now as time off, would a public holiday fall on one of those days? If yes, count how many here.">?</span></label>
+                        <div class="form-group" id="group-manual-public-holidays">
+                            <label for="publicHolidays">Public Holidays After Your Last Day <span class="tooltip-icon" data-tip="Under NZ law, the days you've got coming as unused holidays are treated as if you were still on leave. If a public holiday falls on a day you'd normally work during that time, you get paid for it. Enter your last day above and we'll work this out automatically.">?</span></label>
                             <input type="number" id="publicHolidays" placeholder="0" min="0" step="0.5">
-                            <small class="hint">During your paid-out holiday time</small>
+                            <small class="hint">Or enter your last day above and we'll calculate this for you</small>
                         </div>
                     </div>
 
@@ -965,21 +176,24 @@ footer p {
                 <h2>Estimated Breakdown</h2>
                 
                 <div class="result-list">
-                    <div class="result-item">
-                        <span class="result-label">Unused Annual Leave</span>
+                    <div class="result-item" id="res-annual-leave-row">
+                        <span class="result-label">Unused Holiday Days</span>
                         <span class="result-value" id="res-annual-leave">$0.00</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">8% Holiday Pay</span>
+                        <span class="result-label">8% Holiday Bonus</span>
                         <span class="result-value" id="res-accrued-leave">$0.00</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">Days in Lieu (Alt Leave)</span>
+                        <span class="result-label">Days in Lieu Owed</span>
                         <span class="result-value" id="res-alt-leave">$0.00</span>
                     </div>
                     <div class="result-item">
                         <span class="result-label">Public Holidays</span>
                         <span class="result-value" id="res-public-holidays">$0.00</span>
+                    </div>
+                    <div style="padding: 0 0 0.25rem 0;">
+                        <small id="res-public-holidays-detail" class="ph-detail-list" style="display:none;"></small>
                     </div>
                     <div class="divider"></div>
                     <div class="result-item gross-total">
@@ -998,7 +212,7 @@ footer p {
                 </div>
 
                 <button id="copy-results-btn" class="secondary-btn">
-                    <span>📋</span> Copy Breakdown to Clipboard
+                    <span>📋</span> Copy Breakdown
                 </button>
 
                 <div class="disclaimers">
@@ -1006,8 +220,8 @@ footer p {
                     <details class="disclaimer-details">
                         <summary>Read full disclaimer</summary>
                         <div class="disclaimer-expanded">
-                            <p>While we strive to align with the standard provisions of the NZ Holidays Act 2003, this calculator cannot account for every unique employment agreement, complex leave history, or precise IRD tax logic (including exact KiwiSaver and Student Loan thresholds).</p>
-                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of or reliance on this calculator. Always verify your final payout with your payroll department, <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a>, or a qualified professional.</p>
+                            <p>While we strive to align with the standard provisions of the NZ Holidays Act 2003 (and other relevant legislation), this calculator cannot account for every unique employment agreement, complex leave history, or precise IRD tax logic (including exact KiwiSaver and Student Loan thresholds).</p>
+                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of or reliance on this calculator. Always verify your calculations with your payroll department, <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a>, or a qualified professional.</p>
                         </div>
                     </details>
                 </div>
@@ -1020,32 +234,32 @@ footer p {
         </div>
         
         <div class="lead-gen-grid">
-            <a href="https://www.trademe.co.nz/a/jobs" target="_blank" rel="noopener" class="lead-card">
+            <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/final-pay" target="_blank" rel="noopener" class="lead-card">
                 <div class="lead-icon">🔍</div>
                 <div class="lead-content">
-                    <h3>Search Trade Me Jobs <span>→</span></h3>
-                    <p>Browse thousands of new opportunities across New Zealand.</p>
+                    <h3>Employment NZ: Final Pay Guide <span>→</span></h3>
+                    <p>Official guidance on what your employer must include in your final pay.</p>
                 </div>
             </a>
 
-            <a href="https://simplicity.kiwi/kiwisaver/" target="_blank" rel="noopener" class="lead-card">
+            <a href="https://www.ird.govt.nz/employing-staff/payday-filing/non-standard-filing-of-employment-information/lump-sum-payments/calculate-paye-for-a-lump-sum-payment-end-of-employment" target="_blank" rel="noopener" class="lead-card">
                 <div class="lead-icon">📈</div>
                 <div class="lead-content">
-                    <h3>Compare KiwiSaver Funds <span>→</span></h3>
-                    <p>Getting a lump sum? Ensure you're with a high-performing provider.</p>
+                    <h3>IRD: Tax on Final Payouts <span>→</span></h3>
+                    <p>Learn how your unused annual leave and bonuses are taxed as "extra pay".</p>
                 </div>
             </a>
 
-            <a href="https://www.careers.govt.nz/job-hunting/cvs-and-cover-letters/templates/" target="_blank" rel="noopener" class="lead-card">
+            <a href="https://www.cab.org.nz/article/KB00000412" target="_blank" rel="noopener" class="lead-card">
                 <div class="lead-icon">📄</div>
                 <div class="lead-content">
-                    <h3>Get Free CV Templates <span>→</span></h3>
-                    <p>Download expert templates to stand out in the current job market.</p>
+                    <h3>CAB: Resignation & Notice <span>→</span></h3>
+                    <p>Understand your rights regarding notice periods and final day obligations.</p>
                 </div>
             </a>
         </div>
 
-        <div class="faq-section">
+        <section class="card faq-section">
             <div class="faq-header">
                 <h2>Frequently Asked Questions</h2>
                 <p>Common questions about final pay and leave entitlements in NZ.</p>
@@ -1053,46 +267,70 @@ footer p {
             
             <div class="faq-list">
                 <details class="faq-item">
-                    <summary>How is final pay calculated in NZ?</summary>
+                    <summary>When should my final pay be paid?</summary>
                     <div class="faq-content">
-                        <p>Under the Holidays Act 2003, your final pay must include any standard pay owed for days worked, payout for any alternative holidays (days in lieu) you've earned, your unused annual leave balance, and an additional 8% of your gross earnings since your last employment anniversary (which covers the leave you've accrued but haven't been formally entitled to yet).</p>
+                        <p>Under NZ law, your final pay must be paid <strong>on or before the pay day of the final pay period</strong>. This may be after your last day of work, but it cannot be delayed indefinitely.</p>
                     </div>
                 </details>
                 
                 <details class="faq-item">
-                    <summary>Do I get paid out annual leave when I resign?</summary>
+                    <summary>What if I'm asked not to work my notice period?</summary>
                     <div class="faq-content">
-                        <p>Yes. By law, any annual leave that you are entitled to (i.e., you have passed an anniversary date) but haven't taken must be paid out to you at the higher of your ordinary weekly pay or your average weekly earnings over the last 12 months.</p>
+                        <p>Your employer can ask you not to work some or all of your notice period (sometimes called 'garden leave'), but they must still pay you for the <strong>full notice period</strong> unless you specifically agree to waive it. If you choose to leave early without your employer's agreement, you only get paid for the days you actually worked.</p>
                     </div>
                 </details>
 
                 <details class="faq-item">
-                    <summary>Do I get paid for public holidays after I leave?</summary>
+                    <summary>How is annual leave paid out in my final pay?</summary>
                     <div class="faq-content">
-                        <p>Sometimes. If you take all of your unused annual leave as a continuous period of time off right after your employment ends, and a public holiday falls on a day you would usually work during that period, you are entitled to be paid for that public holiday.</p>
+                        <p>If you've worked less than 12 months, you get <strong>8% of your gross earnings</strong>. If you've worked over 12 months, you get paid for any unused "entitled" leave at the higher of your <strong>ordinary or average weekly pay</strong>, <em>plus</em> 8% of your earnings since your last anniversary.</p>
                     </div>
                 </details>
 
                 <details class="faq-item">
-                    <summary>Is my final pay taxed heavily?</summary>
+                    <summary>Am I entitled to be paid for public holidays after I leave?</summary>
                     <div class="faq-content">
-                        <p>Final payouts, such as accrued annual leave, are treated as "extra pay" by the IRD. This means they are generally taxed at a flat rate based on your estimated annual income bracket (such as 30% or 33%), which can sometimes feel heavier than your standard PAYE deduction, but it ensures you don't end up with a massive tax bill at the end of the year.</p>
+                        <p>Yes, if you have unused annual holidays you are entitled to. Your employer must treat these holidays as if you were taking them immediately after your last day. If a public holiday falls within this "extended" period, you must be paid for it.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Are alternative holidays (days in lieu) paid out?</summary>
+                    <div class="faq-content">
+                        <p>Yes. Any unused alternative holidays must be paid out at your <strong>relevant daily pay</strong> (the amount you would have earned if you'd worked that day) on your last day, regardless of the rate of pay when you originally earned the day.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Is unused sick leave paid out in final pay?</summary>
+                    <div class="faq-content">
+                        <p>No. By law, there is no legal entitlement for unused sick or bereavement leave to be paid out when you leave an employer, unless your employment agreement specifically requires it.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What if I think my final pay is wrong?</summary>
+                    <div class="faq-content">
+                        <p>First, check with your employer to resolve any issues. If that doesn't work, you may have a claim for unpaid wages via the <strong>Labour Inspectorate</strong>. You can contact Employment New Zealand for help and mediation at 0800 20 90 20.</p>
                     </div>
                 </details>
             </div>
-        </div>
+        </section>
 
         <footer>
-            <p>&copy; 2024 NZ Final Pay Calculator. Dedicated to helping Kiwis understand their entitlements.</p>
+            <p>For official government guidance, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">employment.govt.nz</a>.</p>
             <div class="footer-links">
                 <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
                 <span class="sep">•</span>
-                <a href="https://www.employment.govt.nz/leave-and-holidays" target="_blank" rel="noopener">Official Guidance</a>
+                <a href="https://www.employment.govt.nz/leave-and-holidays" target="_blank" rel="noopener">Holiday Guidance</a>
             </div>
         </footer>
 
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="common.js" defer></script>
+    <script src="nz-holidays.js" defer></script>
     <script src="script.js" defer></script>
 </body>
 </html>
