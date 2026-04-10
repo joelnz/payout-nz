@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NZ Holiday Pay & Annual Leave Calculator</title>
+    <title>NZ Redundancy Pay Calculator | Compensation Estimate</title>
     <meta name="robots" content="noarchive">
     <meta name="ia_archiver" content="noarchive">
-    <meta name="description" content="Calculate your NZ holiday pay (8% of gross) or find your annual leave entitlement date. Essential for casual workers.">
+    <meta name="description" content="Estimate your NZ redundancy payout including compensation weeks, notice period pay, and tax on lump sum payments.">
     <meta name="keywords" content="New Zealand, NZ, Final Pay, Leave Payout, Calculator, Holidays Act, Resignation, PAYE">
     <meta property="og:title" content="NZ Final Pay Calculator | Holiday Pay Estimate">
     <meta property="og:description" content="Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.">
@@ -80,13 +80,13 @@
     </nav>
     <main class="container">
         <header class="header-hero">
-            <img src="mascot-holiday.png" alt="NZ Payout Mascot" class="header-mascot">
+            <img src="mascot-redundancy.png" alt="NZ Payout Mascot" class="header-mascot">
             <div class="header-text">
-                <h1>NZ Holiday Pay & Leave</h1>
-                <p class="subtitle">Calculate your 8% holiday pay payout or check when you become entitled to 4 weeks of annual leave.</p>
+                <h1>NZ Redundancy Pay Calculator</h1>
+                <p class="subtitle">Calculate your estimated redundancy compensation and see the tax impact on your lump sum payout.</p>
                 <div class="header-actions">
                     <div class="assurance-badge">
-                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">lightbulb</span> Based on the <strong>NZ Holidays Act 2003</strong>
+                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">lightbulb</span> Based on standard <strong>NZ Employment Law</strong> & IRD Tax Rules
                     </div>
                     <button id="share-btn" class="icon-btn" title="Share Calculator">
                         <span class="material-symbols-outlined">share</span> Share
@@ -97,48 +97,66 @@
 
         <div class="calculator-grid">
             <section class="card input-section">
-                <form id="leave-form" onsubmit="event.preventDefault();">
+                <form id="redundancy-form" onsubmit="event.preventDefault();">
                     <div class="form-group">
-                        <label>What would you like to calculate?</label>
-                        <div class="segmented-control" id="calc-mode-selector">
-                            <input type="radio" id="mode-8percent" name="calcMode" value="8percent" checked>
-                            <label for="mode-8percent">8% Holiday Pay</label>
-                            <input type="radio" id="mode-anniversary" name="calcMode" value="anniversary">
-                            <label for="mode-anniversary">Entitlement Date</label>
+                        <label for="baseSalary">Current Annual Salary (Gross NZD) *</label>
+                        <div class="input-wrapper">
+                            <span class="prefix material-symbols-outlined">attach_money</span>
+                            <input type="text" id="baseSalary" class="has-prefix" placeholder="0">
                         </div>
                     </div>
-                    <div id="section-8percent">
-                        <div class="form-group">
-                            <label for="grossEarnings">Total Gross Earnings (NZD) <span class="tooltip-icon" data-tip="Enter your total before-tax earnings for the period. Holiday pay is 8% of this total.">?</span></label>
-                            <div class="input-wrapper">
-                                <span class="prefix material-symbols-outlined">attach_money</span>
-                                <input type="text" id="grossEarnings" class="has-prefix" placeholder="0">
-                            </div>
-                            <small class="hint">Your total pay before tax during the employment period</small>
-                        </div>
+                    <div class="form-group">
+                        <label for="yearsService">Years of Service</label>
+                        <input type="number" id="yearsService" value="1" min="0">
                     </div>
-                    <div id="section-anniversary" style="display: none;">
-                        <div class="form-group">
-                            <label for="startDate">Your Start Date *</label>
-                            <input type="text" id="startDate" placeholder="dd/mm/yyyy">
+                    <div class="form-group">
+                        <label for="weeksPerYear">Weeks of Pay per Year</label>
+                        <input type="number" id="weeksPerYear" value="4" min="0" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="noticePay">Notice Period to be Paid Out (Weeks) <span class="tooltip-icon" data-tip="If your employer is paying you 'in lieu of notice' rather than having you work your notice period, enter how many weeks of notice you are being paid for.">?</span></label>
+                        <input type="number" id="noticePay" value="0" min="0" step="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="taxBracket">Your Tax Bracket (for Lump Sum)</label>
+                        <div class="select-wrapper">
+                            <select id="taxBracket">
+                                <option value="0.105">10.5% (Under $14k)</option>
+                                <option value="0.175">17.5% ($14k - $48k)</option>
+                                <option value="0.30" selected>30% ($48k - $70k)</option>
+                                <option value="0.33">33% ($70k - $180k)</option>
+                                <option value="0.39">39% (Over $180k)</option>
+                            </select>
                         </div>
+                        <small class="hint">Redundancy is taxed as "Extra Pay" based on your total annual income.</small>
                     </div>
                 </form>
             </section>
             <section class="card results-section">
-                <div id="results-8percent">
-                    <h2>Estimated Payout</h2>
-                    <div class="net-total-box" style="padding: 2.5rem;">
-                        <span class="net-label">8% Holiday Pay (Gross)</span>
-                        <span class="net-value" id="res-8percent">$0.00</span>
+                <h2>Payout Breakdown</h2>
+                <div class="result-list">
+                    <div class="result-item">
+                        <span class="result-label">Base Compensation</span>
+                        <span class="result-value" id="res-comp-value">$0.00</span>
+                        <small class="hint" id="res-comp-detail">0 weeks @ $0/wk</small>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Payment in Lieu of Notice</span>
+                        <span class="result-value" id="res-notice-value">$0.00</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="result-item gross-total">
+                        <span class="result-label">Total Gross Payout</span>
+                        <span class="result-value" id="res-gross-payout">$0.00</span>
+                    </div>
+                    <div class="result-item tax-deduction">
+                        <span class="result-label">Estimated Tax (PAYE)</span>
+                        <span class="result-value" id="res-tax-value">-$0.00</span>
                     </div>
                 </div>
-                <div id="results-anniversary" style="display: none;">
-                    <h2>Entitlement Status</h2>
-                    <div class="net-total-box" id="status-box" style="padding: 1.5rem;">
-                        <span class="net-label" id="status-label">Enter Start Date</span>
-                        <span class="net-value" id="status-date" style="font-size: 2rem; margin-top: 0.5rem;">➖</span>
-                    </div>
+                <div class="net-total-box">
+                    <span class="net-label">Estimated Net Redundancy</span>
+                    <span class="net-value" id="res-net-payout">$0.00</span>
                 </div>
             </section>
         </div>
@@ -150,39 +168,39 @@
             </div>
             <div class="faq-list">
                 <details class="faq-item">
-                    <summary>What is the difference between Holiday Pay and Annual Leave?</summary>
+                    <summary>Is redundancy pay legally required in NZ?</summary>
                     <div class="faq-content">
-                        <p>'Holiday Pay' (the 8% rule) usually applies to casual workers or those reaching the end of a job. 'Annual Leave' refers to the 4 weeks of time-off you become entitlement to after working for 1 year.</p>
+                        <p>No. There is no legal requirement to pay redundancy compensation in NZ unless it is explicitly written in your employment agreement (contract).</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>I've worked less than 12 months. What am I owed?</summary>
+                    <summary>How is redundancy pay taxed?</summary>
                     <div class="faq-content">
-                        <p>If you leave your job before your 1-year anniversary, you are generally owed 8% of your total gross earnings from that job as a cash payout.</p>
+                        <p>It is treated as 'Extra Pay' and taxed at your marginal rate (PAYE). However, it is not subject to ACC levies or KiwiSaver deductions unless you choose to.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Can I take my leave before my 1-year anniversary?</summary>
+                    <summary>What is 'Notice in Lieu'?</summary>
                     <div class="faq-content">
-                        <p>Technically, you don't 'own' it yet. Taking leave before 12 months is called 'Leave in Advance'. Your employer doesn't have to agree to it, but many do to keep staff happy.</p>
+                        <p>This is when your employer pays you for your notice period instead of requiring you to work it. You effectively finish immediately but get paid as if you worked the notice weeks.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Can my employer force me to take my annual leave?</summary>
+                    <summary>Can I be made redundant while on sick leave?</summary>
                     <div class="faq-content">
-                        <p>Yes, but only if you cannot agree on when to take it and they give you at least 14 days' notice. This often happens during 'Christmas close-downs'.</p>
+                        <p>Yes, but the company must follow a fair process. Redundancy is about the 'role' being unnecessary, not your personal situation or performance.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Can I 'cash up' my annual leave for money?</summary>
+                    <summary>Will redundancy affect my student loan?</summary>
                     <div class="faq-content">
-                        <p>The law allows you to ask to cash up to 1 week of your 4 weeks' annual holiday per year, but your employer has the right to say no.</p>
+                        <p>Yes. Deductions will be taken from your total gross payout at the standard 12% rate for everything over the threshold.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>What is an 'Alternative Holiday'?</summary>
+                    <summary>What if I find another job before my redundancy date?</summary>
                     <div class="faq-content">
-                        <p>Commonly called a 'day in lieu', this is an extra day off you earn for working on a public holiday that falls on a day you would normally work.</p>
+                        <p>You can ask for an earlier finish date, but technically you are bound by your notice period. Many employers will agree to an early exit to save on costs.</p>
                     </div>
                 </details>
             </div>
@@ -232,6 +250,6 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="common.js" defer></script>
     <script src="nz-holidays.js" defer></script>
-    <script src="leave-entitlement.js" defer></script>
+    <script src="redundancy.js" defer></script>
 </body>
 </html>

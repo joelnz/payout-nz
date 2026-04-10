@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NZ KiwiSaver Calculator | Contribution & Projection</title>
+    <title>NZ KiwiSaver Contribution Estimator</title>
     <meta name="robots" content="noarchive">
     <meta name="ia_archiver" content="noarchive">
     <meta name="description" content="Estimate your KiwiSaver weekly/monthly contributions and projected balance at retirement age in New Zealand.">
     <meta name="keywords" content="New Zealand, NZ, Final Pay, Leave Payout, Calculator, Holidays Act, Resignation, PAYE">
-    <meta property="og:title" content="NZ KiwiSaver Calculator | Contribution & Projection">
+    <meta property="og:title" content="NZ Final Pay Calculator | Holiday Pay Estimate">
     <meta property="og:description" content="Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.">
     <meta property="og:type" content="website">
     <link rel="canonical" href="https://payout.nz/">
+    <meta name="geo.region" content="NZ" />
+    <meta name="geo.placename" content="New Zealand" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -26,6 +28,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <link rel="stylesheet" href="style.css">
 
+    <!-- Flatpickr Dark Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-95V0NXHCS7"></script>
     <script>
@@ -43,20 +47,30 @@
       "description": "Estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.",
       "url": "https://payout.nz/",
       "applicationCategory": "BusinessApplication",
-      "operatingSystem": "All"
+      "operatingSystem": "All",
+      "audience": {
+        "@type": "Audience",
+        "geographicArea": {
+          "@type": "Country",
+          "name": "New Zealand"
+        }
+      }
     }
     </script>
 </head>
 <body>
+    <div class="background-effects"></div>
     <nav class="top-nav">
         <div class="nav-scroller container">
             <div class="logo" style="font-weight: 800; color: var(--accent-primary); letter-spacing: -0.05em; font-size: 1.25rem;">PAYOUT<span style="color: var(--accent-secondary);">.NZ</span></div>
             <div class="nav-links" id="nav-links">
                 <a href="index.html" class="nav-pill">Final Pay</a>
                 <a href="pay-calculator.html" class="nav-pill">Take-Home Pay</a>
-                <a href="leave-entitlement.html" class="nav-pill">Annual Leave</a>
-                <a href="kiwisaver.html" class="nav-pill active">KiwiSaver</a>
-            </div>
+                <a href="leave-entitlement.html" class="nav-pill">Holiday Pay & Leave</a>
+                <a href="kiwisaver.html" class="nav-pill">KiwiSaver</a>
+                <a href="redundancy.html" class="nav-pill">Redundancy</a>
+                <a href="minimum-wage.html" class="nav-pill">Minimum Wage</a>
+    </div>
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
                 <span></span>
                 <span></span>
@@ -65,187 +79,163 @@
         </div>
     </nav>
     <main class="container">
-        <header>
-            <h1>NZ KiwiSaver Calculator</h1>
-            <p class="subtitle">Calculate your personal and employer KiwiSaver contributions and see a simple projected balance by age 65.</p>
-            <div class="header-actions">
-                <div class="assurance-badge">
-                    <span class="material-symbols-outlined" style="font-size: 1.25rem;">lightbulb</span> Based on standard guidance from the <strong>KiwiSaver Act 2006</strong>
+        <header class="header-hero">
+            <img src="mascot-kiwisaver.png" alt="NZ Payout Mascot" class="header-mascot">
+            <div class="header-text">
+                <h1>NZ KiwiSaver Estimator</h1>
+                <p class="subtitle">Calculate your personal and employer KiwiSaver contributions and see a simple projected balance by age 65.</p>
+                <div class="header-actions">
+                    <div class="assurance-badge">
+                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">lightbulb</span> Based on standard guidance from the <strong>KiwiSaver Act 2006</strong>
+                    </div>
+                    <button id="share-btn" class="icon-btn" title="Share Calculator">
+                        <span class="material-symbols-outlined">share</span> Share
+                    </button>
                 </div>
-                <button id="share-btn" class="icon-btn" title="Share Calculator">
-                    <span class="material-symbols-outlined">share</span> Share
-                </button>
             </div>
         </header>
 
         <div class="calculator-grid">
             <section class="card input-section">
-                <!-- Stepper -->
-                <div class="stepper-header">
+                <div class="wizard-nav">
                     <div class="step-item active" data-step="1">
-                        <div class="step-circle">1</div>
-                        <span>Profile</span>
+                        <span class="step-num">1</span>
+                        <span class="step-text">Profile</span>
                     </div>
                     <div class="step-line"></div>
                     <div class="step-item" data-step="2">
-                        <div class="step-circle">2</div>
-                        <span>Growth</span>
+                        <span class="step-num">2</span>
+                        <span class="step-text">Savings</span>
                     </div>
                 </div>
-
                 <form id="kiwisaver-form" onsubmit="event.preventDefault();">
-                    <!-- Step 1: Your Profile -->
-                    <div id="step-1" class="wizard-step active">
+                    <div class="wizard-step active" id="step-1">
                         <div class="form-group">
-                            <label for="currentBalance">My KiwiSaver balance is</label>
-                            <div class="input-wrapper">
-                                <span class="prefix">$</span>
-                                <input type="text" id="currentBalance" class="has-prefix" placeholder="0" value="">
+                            <label for="employmentStatus">Employment Status</label>
+                            <div class="select-wrapper">
+                                <select id="employmentStatus">
+                                    <option value="employed" selected>Employed (PAYE)</option>
+                                    <option value="self-employed">Self-Employed / Other</option>
+                                </select>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label>My employer contributes <span class="tooltip-icon" data-tip="Legal minimum is 3%. Some employers match your contribution up to a certain % or offer a fixed rate.">?</span></label>
-                            <div class="segmented-control">
-                                <input type="radio" id="emp-3" name="employerRate" value="0.03" checked>
-                                <label for="emp-3">3%</label>
-                                <input type="radio" id="emp-4" name="employerRate" value="0.04">
-                                <label for="emp-4">4%</label>
-                                <input type="radio" id="emp-other" name="employerRate" value="other">
-                                <label for="emp-other">Other</label>
+                            <label for="salary">Annual Gross Salary / Wages (NZD) *</label>
+                            <div class="input-wrapper">
+                                <span class="prefix material-symbols-outlined">attach_money</span>
+                                <input type="text" id="salary" class="has-prefix" placeholder="0">
                             </div>
-                            <div id="emp-custom-container" style="display: none; margin-top: 1rem;">
+                            <div class="select-wrapper" style="margin-top: 0.5rem;">
+                                <select id="payFrequency">
+                                    <option value="52">Weekly</option>
+                                    <option value="26">Fortnightly</option>
+                                    <option value="12">Monthly</option>
+                                    <option value="1" selected>Annual</option>
+                                </select>
+                            </div>
+                            <small class="hint">Include bonuses and overtime (as per KS4 April 2026 guide).</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="currentAge">Your Current Age: <span id="age-val" class="value-display">-</span></label>
+                            <input type="range" id="currentAge" min="18" max="65" value="30" class="styled-range">
+                        </div>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn-primary next-step">Next: Strategy <span class="material-symbols-outlined">arrow_forward</span></button>
+                        </div>
+                    </div>
+                    <div class="wizard-step" id="step-2">
+                        <div class="form-group">
+                            <label for="currentBalance">Current KiwiSaver Balance (Optional)</label>
+                            <div class="input-wrapper">
+                                <span class="prefix material-symbols-outlined">account_balance_wallet</span>
+                                <input type="text" id="currentBalance" class="has-prefix" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Contribution Rate</label>
+                            <div class="radio-group horizontal">
+                                <input type="radio" id="cr-3" name="contribRate" value="0.03">
+                                <label for="cr-3">3%</label>
+                                <input type="radio" id="cr-3.5" name="contribRate" value="0.035" checked>
+                                <label for="cr-3.5">3.5%</label>
+                                <input type="radio" id="cr-4" name="contribRate" value="0.04">
+                                <label for="cr-4">4%</label>
+                                <input type="radio" id="cr-6" name="contribRate" value="0.06">
+                                <label for="cr-6">6%</label>
+                                <input type="radio" id="cr-10" name="contribRate" value="0.10">
+                                <label for="cr-10">10%</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="fundType">KiwiSaver Fund Type</label>
+                            <div class="select-wrapper">
+                                <select id="fundType">
+                                    <option value="defensive">Defensive (2.5%)</option>
+                                    <option value="conservative">Conservative (4.0%)</option>
+                                    <option value="balanced" selected>Balanced (5.5%)</option>
+                                    <option value="growth">Growth (7.0%)</option>
+                                    <option value="aggressive">Aggressive (8.0%)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Employer Contribution Rate</label>
+                            <div class="radio-group horizontal">
+                                <input type="radio" id="er-3" name="employerRate" value="0.03">
+                                <label for="er-3">3%</label>
+                                <input type="radio" id="er-3.5" name="employerRate" value="0.035" checked>
+                                <label for="er-3.5">3.5%</label>
+                                <input type="radio" id="er-other" name="employerRate" value="other">
+                                <label for="er-other">Other</label>
+                            </div>
+                            <div id="emp-custom-container" style="display: none; margin-top: 0.5rem;">
                                 <div class="input-wrapper">
-                                    <input type="number" id="employerRateCustom" class="has-suffix" placeholder="3" step="0.5" min="0" max="100">
+                                    <input type="number" id="employerRateCustom" placeholder="Enter %" step="0.1">
                                     <span class="suffix">%</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label>Employment Status</label>
-                            <div class="select-wrapper">
-                                <select id="employmentStatus">
-                                    <option value="employed" selected>Employed</option>
-                                    <option value="self-employed">Self-employed / Not working</option>
-                                </select>
+                            <label for="topupAmount">Voluntary Top-ups (Optional)</label>
+                            <div class="input-wrapper">
+                                <span class="prefix material-symbols-outlined">payments</span>
+                                <input type="text" id="topupAmount" class="has-prefix" placeholder="0">
                             </div>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="form-group">
-                                <label for="salary">Annual Salary (Gross) *</label>
-                                <div class="input-wrapper">
-                                    <span class="prefix">$</span>
-                                    <input type="text" id="salary" class="has-prefix" placeholder="Enter salary" value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="payFrequency">Pay frequency</label>
-                                <div class="select-wrapper">
-                                    <select id="payFrequency">
-                                        <option value="52">Weekly</option>
-                                        <option value="26">Fortnightly</option>
-                                        <option value="12">Monthly</option>
-                                        <option value="1">Yearly</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="currentAge">My current age: &nbsp;<span id="age-val" class="slider-val">-</span></label>
-                            <input type="range" id="currentAge" min="18" max="65" value="18" class="slider">
-                            <p class="field-hint">Slide to your age</p>
-                        </div>
-
-                        <div class="wizard-nav">
-                            <button type="button" class="primary-btn next-step" id="next-to-growth" style="width: 100%; justify-content: center;">Next: Growth Details <span>→</span></button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Growth Details -->
-                    <div id="step-2" class="wizard-step">
-                        <div class="form-group">
-                            <label for="fundType">My fund type <span class="tooltip-icon" data-tip="Defensive (~2.5% return): Lowest risk. Conservative (~4%): Low risk. Balanced (~5.5%): Medium risk. Growth (~7%): Higher risk. Aggressive (~8%): Highest risk.">?</span></label>
-                            <div class="select-wrapper">
-                                <select id="fundType">
-                                    <option value="defensive">Defensive</option>
-                                    <option value="conservative">Conservative</option>
-                                    <option value="balanced" selected>Balanced</option>
-                                    <option value="growth">Growth</option>
-                                    <option value="aggressive">Aggressive</option>
+                            <div class="select-wrapper" style="margin-top: 0.5rem;">
+                                <select id="topupFrequency">
+                                    <option value="52">Weekly</option>
+                                    <option value="26">Fortnightly</option>
+                                    <option value="12">Monthly</option>
+                                    <option value="1">Once a year</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label>My contribution rate</label>
-                            <div class="segmented-control">
-                                <input type="radio" id="rate-3" name="contribRate" value="0.03" checked>
-                                <label for="rate-3">3%</label>
-                                <input type="radio" id="rate-4" name="contribRate" value="0.04">
-                                <label for="rate-4">4%</label>
-                                <input type="radio" id="rate-6" name="contribRate" value="0.06">
-                                <label for="rate-6">6%</label>
-                                <input type="radio" id="rate-8" name="contribRate" value="0.08">
-                                <label for="rate-8">8%</label>
-                                <input type="radio" id="rate-10" name="contribRate" value="0.10">
-                                <label for="rate-10">10%</label>
-                            </div>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="form-group">
-                                <label for="topupAmount">Voluntary Top-up</label>
-                                <div class="input-wrapper">
-                                    <span class="prefix">$</span>
-                                    <input type="text" id="topupAmount" class="has-prefix" placeholder="0" value="0">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="topupFrequency">How often?</label>
-                                <div class="select-wrapper">
-                                    <select id="topupFrequency">
-                                        <option value="52">Weekly</option>
-                                        <option value="26">Fortnightly</option>
-                                        <option value="12">Monthly</option>
-                                        <option value="1">Yearly</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <label for="retireAge">Retirement Age: <span id="retire-val" class="value-display">65 years</span></label>
+                            <input type="range" id="retireAge" min="65" max="80" value="65" class="styled-range">
                         </div>
 
                         <div class="form-group">
-                            <label for="retireAge">I plan to retire at: <span id="retire-val" class="slider-val">65 years</span></label>
-                            <input type="range" id="retireAge" min="65" max="90" value="65" class="slider">
+                            <label class="toggle-container">
+                                <div class="toggle-text">Adjust for Inflation (2% p.a.)</div>
+                                <input type="checkbox" id="inflationToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
-
-                        <div class="toggle-group">
-                            <div class="toggle-item">
-                                <label for="inflationToggle">Take inflation into account <span class="tooltip-icon" data-tip="If enabled, results are shown in 'Today's Dollars'.">?</span></label>
-                                <label class="switch">
-                                    <input type="checkbox" id="inflationToggle" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="wizard-nav">
-                            <button type="button" class="secondary-btn prev-step" style="width: 100%; justify-content: center;"><span>←</span> Back to Profile</button>
+                        <div class="wizard-actions">
+                            <button type="button" class="btn-secondary prev-step"><span class="material-symbols-outlined">arrow_back</span> Back</button>
                         </div>
                     </div>
                 </form>
             </section>
-
             <section class="card results-section">
-                <h2>Your Savings Estimate</h2>
-                
-                <div class="net-total-box" id="status-box" style="padding: 1.5rem; text-align: center;">
-                    <span class="net-label" id="res-big-label">Projected Total at Retirement</span>
+                <h2>Projected Outcome</h2>
+                <div class="net-total-box" style="padding: 1.5rem; text-align: center;">
+                    <span class="net-label" id="res-big-label">Projected Total at Age 65</span>
                     <span class="net-value" id="res-projected" style="font-size: 3rem;">$0</span>
                 </div>
-
                 <div class="result-list">
                     <div class="result-item">
                         <span class="result-label">Total Annual Contributions</span>
@@ -270,105 +260,98 @@
                         <span class="result-value" id="res-emp-monthly">+$0.00</span>
                     </div>
                 </div>
-
-                <div class="page-note">
-                    <p><strong>Note:</strong> Calculations assume a 5% conservative annual return and do not account for existing balances or inflation. Employer contributions are subject to ESCT tax.</p>
-                </div>
-
-                <div class="disclaimers">
-                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute financial, tax, or legal advice.</p>
-                    <details class="disclaimer-details">
-                        <summary>Read full disclaimer</summary>
-                        <div class="disclaimer-expanded">
-                            <p>While we strive to align with the standard provisions of the NZ Holidays Act 2003 (and other relevant legislation), this calculator cannot account for every unique employment agreement, complex leave history, or precise IRD tax logic (including exact KiwiSaver and Student Loan thresholds).</p>
-                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of or reliance on this calculator. Always verify your calculations with your payroll department, <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a>, or a qualified professional.</p>
-                        </div>
-                    </details>
-                </div>
             </section>
-        </div>
-        <div class="lead-gen-header">
-            <h2>External Resources</h2>
-            <p>Make the most of your transition with these popular New Zealand resources.</p>
-        </div>
-        
-        <div class="lead-gen-grid">
-            <a href="https://www.ird.govt.nz/kiwisaver/kiwisaver-individuals" target="_blank" rel="noopener" class="lead-card">
-                <div class="lead-icon"><span class="material-symbols-outlined">search</span></div>
-                <div class="lead-content">
-                    <h3>IRD: KiwiSaver Hub <span>→</span></h3>
-                    <p>Manage your account, check your contributions, and see your tax credit status.</p>
-                </div>
-            </a>
-
-            <a href="https://sorted.org.nz/guides/kiwisaver/" target="_blank" rel="noopener" class="lead-card">
-                <div class="lead-icon"><span class="material-symbols-outlined">trending_up</span></div>
-                <div class="lead-content">
-                    <h3>Sorted: KiwiSaver Guides <span>→</span></h3>
-                    <p>Independent guides on choosing a fund, comparing fees, and tracking your performance.</p>
-                </div>
-            </a>
-
-            <a href="https://kaingaora.govt.nz/home-ownership/first-home-decision-tool/" target="_blank" rel="noopener" class="lead-card">
-                <div class="lead-icon"><span class="material-symbols-outlined">description</span></div>
-                <div class="lead-content">
-                    <h3>First Home Withdrawal <span>→</span></h3>
-                    <p>See if you're eligible to use your KiwiSaver savings to help buy your first home.</p>
-                </div>
-            </a>
         </div>
 
         <section class="card faq-section">
             <div class="faq-header">
                 <h2>Frequently Asked Questions</h2>
-                <p>Common questions about KiwiSaver contributions and benefits.</p>
+                <p>Common clarifications and helpful advice for non-experts.</p>
             </div>
-            
             <div class="faq-list">
                 <details class="faq-item">
                     <summary>How much does my employer have to contribute?</summary>
                     <div class="faq-content">
-                        <p>If you are a KiwiSaver member and contributing from your pay, your employer must generally contribute at least 3% of your gross pay (before tax), provided you are between 18 and 65 years old.</p>
+                        <p>If you are a KiwiSaver member and contributing from your pay, your employer must generally contribute at least 3.5% of your gross pay (as of April 2026), provided you are between 18 and 65 years old.</p>
                     </div>
                 </details>
-                
                 <details class="faq-item">
-                    <summary>What is the $521 Government contribution?</summary>
+                    <summary>What is the Government contribution?</summary>
                     <div class="faq-content">
-                        <p>If you are 18 or older and live in NZ, the government will contribute 50 cents for every dollar you contribute, up to a maximum of $521.43 per year. To get the full amount, you need to contribute at least $1,042.86 between 1 July and 30 June.</p>
+                        <p>If you are 18 or older and live in NZ, the government will contribute 50 cents for every dollar you contribute, up to a maximum of $260.72 per year (starting 2026).</p>
                     </div>
                 </details>
-
                 <details class="faq-item">
                     <summary>Can I stop my KiwiSaver contributions?</summary>
                     <div class="faq-content">
-                        <p>Yes. After you've been a member for 12 months, you can apply for a "savings suspension" (previously called a contribution holiday) for between 3 months and 1 year. You can do this through your myIR account.</p>
+                        <p>Yes. After you've been a member for 12 months, you can apply for a 'savings suspension' for between 3 months and 1 year via your myIR account.</p>
                     </div>
                 </details>
-
                 <details class="faq-item">
-                    <summary>Can I use KiwiSaver for my first home?</summary>
+                    <summary>Can I use my KiwiSaver to buy my first home?</summary>
                     <div class="faq-content">
-                        <p>Yes. After 3 years of contributing to KiwiSaver, you can usually withdraw most of your savings (leaving at least $1,000 in your account) to help with a deposit for your first home. Subject to eligibility, you may also qualify for a First Home Grant.</p>
+                        <p>Yes! If you've been a member for at least 3 years, you can usually withdraw almost all of your balance (leaving $1,000) to help with a deposit.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What happens if I move overseas permanently?</summary>
+                    <div class="faq-content">
+                        <p>If you move to a country other than Australia, you can usually withdraw your funds after living abroad for 1 year, though you won't get the government's contributions.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my money safe in KiwiSaver?</summary>
+                    <div class="faq-content">
+                        <p>Your funds are held by private providers (like banks or investment firms), not the government. While markets can go up and down, these providers are strictly regulated.</p>
                     </div>
                 </details>
             </div>
-        </section>
+        </section><div class="lead-gen-header">
+            <h2>External Resources</h2>
+            <p>Make the most of your transition with these popular New Zealand resources.</p>
+        </div>
+        
+        <div class="lead-gen-grid">
+            <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/final-pay" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon"><span class="material-symbols-outlined">search</span></div>
+                <div class="lead-content">
+                    <h3>Employment NZ: Final Pay Guide <span>→</span></h3>
+                    <p>Official guidance on what your employer must include in your final pay.</p>
+                </div>
+            </a>
+
+            <a href="https://www.ird.govt.nz/employing-staff/payday-filing/non-standard-filing-of-employment-information/lump-sum-payments/calculate-paye-for-a-lump-sum-payment-end-of-employment" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon"><span class="material-symbols-outlined">trending_up</span></div>
+                <div class="lead-content">
+                    <h3>IRD: Tax on Final Payouts <span>→</span></h3>
+                    <p>Learn how your unused annual leave and bonuses are taxed as "extra pay".</p>
+                </div>
+            </a>
+
+            <a href="https://www.cab.org.nz/article/KB00000412" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon"><span class="material-symbols-outlined">description</span></div>
+                <div class="lead-content">
+                    <h3>CAB: Resignation & Notice <span>→</span></h3>
+                    <p>Understand your rights regarding notice periods and final day obligations.</p>
+                </div>
+            </a>
+        </div>
 
         
 
-        <footer>
-            <p>For official government guidance, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">employment.govt.nz</a>.</p>
-            <div class="footer-links">
-                <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
-                <span class="sep">•</span>
-                <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay/calculating-holiday-and-leave-pay" target="_blank" rel="noopener">Holiday Pay Guidance</a>
-            </div>
-        </footer>
-
     </main>
+    <footer>
+        <p>For official government guidance, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">employment.govt.nz</a>.</p>
+        <div class="footer-links">
+            <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
+            <span class="sep">•</span>
+            <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay/calculating-holiday-and-leave-pay" target="_blank" rel="noopener">Holiday Pay Guidance</a>
+        </div>
+    </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="common.js" defer></script>
+    <script src="nz-holidays.js" defer></script>
     <script src="kiwisaver.js" defer></script>
 </body>
 </html>

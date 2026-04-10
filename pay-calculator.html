@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NZ Take-Home Pay Calculator | Entitlements & Tax Credit</title>
+    <title>NZ Take-Home Pay Calculator | 2026 Tax Estimate</title>
     <meta name="robots" content="noarchive">
     <meta name="ia_archiver" content="noarchive">
-    <meta name="description" content="Calculate your NZ weekly take-home pay for 2026. Includes PAYE tax, ACC, Student Loans, and IETC tax credits. Updated for April 2026 rates.">
-    <meta name="keywords" content="New Zealand, NZ, Final Pay, Take-Home Pay, Calculator, Student Loan, IETC, PAYE, Minimum Wage 2026">
-    <meta property="og:title" content="NZ Take-Home Pay Calculator | Entitlements & Tax Credit">
-    <meta property="og:description" content="Calculate exactly how much lands in your bank account after NZ taxes and student loans.">
+    <meta name="description" content="Calculate your NZ weekly take-home pay for 2026. Includes PAYE tax, ACC, and student loans.">
+    <meta name="keywords" content="New Zealand, NZ, Final Pay, Leave Payout, Calculator, Holidays Act, Resignation, PAYE">
+    <meta property="og:title" content="NZ Final Pay Calculator | Holiday Pay Estimate">
+    <meta property="og:description" content="Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.">
     <meta property="og:type" content="website">
     <link rel="canonical" href="https://payout.nz/">
+    <meta name="geo.region" content="NZ" />
+    <meta name="geo.placename" content="New Zealand" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -26,6 +28,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <link rel="stylesheet" href="style.css">
 
+    <!-- Flatpickr Dark Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-95V0NXHCS7"></script>
     <script>
@@ -43,23 +47,30 @@
       "description": "Estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.",
       "url": "https://payout.nz/",
       "applicationCategory": "BusinessApplication",
-      "operatingSystem": "All"
+      "operatingSystem": "All",
+      "audience": {
+        "@type": "Audience",
+        "geographicArea": {
+          "@type": "Country",
+          "name": "New Zealand"
+        }
+      }
     }
     </script>
 </head>
 <body>
     <div class="background-effects"></div>
-
-    
     <nav class="top-nav">
         <div class="nav-scroller container">
             <div class="logo" style="font-weight: 800; color: var(--accent-primary); letter-spacing: -0.05em; font-size: 1.25rem;">PAYOUT<span style="color: var(--accent-secondary);">.NZ</span></div>
             <div class="nav-links" id="nav-links">
                 <a href="index.html" class="nav-pill">Final Pay</a>
-                <a href="pay-calculator.html" class="nav-pill active">Take-Home Pay</a>
-                <a href="leave-entitlement.html" class="nav-pill">Annual Leave</a>
+                <a href="pay-calculator.html" class="nav-pill">Take-Home Pay</a>
+                <a href="leave-entitlement.html" class="nav-pill">Holiday Pay & Leave</a>
                 <a href="kiwisaver.html" class="nav-pill">KiwiSaver</a>
-            </div>
+                <a href="redundancy.html" class="nav-pill">Redundancy</a>
+                <a href="minimum-wage.html" class="nav-pill">Minimum Wage</a>
+    </div>
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
                 <span></span>
                 <span></span>
@@ -67,18 +78,20 @@
             </button>
         </div>
     </nav>
-
     <main class="container">
-        <header>
-            <h1>NZ Take-Home Pay & Entitlements</h1>
-            <p class="subtitle">See exactly how much lands in your bank account after PAYE, ACC, and student loans. Updated for 2026 rates.</p>
-            <div class="header-actions">
-                <div class="assurance-badge">
-                    <span class="material-symbols-outlined" style="font-size: 1.25rem;">payments</span> Includes <strong>IETC Tax Credit</strong> calculations
+        <header class="header-hero">
+            <img src="mascot-pay.png" alt="NZ Payout Mascot" class="header-mascot">
+            <div class="header-text">
+                <h1>NZ Take-Home Pay Calculator</h1>
+                <p class="subtitle">See exactly how much lands in your bank account after PAYE, ACC, and student loans.</p>
+                <div class="header-actions">
+                    <div class="assurance-badge">
+                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">lightbulb</span> Updated for <strong>2026 IRD Tax Rates</strong>
+                    </div>
+                    <button id="share-btn" class="icon-btn" title="Share Calculator">
+                        <span class="material-symbols-outlined">share</span> Share
+                    </button>
                 </div>
-                <button id="share-btn" class="icon-btn" title="Share Calculator">
-                    <span class="material-symbols-outlined">share</span> Share
-                </button>
             </div>
         </header>
 
@@ -89,7 +102,7 @@
                         <label for="hourlyRate">Hourly Rate (NZD) *</label>
                         <div class="input-wrapper">
                             <span class="prefix">$</span>
-                            <input type="number" id="hourlyRate" class="has-prefix" placeholder="23.95" min="0" step="0.01">
+                            <input type="number" id="hourlyRate" class="has-prefix" placeholder="23.95" min="0" max="5000" step="0.01">
                         </div>
                         <div class="quick-presets" style="display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
                             <button type="button" class="preset-btn" data-rate="23.95">Min Wage</button>
@@ -195,95 +208,302 @@
                     <details class="disclaimer-details">
                         <summary>Read full disclaimer</summary>
                         <div class="disclaimer-expanded">
-                            <p>While we strive to align with the standard provisions of the NZ Holidays Act 2003 (and other relevant legislation), this calculator cannot account for every unique employment agreement, complex leave history, or precise IRD tax logic (including exact KiwiSaver and Student Loan thresholds).</p>
-                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of or reliance on this calculator. Always verify your calculations with your payroll department, <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a>, or a qualified professional.</p>
+                            <p>This calculator uses standard PAYE tax tables for the 2025/26 tax year and assumes the 'M' tax code unless otherwise specified. It includes ACC earner levies but cannot account for specific student loan repayment thresholds, child support deductions, or non-standard tax codes (like SB, SH, or ST).</p>
+                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of or reliance on this calculator. Always verify your calculations with your payroll department, <a href="https://www.ird.govt.nz/" target="_blank" rel="noopener">Inland Revenue</a>, or a qualified tax professional.</p>
                         </div>
                     </details>
                 </div>
             </section>
         </div>
-        <div class="lead-gen-header">
-            <h2>External Resources</h2>
-            <p>Make the most of your transition with these popular New Zealand resources.</p>
-        </div>
         
-        <div class="lead-gen-grid">
-            <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/minimum-wage-rates-and-types" target="_blank" rel="noopener" class="lead-card">
-                <div class="lead-icon"><span class="material-symbols-outlined">search</span></div>
-                <div class="lead-content">
-                    <h3>Official 2026 Wage Rates <span>→</span></h3>
-                    <p>View the current Adult, Starting-out, and Training rates on Employment NZ.</p>
-                </div>
-            </a>
-
-            <a href="https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals" target="_blank" rel="noopener" class="lead-card">
-                <div class="lead-icon"><span class="material-symbols-outlined">trending_up</span></div>
-                <div class="lead-content">
-                    <h3>Current Income Tax Rates <span>→</span></h3>
-                    <p>Check the IRD tax brackets to see how much of your wage goes to PAYE.</p>
-                </div>
-            </a>
-
-            <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/" target="_blank" rel="noopener" class="lead-card">
-                <div class="lead-icon"><span class="material-symbols-outlined">description</span></div>
-                <div class="lead-content">
-                    <h3>Minimum Wage Rights <span>→</span></h3>
-                    <p>Understand who is covered by the Minimum Wage Act and your legal protections.</p>
-                </div>
-            </a>
-        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         <section class="card faq-section">
             <div class="faq-header">
                 <h2>Frequently Asked Questions</h2>
-                <p>Common questions about minimum wage entitlements in New Zealand.</p>
+                <p>Common clarifications and helpful advice for non-experts.</p>
             </div>
-            
             <div class="faq-list">
                 <details class="faq-item">
-                    <summary>What are the current minimum wage rates in NZ?</summary>
+                    <summary>What is the ACC levy in 2026?</summary>
                     <div class="faq-content">
-                        <p>As of April 1, 2026, the Adult minimum wage is $23.95 per hour. The Starting-out and Training rates are $19.16 per hour (which is 80% of the adult rate).</p>
+                        <p>The ACC earners' levy for the 2025/26 year is 1.75% of your gross income, capped at a maximum liable income of $156,641.</p>
                     </div>
                 </details>
-                
                 <details class="faq-item">
-                    <summary>Who is eligible for the 'Starting-out' rate?</summary>
+                    <summary>Does this accountant for Student Loans?</summary>
                     <div class="faq-content">
-                        <p>Starting-out workers are typically 16 or 17 year olds who have worked for their current employer for less than 6 months, or 18 and 19 year olds who have been on a social security benefit for 6 months or more and haven't completed 6 months with a new employer.</p>
+                        <p>Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week).</p>
                     </div>
                 </details>
-
                 <details class="faq-item">
-                    <summary>Does the minimum wage apply to salary earners?</summary>
+                    <summary>What is the Independent Earner Tax Credit (IETC)?</summary>
                     <div class="faq-content">
-                        <p>Yes. If you are on a salary, your total pay divided by the hours you work must not be lower than the minimum wage for any given pay period. Employers cannot use a salary to bypass minimum wage protections.</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary>Is the minimum wage before or after tax?</summary>
-                    <div class="faq-content">
-                        <p>The minimum wage is the "gross" amount—this is the amount you earn before any PAYE tax, Student Loan repayments, or KiwiSaver contributions are deducted from your pay.</p>
+                        <p>It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other benefits.</p>
                     </div>
                 </details>
             </div>
         </section>
 
+        <section class="card faq-section">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common clarifications and helpful advice for non-experts.</p>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What is the ACC levy in 2026?</summary>
+                    <div class="faq-content">
+                        <p>The ACC earners' levy for the 2025/26 year is 1.75% of your gross income, capped at a maximum liable income of $156,641.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this accountant for Student Loans?</summary>
+                    <div class="faq-content">
+                        <p>Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week).</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the Independent Earner Tax Credit (IETC)?</summary>
+                    <div class="faq-content">
+                        <p>It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other benefits.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="card faq-section">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common clarifications and helpful advice for non-experts.</p>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What is the ACC levy in 2026?</summary>
+                    <div class="faq-content">
+                        <p>The ACC earners' levy for the 2025/26 year is 1.75% of your gross income, capped at a maximum liable income of $156,641.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this accountant for Student Loans?</summary>
+                    <div class="faq-content">
+                        <p>Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week).</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the Independent Earner Tax Credit (IETC)?</summary>
+                    <div class="faq-content">
+                        <p>It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other benefits.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="card faq-section">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common clarifications and helpful advice for non-experts.</p>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What is the ACC levy in 2026?</summary>
+                    <div class="faq-content">
+                        <p>The ACC earners' levy for the 2025/26 year is 1.75% of your gross income, capped at a maximum liable income of $156,641.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this accountant for Student Loans?</summary>
+                    <div class="faq-content">
+                        <p>Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week).</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the Independent Earner Tax Credit (IETC)?</summary>
+                    <div class="faq-content">
+                        <p>It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other benefits.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="card faq-section">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common clarifications and helpful advice for non-experts.</p>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What is the ACC levy in 2026?</summary>
+                    <div class="faq-content">
+                        <p>The ACC earners' levy for the 2025/26 year is 1.75% of your gross income, capped at a maximum liable income of $156,641.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this accountant for Student Loans?</summary>
+                    <div class="faq-content">
+                        <p>Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week).</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the Independent Earner Tax Credit (IETC)?</summary>
+                    <div class="faq-content">
+                        <p>It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other benefits.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="card faq-section">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common clarifications and helpful advice for non-experts.</p>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What is the ACC levy in 2026?</summary>
+                    <div class="faq-content">
+                        <p>The ACC earners' levy for the 2025/26 year is 1.75% of your gross income, capped at a maximum liable income of $156,641.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this accountant for Student Loans?</summary>
+                    <div class="faq-content">
+                        <p>Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week).</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the Independent Earner Tax Credit (IETC)?</summary>
+                    <div class="faq-content">
+                        <p>It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other benefits.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="card faq-section">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common clarifications and helpful advice for non-experts.</p>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What is the ACC levy in 2026?</summary>
+                    <div class="faq-content">
+                        <p>The ACC earners' levy for the 2025/26 year is 1.75% of your gross income, capped at a maximum liable income of $156,641.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this accountant for Student Loans?</summary>
+                    <div class="faq-content">
+                        <p>Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week).</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the Independent Earner Tax Credit (IETC)?</summary>
+                    <div class="faq-content">
+                        <p>It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other benefits.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="card faq-section">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common clarifications and helpful advice for non-experts.</p>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What is the ACC levy in 2026?</summary>
+                    <div class="faq-content">
+                        <p>The ACC earners' levy for the 2025/26 year is 1.75% of your gross income, capped at a maximum liable income of $156,641.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this accountant for Student Loans?</summary>
+                    <div class="faq-content">
+                        <p>Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week).</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the Independent Earner Tax Credit (IETC)?</summary>
+                    <div class="faq-content">
+                        <p>It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other benefits.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Why does my first pay look lower than expected?</summary>
+                    <div class="faq-content">
+                        <p>New employees are often on an 'Emergency' or 'Standard' tax code until their details are fully processed. Ensure you've submitted your IR330 form correctly.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my 'Gross Pay' different from my 'Taxable Pay'?</summary>
+                    <div class="faq-content">
+                        <p>Yes, sometimes. Certain deductions like KiwiSaver are taken out after tax, whereas other specific allowances might be non-taxable.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this calculator handle the 3.5% KiwiSaver rate?</summary>
+                    <div class="faq-content">
+                        <p>Yes. We have updated the calculations to reflect the mandatory 3.5% employer contribution rate coming into effect in April 2026.</p>
+                    </div>
+                </details>
+            </div>
+        </section><div class="lead-gen-header">
+            <h2>External Resources</h2>
+            <p>Make the most of your transition with these popular New Zealand resources.</p>
+        </div>
+        
+        <div class="lead-gen-grid">
+            <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/final-pay" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon"><span class="material-symbols-outlined">search</span></div>
+                <div class="lead-content">
+                    <h3>Employment NZ: Final Pay Guide <span>→</span></h3>
+                    <p>Official guidance on what your employer must include in your final pay.</p>
+                </div>
+            </a>
+
+            <a href="https://www.ird.govt.nz/employing-staff/payday-filing/non-standard-filing-of-employment-information/lump-sum-payments/calculate-paye-for-a-lump-sum-payment-end-of-employment" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon"><span class="material-symbols-outlined">trending_up</span></div>
+                <div class="lead-content">
+                    <h3>IRD: Tax on Final Payouts <span>→</span></h3>
+                    <p>Learn how your unused annual leave and bonuses are taxed as "extra pay".</p>
+                </div>
+            </a>
+
+            <a href="https://www.cab.org.nz/article/KB00000412" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon"><span class="material-symbols-outlined">description</span></div>
+                <div class="lead-content">
+                    <h3>CAB: Resignation & Notice <span>→</span></h3>
+                    <p>Understand your rights regarding notice periods and final day obligations.</p>
+                </div>
+            </a>
+        </div>
+
         
 
-        <footer>
-            <p>For official government guidance, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">employment.govt.nz</a>.</p>
-            <div class="footer-links">
-                <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
-                <span class="sep">•</span>
-                <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay/calculating-holiday-and-leave-pay" target="_blank" rel="noopener">Holiday Pay Guidance</a>
-            </div>
-        </footer>
-
     </main>
+    <footer>
+        <p>For official government guidance, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">employment.govt.nz</a>.</p>
+        <div class="footer-links">
+            <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
+            <span class="sep">•</span>
+            <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay/calculating-holiday-and-leave-pay" target="_blank" rel="noopener">Holiday Pay Guidance</a>
+        </div>
+    </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="common.js" defer></script>
+    <script src="nz-holidays.js" defer></script>
     <script src="pay-calculator.js" defer></script>
 </body>
 </html>

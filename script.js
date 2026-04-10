@@ -282,6 +282,16 @@ document.addEventListener('DOMContentLoaded', () => {
     [payRateInput, grossEarningsInput].forEach(el => {
         if (el) {
             el.addEventListener('input', (e) => {
+                // Enforce max for these text-based currency fields
+                const max = parseFloat(el.getAttribute('max'));
+                if (max) {
+                    let val = parseFormattedValue(e.target.value);
+                    if (val > max) {
+                        // If it exceeds max, we need to decide whether to clamp it immediately
+                        // or just let it be. Clamping is safer.
+                        e.target.value = max.toString();
+                    }
+                }
                 formatCurrencyInput(e.target);
                 calculate();
             });
@@ -292,8 +302,14 @@ document.addEventListener('DOMContentLoaded', () => {
      altLeaveInput, publicHolidaysInput, taxRateSelect
     ].forEach(el => {
         if (el) {
-            el.addEventListener('input',  calculate);
-            el.addEventListener('change', calculate);
+            el.addEventListener('input', () => {
+                clampInput(el);
+                calculate();
+            });
+            el.addEventListener('change', () => {
+                clampInput(el);
+                calculate();
+            });
         }
     });
 

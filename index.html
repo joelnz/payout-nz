@@ -12,6 +12,8 @@
     <meta property="og:description" content="Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.">
     <meta property="og:type" content="website">
     <link rel="canonical" href="https://payout.nz/">
+    <meta name="geo.region" content="NZ" />
+    <meta name="geo.placename" content="New Zealand" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -45,7 +47,14 @@
       "description": "Estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.",
       "url": "https://payout.nz/",
       "applicationCategory": "BusinessApplication",
-      "operatingSystem": "All"
+      "operatingSystem": "All",
+      "audience": {
+        "@type": "Audience",
+        "geographicArea": {
+          "@type": "Country",
+          "name": "New Zealand"
+        }
+      }
     }
     </script>
 </head>
@@ -57,8 +66,10 @@
             <div class="nav-links" id="nav-links">
                 <a href="index.html" class="nav-pill">Final Pay</a>
                 <a href="pay-calculator.html" class="nav-pill">Take-Home Pay</a>
-                <a href="leave-entitlement.html" class="nav-pill">Annual Leave</a>
+                <a href="leave-entitlement.html" class="nav-pill">Holiday Pay & Leave</a>
                 <a href="kiwisaver.html" class="nav-pill">KiwiSaver</a>
+                <a href="redundancy.html" class="nav-pill">Redundancy</a>
+                <a href="minimum-wage.html" class="nav-pill">Minimum Wage</a>
             </div>
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
                 <span></span>
@@ -68,16 +79,19 @@
         </div>
     </nav>
     <main class="container">
-        <header>
-            <h1>NZ Final Pay Calculator</h1>
-            <p class="subtitle">Estimate your final pay when leaving a job in New Zealand. See how much you're owed for unused leave and public holidays.</p>
-            <div class="header-actions">
-                <div class="assurance-badge">
-                    <span class="material-symbols-outlined" style="font-size: 1.25rem;">lightbulb</span> Based on the <strong>NZ Holidays Act 2003</strong>
+        <header class="header-hero">
+            <img src="mascot-final-pay.png" alt="NZ Payout Mascot" class="header-mascot">
+            <div class="header-text">
+                <h1>NZ Final Pay Calculator</h1>
+                <p class="subtitle">Estimate your final pay when leaving a job in New Zealand. See how much you're owed for unused leave and public holidays.</p>
+                <div class="header-actions">
+                    <div class="assurance-badge">
+                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">lightbulb</span> Based on the <strong>NZ Holidays Act 2003</strong>
+                    </div>
+                    <button id="share-btn" class="icon-btn" title="Share Calculator">
+                        <span class="material-symbols-outlined">share</span> Share
+                    </button>
                 </div>
-                <button id="share-btn" class="icon-btn" title="Share Calculator">
-                    <span class="material-symbols-outlined">share</span> Share
-                </button>
             </div>
         </header>
 
@@ -109,7 +123,7 @@
                     <div class="form-group" id="group-pay-rate">
                         <label id="label-pay-rate" for="payRate">Yearly Salary (NZD) *</label>
                         <div class="input-wrapper">
-                            <span class="prefix">$</span>
+                            <span class="prefix material-symbols-outlined">attach_money</span>
                             <input type="text" id="payRate" class="has-prefix" placeholder="0" min="0">
                         </div>
                     </div>
@@ -127,13 +141,13 @@
                     <div class="input-row">
                         <div class="form-group" id="group-annual-leave">
                             <label for="annualLeave">Unused Holiday Days <span class="tooltip-icon" data-tip="The number of holiday days you've earned but haven't taken yet. Check your latest payslip — it's usually listed there. Standard NZ entitlement is 4 weeks (20 days if you work 5 days a week).">?</span></label>
-                            <input type="number" id="annualLeave" placeholder="0" min="0" step="0.5">
+                            <input type="number" id="annualLeave" placeholder="0" min="0" max="365" step="0.5">
                             <small class="hint">Usually shown on your payslip</small>
                         </div>
                         <div class="form-group">
                             <label id="label-gross-earnings" for="grossEarnings">Total Pay Earned Since You Started (NZD) <span class="tooltip-icon" data-tip="Because you've been here less than a year, your 8% holiday bonus is based on your total before-tax pay since day one. Add up all your wages since you started — you'll find these on your payslips.">?</span></label>
                             <div class="input-wrapper">
-                                <span class="prefix">$</span>
+                                <span class="prefix material-symbols-outlined">attach_money</span>
                                 <input type="text" id="grossEarnings" class="has-prefix" placeholder="0" min="0">
                             </div>
                             <small class="hint" id="hint-gross-earnings">All before-tax wages since your first day — your 8% bonus is based on this</small>
@@ -150,12 +164,12 @@
                     <div class="input-row">
                         <div class="form-group">
                             <label for="altLeave">Days in Lieu Owed <span class="tooltip-icon" data-tip="Did you work on a public holiday and your employer owes you a paid day off in return? If you haven't taken any of those days yet, enter how many you're owed. These are sometimes called 'alternative holidays'.">?</span></label>
-                            <input type="number" id="altLeave" placeholder="0" min="0" step="0.5">
+                            <input type="number" id="altLeave" placeholder="0" min="0" max="365" step="0.5">
                             <small class="hint">From working on public holidays (not yet taken)</small>
                         </div>
                         <div class="form-group" id="group-manual-public-holidays">
                             <label for="publicHolidays">Public Holidays After Your Last Day <span class="tooltip-icon" data-tip="Under NZ law, the days you've got coming as unused holidays are treated as if you were still on leave. If a public holiday falls on a day you'd normally work during that time, you get paid for it. Enter your last day above and we'll work this out automatically.">?</span></label>
-                            <input type="number" id="publicHolidays" placeholder="0" min="0" step="0.5">
+                            <input type="number" id="publicHolidays" placeholder="0" min="0" max="25" step="0.5">
                             <small class="hint">Or enter your last day above and we'll calculate this for you</small>
                         </div>
                     </div>
@@ -269,67 +283,67 @@
             </div>
             
             <div class="faq-list">
-                <details class="faq-item">
-                    <summary>When should my final pay be paid?</summary>
-                    <div class="faq-content">
-                        <p>Under NZ law, your final pay must be paid <strong>on or before the pay day of the final pay period</strong>. This may be after your last day of work, but it cannot be delayed indefinitely.</p>
-                    </div>
-                </details>
-                
-                <details class="faq-item">
-                    <summary>What if I'm asked not to work my notice period?</summary>
-                    <div class="faq-content">
-                        <p>Your employer can ask you not to work some or all of your notice period (sometimes called 'garden leave'), but they must still pay you for the <strong>full notice period</strong> unless you specifically agree to waive it. If you choose to leave early without your employer's agreement, you only get paid for the days you actually worked.</p>
-                    </div>
-                </details>
+                    <details class="faq-item">
+                        <summary>Wait, what exactly is "Final Pay"?</summary>
+                        <div class="faq-content">
+                            <p>It's the very last payment your employer gives you when you leave your job. It's not just your last week's wages—it also includes any <strong>holiday days you haven't used</strong>, any <strong>days in lieu</strong> you've earned, and sometimes a portion of your yearly bonus if you're lucky. Basically, it’s all the money they still owe you up to your last official minute of work.</p>
+                        </div>
+                    </details>
+                    
+                    <details class="faq-item">
+                        <summary>When do I actually get the money?</summary>
+                        <div class="faq-content">
+                            <p>Usually, you get it on your <strong>next regular payday</strong> after your last day of work. Your employer can’t wait months to pay you, but they also don't have to pay you the very second you walk out the door. It just has to be on or before the normal payday for your final period of work.</p>
+                        </div>
+                    </details>
+                    
+                    <details class="faq-item">
+                        <summary>Will I get paid for unused sick leave?</summary>
+                        <div class="faq-content">
+                            <p>Unfortunately, <strong>no</strong>. In New Zealand, the law says you don't get paid out for sick leave or bereavement leave when you leave. You only get paid out for "Annual Leave" (holidays) and "Alternative Holidays" (days in lieu).</p>
+                        </div>
+                    </details>
 
-                <details class="faq-item">
-                    <summary>How is annual leave paid out in my final pay?</summary>
-                    <div class="faq-content">
-                        <p>If you've worked less than 12 months, you get <strong>8% of your gross earnings</strong>. If you've worked over 12 months, you get paid for any unused "entitled" leave at the higher of your <strong>ordinary or average weekly pay</strong>, <em>plus</em> 8% of your earnings since your last anniversary.</p>
-                    </div>
-                </details>
+                    <details class="faq-item">
+                        <summary>I've worked here for less than a year. Do I get anything?</summary>
+                        <div class="faq-content">
+                            <p>Yes! Even if you’ve only been there for a month, you are owed a <strong>8% holiday pay bonus</strong>. This is because you haven't "unlocked" your 4 weeks of leave yet. Instead, the law says you get 8% of everything you've earned since your first day as a cash payout.</p>
+                        </div>
+                    </details>
 
-                <details class="faq-item">
-                    <summary>Am I entitled to be paid for public holidays after I leave?</summary>
-                    <div class="faq-content">
-                        <p>Yes, if you have unused annual holidays you are entitled to. Your employer must treat these holidays as if you were taking them immediately after your last day. If a public holiday falls within this "extended" period, you must be paid for it.</p>
-                    </div>
-                </details>
+                    <details class="faq-item">
+                        <summary>What if I'm "resigning immediately" (no notice)?</summary>
+                        <div class="faq-content">
+                            <p>Be careful. If you don't give the notice length required in your contract, your employer might be able to <strong>deduct pay</strong> from your final payout (but only if your contract explicitly says they can). You should always check your agreement or talk to your boss first.</p>
+                        </div>
+                    </details>
 
-                <details class="faq-item">
-                    <summary>Are alternative holidays (days in lieu) paid out?</summary>
-                    <div class="faq-content">
-                        <p>Yes. Any unused alternative holidays must be paid out at your <strong>relevant daily pay</strong> (the amount you would have earned if you'd worked that day) on your last day, regardless of the rate of pay when you originally earned the day.</p>
-                    </div>
-                </details>
+                    <details class="faq-item">
+                        <summary>Does my final pay get taxed differently?</summary>
+                        <div class="faq-content">
+                            <p>It feels like it! Because your final pay is often a "lump sum" (a big chunk at once), it can sometimes be taxed at a higher rate known as "Extra Pay." You aren't losing the money forever, though—if you overpay tax, you'll usually get a refund from the IRD at the end of the tax year.</p>
+                        </div>
+                    </details>
 
-                <details class="faq-item">
-                    <summary>Is unused sick leave paid out in final pay?</summary>
-                    <div class="faq-content">
-                        <p>No. By law, there is no legal entitlement for unused sick or bereavement leave to be paid out when you leave an employer, unless your employment agreement specifically requires it.</p>
-                    </div>
-                </details>
-
-                <details class="faq-item">
-                    <summary>What if I think my final pay is wrong?</summary>
-                    <div class="faq-content">
-                        <p>First, check with your employer to resolve any issues. If that doesn't work, you may have a claim for unpaid wages via the <strong>Labour Inspectorate</strong>. You can contact Employment New Zealand for help and mediation at 0800 20 90 20.</p>
-                    </div>
-                </details>
+                    <details class="faq-item">
+                        <summary>What do I do if my boss refuses to pay me?</summary>
+                        <div class="faq-content">
+                            <p>Speak up! First, send them a polite email asking for a breakdown. If they still won't pay, call <strong>Employment New Zealand (0800 20 90 20)</strong>. They are a free government service that helps people get the pay they are legally owed.</p>
+                        </div>
+                    </details>
+                </div>
             </div>
         </section>
 
-        <footer>
-            <p>For official government guidance, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">employment.govt.nz</a>.</p>
-            <div class="footer-links">
-                <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
-                <span class="sep">•</span>
-                <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay/calculating-holiday-and-leave-pay" target="_blank" rel="noopener">Holiday Pay Guidance</a>
-            </div>
-        </footer>
-
     </main>
+    <footer>
+        <p>For official government guidance, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">employment.govt.nz</a>.</p>
+        <div class="footer-links">
+            <a href="https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html" target="_blank" rel="noopener">Holidays Act 2003</a>
+            <span class="sep">•</span>
+            <a href="https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay/calculating-holiday-and-leave-pay" target="_blank" rel="noopener">Holiday Pay Guidance</a>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="common.js" defer></script>

@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NZ Holiday Pay & Annual Leave Calculator</title>
+    <title>NZ Minimum Wage Checker 2026</title>
     <meta name="robots" content="noarchive">
     <meta name="ia_archiver" content="noarchive">
-    <meta name="description" content="Calculate your NZ holiday pay (8% of gross) or find your annual leave entitlement date. Essential for casual workers.">
+    <meta name="description" content="Check if you are being paid the correct New Zealand minimum wage (Adult, Training, or Starting-out) for 2026.">
     <meta name="keywords" content="New Zealand, NZ, Final Pay, Leave Payout, Calculator, Holidays Act, Resignation, PAYE">
     <meta property="og:title" content="NZ Final Pay Calculator | Holiday Pay Estimate">
     <meta property="og:description" content="Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.">
@@ -80,13 +80,13 @@
     </nav>
     <main class="container">
         <header class="header-hero">
-            <img src="mascot-holiday.png" alt="NZ Payout Mascot" class="header-mascot">
+            <img src="mascot-min-wage.png" alt="NZ Payout Mascot" class="header-mascot">
             <div class="header-text">
-                <h1>NZ Holiday Pay & Leave</h1>
-                <p class="subtitle">Calculate your 8% holiday pay payout or check when you become entitled to 4 weeks of annual leave.</p>
+                <h1>NZ Minimum Wage Checker</h1>
+                <p class="subtitle">Quickly check if your hourly rate meets New Zealand minimum wage laws (Updated for 2026 rates).</p>
                 <div class="header-actions">
                     <div class="assurance-badge">
-                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">lightbulb</span> Based on the <strong>NZ Holidays Act 2003</strong>
+                        <span class="material-symbols-outlined" style="font-size: 1.25rem;">lightbulb</span> Based on the <strong>Minimum Wage Act 1983</strong>
                     </div>
                     <button id="share-btn" class="icon-btn" title="Share Calculator">
                         <span class="material-symbols-outlined">share</span> Share
@@ -97,48 +97,57 @@
 
         <div class="calculator-grid">
             <section class="card input-section">
-                <form id="leave-form" onsubmit="event.preventDefault();">
+                <form id="minimum-wage-form" onsubmit="event.preventDefault();">
                     <div class="form-group">
-                        <label>What would you like to calculate?</label>
-                        <div class="segmented-control" id="calc-mode-selector">
-                            <input type="radio" id="mode-8percent" name="calcMode" value="8percent" checked>
-                            <label for="mode-8percent">8% Holiday Pay</label>
-                            <input type="radio" id="mode-anniversary" name="calcMode" value="anniversary">
-                            <label for="mode-anniversary">Entitlement Date</label>
+                        <label for="wageType">Minimum Wage Category</label>
+                        <div class="select-wrapper">
+                            <select id="wageType">
+                                <option value="adult" selected>Adult ($23.95/hr) - 16 yrs or over</option>
+                                <option value="starting">Starting-out ($19.16/hr) - 16/17 yrs</option>
+                                <option value="training">Training ($19.16/hr) - Apprentices</option>
+                            </select>
                         </div>
                     </div>
-                    <div id="section-8percent">
-                        <div class="form-group">
-                            <label for="grossEarnings">Total Gross Earnings (NZD) <span class="tooltip-icon" data-tip="Enter your total before-tax earnings for the period. Holiday pay is 8% of this total.">?</span></label>
-                            <div class="input-wrapper">
-                                <span class="prefix material-symbols-outlined">attach_money</span>
-                                <input type="text" id="grossEarnings" class="has-prefix" placeholder="0">
-                            </div>
-                            <small class="hint">Your total pay before tax during the employment period</small>
+                    <div class="form-group">
+                        <label for="hourlyRate">Your Hourly Rate (NZD) *</label>
+                        <div class="input-wrapper">
+                            <span class="prefix material-symbols-outlined">attach_money</span>
+                            <input type="number" id="hourlyRate" class="has-prefix" placeholder="0" min="0" step="0.01">
                         </div>
                     </div>
-                    <div id="section-anniversary" style="display: none;">
-                        <div class="form-group">
-                            <label for="startDate">Your Start Date *</label>
-                            <input type="text" id="startDate" placeholder="dd/mm/yyyy">
-                        </div>
+                    <div class="form-group">
+                        <label for="hoursPerWeek">Hours Worked per Week <span class="tooltip-icon" data-tip="Used to calculate your total weekly and annual earnings.">?</span></label>
+                        <input type="number" id="hoursPerWeek" value="40" min="0" max="168" step="0.5">
                     </div>
                 </form>
             </section>
             <section class="card results-section">
-                <div id="results-8percent">
-                    <h2>Estimated Payout</h2>
-                    <div class="net-total-box" style="padding: 2.5rem;">
-                        <span class="net-label">8% Holiday Pay (Gross)</span>
-                        <span class="net-value" id="res-8percent">$0.00</span>
+                <h2>Wage Assessment</h2>
+                <div class="net-total-box" id="status-box" style="padding: 1.5rem;">
+                    <span class="net-label" id="status-label">Enter your rate</span>
+                    <span class="net-value" id="status-icon" style="font-size: 2.5rem; margin-top: 0.5rem;">➖</span>
+                </div>
+                <div class="result-list">
+                    <div class="result-item">
+                        <span class="result-label">Legal Minimum Rate</span>
+                        <span class="result-value" id="res-min-rate">$0.00 / hr</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Difference</span>
+                        <span class="result-value" id="res-diff">$0.00 / hr</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="result-item gross-total">
+                        <span class="result-label">Weekly Equivalent (Gross)</span>
+                        <span class="result-value" id="res-weekly">$0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Annual Equivalent (Gross)</span>
+                        <span class="result-value" id="res-annual">$0.00</span>
                     </div>
                 </div>
-                <div id="results-anniversary" style="display: none;">
-                    <h2>Entitlement Status</h2>
-                    <div class="net-total-box" id="status-box" style="padding: 1.5rem;">
-                        <span class="net-label" id="status-label">Enter Start Date</span>
-                        <span class="net-value" id="status-date" style="font-size: 2rem; margin-top: 0.5rem;">➖</span>
-                    </div>
+                <div class="disclaimers">
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an estimate based on April 2026 minimum wage figures. Rates typically change every April.</p>
                 </div>
             </section>
         </div>
@@ -150,39 +159,39 @@
             </div>
             <div class="faq-list">
                 <details class="faq-item">
-                    <summary>What is the difference between Holiday Pay and Annual Leave?</summary>
+                    <summary>Can I be paid less than minimum wage on a trial period?</summary>
                     <div class="faq-content">
-                        <p>'Holiday Pay' (the 8% rule) usually applies to casual workers or those reaching the end of a job. 'Annual Leave' refers to the 4 weeks of time-off you become entitlement to after working for 1 year.</p>
+                        <p>No. Minimum wage laws apply to the trial period just like any other time. Your employer cannot legally pay you less than the minimum for your age category during a 90-day trial.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>I've worked less than 12 months. What am I owed?</summary>
+                    <summary>What if I'm on a salary, not an hourly rate?</summary>
                     <div class="faq-content">
-                        <p>If you leave your job before your 1-year anniversary, you are generally owed 8% of your total gross earnings from that job as a cash payout.</p>
+                        <p>Even if you are salaried, your total pay divided by the hours you work must meet the legal minimum for every hour. If you are doing significant overtime that drops your effective rate below minimum wage, your employer is likely in breach.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Can I take my leave before my 1-year anniversary?</summary>
+                    <summary>Does minimum wage apply to commission or piece-rates?</summary>
                     <div class="faq-content">
-                        <p>Technically, you don't 'own' it yet. Taking leave before 12 months is called 'Leave in Advance'. Your employer doesn't have to agree to it, but many do to keep staff happy.</p>
+                        <p>Yes. If you work on commission or 'per unit', your employer must still ensure your total take-home pay for the pay period at least equals the minimum wage for the number of hours you worked.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Can my employer force me to take my annual leave?</summary>
+                    <summary>Does the rate include tax?</summary>
                     <div class="faq-content">
-                        <p>Yes, but only if you cannot agree on when to take it and they give you at least 14 days' notice. This often happens during 'Christmas close-downs'.</p>
+                        <p>No. The legal minimum wage rates ($23.95 for adults) are 'Gross' amounts, meaning before PAYE tax, ACC, and KiwiSaver deductions are taken out.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Can I 'cash up' my annual leave for money?</summary>
+                    <summary>What if my boss says they can't afford the new 2026 rate?</summary>
                     <div class="faq-content">
-                        <p>The law allows you to ask to cash up to 1 week of your 4 weeks' annual holiday per year, but your employer has the right to say no.</p>
+                        <p>Economic hardship does not exempt an employer from the Minimum Wage Act. They are legally required to pay the current rate. If they don't, you can contact Employment New Zealand for assistance.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>What is an 'Alternative Holiday'?</summary>
+                    <summary>Does this apply to contractors or freelancers?</summary>
                     <div class="faq-content">
-                        <p>Commonly called a 'day in lieu', this is an extra day off you earn for working on a public holiday that falls on a day you would normally work.</p>
+                        <p>Minimum wage laws only apply to 'employees'. However, if your boss controls your hours and tools, you might legally be an employee regardless of what your contract says.</p>
                     </div>
                 </details>
             </div>
@@ -232,6 +241,6 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="common.js" defer></script>
     <script src="nz-holidays.js" defer></script>
-    <script src="leave-entitlement.js" defer></script>
+    <script src="minimum-wage.js" defer></script>
 </body>
 </html>

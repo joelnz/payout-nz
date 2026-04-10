@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resEmpMonthly   = document.getElementById('res-emp-monthly');
     const resBigLabel     = document.getElementById('res-big-label');
 
-    let ageTouched = false;
+    let ageTouched = true; // Set to true by default to allow immediate results
 
     // ── Navigation Logic ──────────────────────────────────────────────────────
     function goToStep(stepNumber) {
@@ -92,8 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── Calculation Logic ────────────────────────────────────────────────────
     function calculate() {
-        const salaryText  = salaryInput.value.trim();
+        const salaryText  = salaryInput ? salaryInput.value.trim() : "";
         const salary      = parseFormatted(salaryText);
+        const freq        = (frequencySelect && frequencySelect.value) ? parseFloat(frequencySelect.value) : 1;
+        const annualGross = salary * freq;
+        
         const balance     = parseFormatted(balanceInput.value);
         const status      = statusSelect.value;
         const currAge     = parseInt(ageSlider.value);
@@ -105,8 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
         retireVal.textContent = `${retAge} years`;
 
         // Handle Employer Contribution Visibility (Needs to be before early return)
-        let empRate     = 0.03;
-        let selectedEmp = '0.03';
+        let empRate     = 0.035; // Updated for 2026
+        let selectedEmp = '0.035';
         employerRadios.forEach(r => { if (r.checked) selectedEmp = r.value; });
         
         if (selectedEmp === 'other') {
@@ -123,10 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Check for required inputs
-        if (!salaryText || salary <= 0 || !ageTouched) {
+        if (!salaryText || annualGross <= 0) {
             resProjected.textContent = '$0';
             resProjected.style.opacity = '0.3';
-            resBigLabel.textContent = 'Enter salary & age to calculate';
+            resBigLabel.textContent = 'Enter your salary to calculate';
             
             [resAnnualTotal, resYouWeekly, resYouMonthly, resEmpWeekly, resEmpMonthly].forEach(el => {
                 if (el) el.textContent = '-';
@@ -149,15 +152,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let myRate = 0.03;
         contribRadios.forEach(r => { if (r.checked) myRate = parseFloat(r.value); });
 
-        const esct = getESCTRate(salary);
+        const esct = getESCTRate(annualGross);
         const empRateNet = status === 'employed' ? (empRate * (1 - esct)) : 0;
         
-        const myContribAnnual = status === 'employed' ? (salary * myRate) : 0;
-        const empContribAnnual = status === 'employed' ? (salary * empRateNet) : 0;
+        const myContribAnnual = status === 'employed' ? (annualGross * myRate) : 0;
+        const empContribAnnual = status === 'employed' ? (annualGross * empRateNet) : 0;
         
         let govtContribAnnual = 0;
         if (currAge >= 18 && currAge < 65) {
-            govtContribAnnual = Math.min(myContribAnnual * 0.5, 521.43);
+            // Updated for April 2026: Cap reduced to 260.72 (Previously 521.43)
+            govtContribAnnual = Math.min(myContribAnnual * 0.5, 260.72);
         }
 
         const tuAmount = parseFormatted(topupInput.value);
