@@ -101,7 +101,7 @@ def generate():
             "resources": [
                 {"title": "Current Wage Rates", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/minimum-wage-rates-and-types", "icon": "payments", "desc": "Official Adult, Starting-out, and Training rates for 2026."},
                 {"title": "2026 Rate Increase", "url": "https://www.employment.govt.nz/news-and-updates/minimum-wage-is-increasing-on-1-april-2026", "icon": "trending_up", "desc": "Official announcement for the latest legal rate adjustments."},
-                {"title": "Wage Calculation Rules", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/how-the-minimum-wage-is-calculated/", "icon": "calculate", "desc": "Ensuring compliance for salaried and piece-rate workers."}
+                {"title": "Wage Calculation Rules", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/minimum-wage-rates-and-types", "icon": "calculate", "desc": "Ensuring compliance for salaried and piece-rate workers."}
             ],
             "calc_html": """<div class="calculator-grid">
             <section class="card input-section">
@@ -185,8 +185,8 @@ def generate():
             "script": "leave-entitlement.js",
             "resources": [
                 {"title": "Leave & Holiday Hub", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay", "icon": "holiday_village", "desc": "Official guide for all leave types including sick and bereavement."},
-                {"title": "Annual Holiday Pay", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay/annual-holiday-pay", "icon": "percent", "desc": "Understanding the 8% vs 4 weeks calculation rules."},
-                {"title": "Entitlement Rights", "url": "https://www.employment.govt.nz/leave-and-holidays/annual-holidays", "icon": "gavel", "desc": "Legal requirements for taking, cashing out, or transferring leave."}
+                {"title": "Annual Holiday Pay", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay/annual-holiday-pay/", "icon": "percent", "desc": "Understanding the 8% vs 4 weeks calculation rules."},
+                {"title": "Entitlement Rights", "url": "https://www.employment.govt.nz/leave-and-holidays/annual-holidays/", "icon": "gavel", "desc": "Legal requirements for taking, cashing out, or transferring leave."}
             ],
             "calc_html": """<div class="calculator-grid">
             <section class="card input-section">
@@ -265,7 +265,7 @@ def generate():
             "resources": [
                 {"title": "KiwiSaver Guide", "url": "https://www.ird.govt.nz/kiwisaver/kiwisaver-individuals/growing-my-kiwisaver-account/employee-contributions-to-kiwisaver", "icon": "account_balance_wallet", "desc": "Official IRD rules on contribution rates and opt-out windows."},
                 {"title": "Deduction Logic", "url": "https://www.ird.govt.nz/kiwisaver/kiwisaver-employers/contributions-and-deductions/calculate-kiwisaver-deductions-and-contributions", "icon": "calculate", "desc": "Technical breakdown of how employee/employer tax (ESCT) works."},
-                {"title": "KiwiSaver Gateway", "url": "https://www.govt.nz/browse/tax/kiwisaver", "icon": "language", "desc": "Central government portal for official benefits and joining info."}
+                {"title": "KiwiSaver Gateway", "url": "https://www.ird.govt.nz/kiwisaver", "icon": "language", "desc": "Central government portal for official benefits and joining info."}
             ],
             "calc_html": """<div class="calculator-grid">
             <section class="card input-section">
@@ -464,9 +464,9 @@ def generate():
             "mascot": "mascot-redundancy.png",
             "script": "redundancy.js",
             "resources": [
-                {"title": "Redundancy Process", "url": "https://www.employment.govt.nz/ending-employment/redundancy", "icon": "corporate_fare", "desc": "Legal requirements for fair selection and employer duties."},
+                {"title": "Redundancy Process", "url": "https://www.employment.govt.nz/ending-employment/redundancy/", "icon": "corporate_fare", "desc": "Legal requirements for fair selection and employer duties."},
                 {"title": "Payout Taxation", "url": "https://www.ird.govt.nz/situations/i-am-being-made-redundant/redundancy-and-income-tax", "icon": "receipt_long", "desc": "Official IRD guidance on how your lump sum will be taxed."},
-                {"title": "Pay & Notice Rights", "url": "https://www.employment.govt.nz/ending-employment/redundancy/redundancy-pay-and-notice/", "icon": "contract_edit", "desc": "Clarification on contractual vs statutory redundancy entitlements."}
+                {"title": "Workplace Problems", "url": "https://www.employment.govt.nz/resolving-problems/problems-in-the-workplace", "icon": "gavel", "desc": "Official guidance on resolving disputes and mediation services."}
             ],
             "calc_html": """<div class="calculator-grid">
             <section class="card input-section">
@@ -563,7 +563,7 @@ def generate():
             "resources": [
                 {"title": "NZ Tax Rates 2026", "url": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals", "icon": "database", "desc": "The official source for New Zealand's personal tax brackets."},
                 {"title": "PAYE Deductions", "url": "https://www.ird.govt.nz/employing-staff/deductions-from-income/deductions-from-salary-and-wages/work-out-paye-deductions-from-salary-or-wages", "icon": "money_off", "desc": "Instructional guide on how IRD calculates PAYE from gross pay."},
-                {"title": "Tax Deduction Tables", "url": "https://www.ird.govt.nz/employing-staff/deductions-from-income/deductions-from-salary-and-wages/paye-deduction-tables", "icon": "table_view", "desc": "Official IR340/341 tables for manual tax verification."}
+                {"title": "Tax Deduction Tables", "url": "https://www.ird.govt.nz/employing-staff/deductions-from-income/deductions-from-salary-and-wages/paye-deduction-tables-2025", "icon": "table_view", "desc": "Official IR340/341 tables for manual tax verification."}
             ],
             "calc_html": None, # Special extraction logic below
             "faqs": [
