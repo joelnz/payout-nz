@@ -36,7 +36,10 @@ def generate():
 
     # Find master boundaries
     idx_start = html.find("<div class=\"calculator-grid\">")
-    idx_end = html.find("<div class=\"lead-gen-header\">")
+    # STOP extraction before any FAQ sections or Lead Gen sections
+    idx_end = html.find("<section class=\"card faq-section\">")
+    if idx_end == -1:
+        idx_end = html.find("<div class=\"lead-gen-header\">")
 
     if idx_start == -1 or idx_end == -1:
         print("Could not find boundaries in index.html")
@@ -63,6 +66,30 @@ def generate():
 
     # --- PAGE DEFINITIONS ---
     PAGES = {
+        "index.html": {
+            "title": "NZ Final Pay Calculator | New Zealand Holiday Pay Estimate",
+            "description": "Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.",
+            "h1": "NZ Final Pay Calculator",
+            "subtitle": "Estimate your final pay when leaving a job in New Zealand. See how much you're owed for unused leave and public holidays.",
+            "assurance": "Based on the <strong>NZ Holidays Act 2003</strong>",
+            "mascot": "mascot-final-pay.png",
+            "script": "script.js",
+            "resources": [
+                {"title": "Final Pay Guide", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/final-pay", "icon": "search", "desc": "Official guidance on what your employer must include in your final pay."},
+                {"title": "Last Day Details", "url": "https://www.employment.govt.nz/ending-employment/resignation", "icon": "event_upcoming", "desc": "Understanding notice periods, handovers, and final obligations."},
+                {"title": "Tax on Final Payouts", "url": "https://www.ird.govt.nz/employing-staff/payday-filing/non-standard-filing-of-employment-information/lump-sum-payments/calculate-paye-for-a-lump-sum-payment-end-of-employment", "icon": "trending_up", "desc": "Learn how your unused annual leave and bonuses are taxed as 'extra pay'."}
+            ],
+            "calc_html": html[idx_start:idx_end],
+            "faqs": [
+                ("What is included in a final pay?", "A typical final pay includes all hours worked since the last payday, payment for unused annual leave, and any public holidays that fall after the last day but during the period covered by your notice payout."),
+                ("How long should a final pay take?", "There is no strict legal 'deadline' but it is normally paid on the next scheduled payday or shortly after. If it's delayed, you should contact your employer immediately."),
+                ("What happens to my sick leave?", "Sick leave is not usually paid out when you leave a job, unless your employment agreement specifically says so. It's important to check your contract as this is not a legal requirement."),
+                ("How is my unused annual leave taxed?", "Unused annual leave is taxed as 'Extra Pay' (a lump sum payment). This means it is taxed at your marginal tax rate, which might feel higher than your regular PAYE but is mathematically correct for your annual income."),
+                ("Do I get paid for public holidays after my last day?", "If you have unused annual leave, your entitlement 'extends' your end date. If a public holiday falls within that extended period, you must be paid for it as if you were still working."),
+                ("What if I owe my employer money?", "Your employer can only deduct money from your final pay if you have given written consent (e.g., in your contract) or if it was an overpayment of wages in specific circumstances."),
+                ("Is 'Holiday Pay' the same as 'Annual Leave'?", "Not exactly. Annual leave is the 'time' you get off (4 weeks), while Holiday Pay is often used for casuals or those leaving before a year of service (8% of gross earnings).")
+            ]
+        },
         "minimum-wage.html": {
             "title": "NZ Minimum Wage Checker 2026",
             "description": "Check if you are being paid the correct New Zealand minimum wage (Adult, Training, or Starting-out) for 2026.",
@@ -71,6 +98,11 @@ def generate():
             "assurance": "Based on the <strong>Minimum Wage Act 1983</strong>",
             "mascot": "mascot-min-wage.png",
             "script": "minimum-wage.js",
+            "resources": [
+                {"title": "Current Wage Rates", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/minimum-wage-rates-and-types", "icon": "payments", "desc": "Official Adult, Starting-out, and Training rates for 2026."},
+                {"title": "2026 Rate Increase", "url": "https://www.employment.govt.nz/news-and-updates/minimum-wage-is-increasing-on-1-april-2026", "icon": "trending_up", "desc": "Official announcement for the latest legal rate adjustments."},
+                {"title": "Wage Calculation Rules", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/how-the-minimum-wage-is-calculated/", "icon": "calculate", "desc": "Ensuring compliance for salaried and piece-rate workers."}
+            ],
             "calc_html": """<div class="calculator-grid">
             <section class="card input-section">
                 <form id="minimum-wage-form" onsubmit="event.preventDefault();">
@@ -151,6 +183,11 @@ def generate():
             "assurance": "Based on the <strong>NZ Holidays Act 2003</strong>",
             "mascot": "mascot-holiday.png",
             "script": "leave-entitlement.js",
+            "resources": [
+                {"title": "Leave & Holiday Hub", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay", "icon": "holiday_village", "desc": "Official guide for all leave types including sick and bereavement."},
+                {"title": "Annual Holiday Pay", "url": "https://www.employment.govt.nz/pay-and-hours/pay-and-wages/leave-and-holiday-pay/annual-holiday-pay", "icon": "percent", "desc": "Understanding the 8% vs 4 weeks calculation rules."},
+                {"title": "Entitlement Rights", "url": "https://www.employment.govt.nz/leave-and-holidays/annual-holidays", "icon": "gavel", "desc": "Legal requirements for taking, cashing out, or transferring leave."}
+            ],
             "calc_html": """<div class="calculator-grid">
             <section class="card input-section">
                 <form id="leave-form" onsubmit="event.preventDefault();">
@@ -225,6 +262,11 @@ def generate():
             "assurance": "Based on standard guidance from the <strong>KiwiSaver Act 2006</strong>",
             "mascot": "mascot-kiwisaver.png",
             "script": "kiwisaver.js",
+            "resources": [
+                {"title": "KiwiSaver Guide", "url": "https://www.ird.govt.nz/kiwisaver/kiwisaver-individuals/growing-my-kiwisaver-account/employee-contributions-to-kiwisaver", "icon": "account_balance_wallet", "desc": "Official IRD rules on contribution rates and opt-out windows."},
+                {"title": "Deduction Logic", "url": "https://www.ird.govt.nz/kiwisaver/kiwisaver-employers/contributions-and-deductions/calculate-kiwisaver-deductions-and-contributions", "icon": "calculate", "desc": "Technical breakdown of how employee/employer tax (ESCT) works."},
+                {"title": "KiwiSaver Gateway", "url": "https://www.govt.nz/browse/tax/kiwisaver", "icon": "language", "desc": "Central government portal for official benefits and joining info."}
+            ],
             "calc_html": """<div class="calculator-grid">
             <section class="card input-section">
                 <div class="wizard-nav">
@@ -421,6 +463,11 @@ def generate():
             "assurance": "Based on standard <strong>NZ Employment Law</strong> & IRD Tax Rules",
             "mascot": "mascot-redundancy.png",
             "script": "redundancy.js",
+            "resources": [
+                {"title": "Redundancy Process", "url": "https://www.employment.govt.nz/ending-employment/redundancy", "icon": "corporate_fare", "desc": "Legal requirements for fair selection and employer duties."},
+                {"title": "Payout Taxation", "url": "https://www.ird.govt.nz/situations/i-am-being-made-redundant/redundancy-and-income-tax", "icon": "receipt_long", "desc": "Official IRD guidance on how your lump sum will be taxed."},
+                {"title": "Pay & Notice Rights", "url": "https://www.employment.govt.nz/ending-employment/redundancy/redundancy-pay-and-notice/", "icon": "contract_edit", "desc": "Clarification on contractual vs statutory redundancy entitlements."}
+            ],
             "calc_html": """<div class="calculator-grid">
             <section class="card input-section">
                 <form id="redundancy-form" onsubmit="event.preventDefault();">
@@ -513,11 +560,17 @@ def generate():
             "assurance": "Updated for <strong>2026 IRD Tax Rates</strong>",
             "mascot": "mascot-pay.png",
             "script": "pay-calculator.js",
+            "resources": [
+                {"title": "NZ Tax Rates 2026", "url": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals", "icon": "database", "desc": "The official source for New Zealand's personal tax brackets."},
+                {"title": "PAYE Deductions", "url": "https://www.ird.govt.nz/employing-staff/deductions-from-income/deductions-from-salary-and-wages/work-out-paye-deductions-from-salary-or-wages", "icon": "money_off", "desc": "Instructional guide on how IRD calculates PAYE from gross pay."},
+                {"title": "Tax Deduction Tables", "url": "https://www.ird.govt.nz/employing-staff/deductions-from-income/deductions-from-salary-and-wages/paye-deduction-tables", "icon": "table_view", "desc": "Official IR340/341 tables for manual tax verification."}
+            ],
             "calc_html": None, # Special extraction logic below
             "faqs": [
                 ("What is the ACC levy in 2026?", "The ACC earners' levy for the 2025/26 year is 1.75% of your gross income, capped at a maximum liable income of $156,641."),
                 ("Does this account for Student Loans?", "Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week)."),
                 ("What is the Independent Earner Tax Credit (IETC)?", "It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other government benefits."),
+                ("Why does my first pay look lower than expected?", "New employees are often on an 'Emergency' or 'Standard' tax code until their details are fully processed. Ensure you've submitted your IR330 form correctly."),
                 ("What tax code should I use for my main job?", "For your primary source of income, you typically use the 'M' tax code. If you have a student loan, it's 'M SL'."),
                 ("How does secondary tax work if I have two jobs?", "If you have a second job, you must use a secondary tax code (like S, SB, or SH) to ensure you don't underpay tax. This calculator can help estimate your total combined take-home pay."),
                 ("What is the highest tax rate in New Zealand?", "For the 2025/2026 tax year, the top marginal tax rate is 39% on any income earned over $180,000."),
@@ -532,7 +585,9 @@ def generate():
         with open("pay-calculator.html", "r") as f:
             pay_orig = f.read()
             p_start = pay_orig.find("<div class=\"calculator-grid\">")
-            p_end = pay_orig.find("<div class=\"lead-gen-header\">")
+            p_end = pay_orig.find("<section class=\"card faq-section\">")
+            if p_end == -1:
+                p_end = pay_orig.find("<div class=\"lead-gen-header\">")
             if p_start != -1 and p_end != -1:
                 PAGES["pay-calculator.html"]["calc_html"] = pay_orig[p_start:p_end]
     except:
@@ -561,6 +616,21 @@ def generate():
         # Inject script name
         tail = tail.replace("script.js", data['script'])
         
+        # Build dynamic resource grid
+        resource_html = ""
+        for res in data.get("resources", []):
+            resource_html += f"""
+            <a href="{res['url']}" target="_blank" rel="noopener" class="lead-card">
+                <div class="lead-icon"><span class="material-symbols-outlined">{res['icon']}</span></div>
+                <div class="lead-content">
+                    <h3>{res['title']} <span>&rarr;</span></h3>
+                    <p>{res['desc']}</p>
+                </div>
+            </a>"""
+        
+        # Inject resources into tail
+        tail = re.sub(r'<div class="lead-gen-grid">.*?</main>', f'<div class="lead-gen-grid">{resource_html}</div>\n    </main>', tail, flags=re.DOTALL)
+
         # Build final block
         full_content = calc_content + "\n" + faq_content
         
