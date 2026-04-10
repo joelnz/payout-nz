@@ -607,7 +607,10 @@ def generate():
         head = head.replace("<h1>NZ Final Pay Calculator</h1>", f"<h1>{data['h1']}</h1>")
         head = head.replace("<p class=\"subtitle\">Estimate your final pay when leaving a job in New Zealand. See how much you're owed for unused leave and public holidays.</p>", f"<p class=\"subtitle\">{data['subtitle']}</p>")
         head = head.replace("Based on the <strong>NZ Holidays Act 2003</strong>", data['assurance'])
-        head = head.replace("mascot-final-pay.png", data['mascot'])
+        head = head.replace("mascot-final-pay.webp", data['mascot'].replace('.png', '.webp'))
+        
+        # Add dimensions to mascot
+        head = re.sub(r'class="header-mascot">', 'class="header-mascot" width="240" height="240">', head)
         
         # Build the full page content
         calc_content = data['calc_html'] if data['calc_html'] else "<!-- Content Missing -->"
