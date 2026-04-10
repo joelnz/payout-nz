@@ -123,7 +123,7 @@
                             <label for="salary">Annual Gross Salary / Wages (NZD) *</label>
                             <div class="input-wrapper">
                                 <span class="prefix material-symbols-outlined">attach_money</span>
-                                <input type="text" id="salary" class="has-prefix" placeholder="0">
+                                <input type="text" id="salary" class="has-prefix" placeholder="0" max="10000000">
                             </div>
                             <div class="select-wrapper" style="margin-top: 0.5rem;">
                                 <select id="payFrequency">
@@ -148,7 +148,7 @@
                             <label for="currentBalance">Current KiwiSaver Balance (Optional)</label>
                             <div class="input-wrapper">
                                 <span class="prefix material-symbols-outlined">account_balance_wallet</span>
-                                <input type="text" id="currentBalance" class="has-prefix" placeholder="0">
+                                <input type="text" id="currentBalance" class="has-prefix" placeholder="0" max="1000000000">
                             </div>
                         </div>
                         <div class="form-group">
@@ -190,7 +190,7 @@
                             </div>
                             <div id="emp-custom-container" style="display: none; margin-top: 0.5rem;">
                                 <div class="input-wrapper">
-                                    <input type="number" id="employerRateCustom" placeholder="Enter %" step="0.1">
+                                    <input type="number" id="employerRateCustom" placeholder="Enter %" min="0" max="100" step="0.1">
                                     <span class="suffix">%</span>
                                 </div>
                             </div>
@@ -200,7 +200,7 @@
                             <label for="topupAmount">Voluntary Top-ups (Optional)</label>
                             <div class="input-wrapper">
                                 <span class="prefix material-symbols-outlined">payments</span>
-                                <input type="text" id="topupAmount" class="has-prefix" placeholder="0">
+                                <input type="text" id="topupAmount" class="has-prefix" placeholder="0" max="1000000">
                             </div>
                             <div class="select-wrapper" style="margin-top: 0.5rem;">
                                 <select id="topupFrequency">
@@ -260,6 +260,16 @@
                         <span class="result-value" id="res-emp-monthly">+$0.00</span>
                     </div>
                 </div>
+                <div class="disclaimers">
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute financial advice.</p>
+                    <details class="disclaimer-details">
+                        <summary>Read full disclaimer</summary>
+                        <div class="disclaimer-expanded">
+                            <p>This calculator provides a generalized projection based on a 5% conservative annual return and current legislated contribution rates. It does not account for Employer Superannuation Contribution Tax (ESCT), fund management fees, investment volatility, inflation, or your current fund balance.</p>
+                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of or reliance on this calculator. For personalized advice, consult a registered financial advisor.</p>
+                        </div>
+                    </details>
+                </div>
             </section>
         </div>
 
@@ -276,33 +286,45 @@
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>What is the Government contribution?</summary>
+                    <summary>Can I temporarily lower my contribution rate?</summary>
                     <div class="faq-content">
-                        <p>If you are 18 or older and live in NZ, the government will contribute 50 cents for every dollar you contribute, up to a maximum of $260.72 per year (starting 2026).</p>
+                        <p>Yes. If your rate is 3.5%, you can apply for a 'temporary rate reduction' to 3% for a period of 3 to 12 months. You can apply for this via your myIR account.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Can I stop my KiwiSaver contributions?</summary>
+                    <summary>Can I opt out if I was automatically enrolled?</summary>
                     <div class="faq-content">
-                        <p>Yes. After you've been a member for 12 months, you can apply for a 'savings suspension' for between 3 months and 1 year via your myIR account.</p>
+                        <p>Yes. If you were automatically enrolled in a new job, you have a window between day 14 and day 56 of your employment to submit a KS10 opt-out form.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Can I use my KiwiSaver to buy my first home?</summary>
+                    <summary>What if I am under 18?</summary>
                     <div class="faq-content">
-                        <p>Yes! If you've been a member for at least 3 years, you can usually withdraw almost all of your balance (leaving $1,000) to help with a deposit.</p>
+                        <p>You can join KiwiSaver at any age! However, if you are under 18, you cannot be automatically enrolled and must join by contracting directly with a KiwiSaver provider.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>What happens if I move overseas permanently?</summary>
+                    <summary>What is the Government contribution in 2026?</summary>
                     <div class="faq-content">
-                        <p>If you move to a country other than Australia, you can usually withdraw your funds after living abroad for 1 year, though you won't get the government's contributions.</p>
+                        <p>The government will contribute 50 cents for every dollar you put in, up to a maximum of $260.72 per year (provided you are 18+ and live in New Zealand).</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Is my money safe in KiwiSaver?</summary>
+                    <summary>Is KiwiSaver deducted from my redundancy payout?</summary>
                     <div class="faq-content">
-                        <p>Your funds are held by private providers (like banks or investment firms), not the government. While markets can go up and down, these providers are strictly regulated.</p>
+                        <p>No. According to the KS4 2026 guide, redundancy payments are specifically excluded from 'gross salary or wages' for KiwiSaver calculation purposes.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I use my KiwiSaver for a first home?</summary>
+                    <div class="faq-content">
+                        <p>Yes! If you've been a member for at least 3 years, you can usually withdraw your savings (leaving a $1,000 balance) to help with a deposit on your first home.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I stop my contributions if I'm struggling?</summary>
+                    <div class="faq-content">
+                        <p>After being a member for 12 months, you can apply for a 'savings suspension' for between 3 months and 1 year. If you're in significant financial hardship, you can apply earlier.</p>
                     </div>
                 </details>
             </div>

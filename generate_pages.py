@@ -123,7 +123,14 @@ def generate():
                     </div>
                 </div>
                 <div class="disclaimers">
-                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an estimate based on April 2026 minimum wage figures. Rates typically change every April.</p>
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute legal or financial advice.</p>
+                    <details class="disclaimer-details">
+                        <summary>Read full disclaimer</summary>
+                        <div class="disclaimer-expanded">
+                            <p>Minimum wage rates are reviewed annually by the New Zealand government and typically change on April 1st. While we strive for accuracy, this tool does not account for complex deductions (like board and lodgings), specific exemptions for disabled workers, or the unique legal requirements of "Starting-out" or "Training" wage categories.</p>
+                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of this tool. For official confirmation of your entitlements, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a> or contact the Labour Inspectorate.</p>
+                        </div>
+                    </details>
                 </div>
             </section>
         </div>""",
@@ -188,6 +195,16 @@ def generate():
                         <span class="net-label" id="status-label">Enter Start Date</span>
                         <span class="net-value" id="status-date" style="font-size: 2rem; margin-top: 0.5rem;">➖</span>
                     </div>
+                </div>
+                <div class="disclaimers">
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute financial, tax, or legal advice.</p>
+                    <details class="disclaimer-details">
+                        <summary>Read full disclaimer</summary>
+                        <div class="disclaimer-expanded">
+                            <p>Holidays and leave calculations in New Zealand are governed by the Holidays Act 2003. This tool simplifies complex rules regarding "Ordinary Weekly Pay" and "Average Weekly Pay".</p>
+                            <p>Note that "Accrued Leave" (8% of gross earnings) is legally distinct from "Entitled Leave" (4 weeks). This calculator provides a general estimate. We accept no liability for any loss, damage, or discrepancy arising from the use of this tool. Always verify with your specific employment agreement or contact <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a>.</p>
+                        </div>
+                    </details>
                 </div>
             </section>
         </div>""",
@@ -373,15 +390,27 @@ def generate():
                         <span class="result-value" id="res-emp-monthly">+$0.00</span>
                     </div>
                 </div>
+                <div class="disclaimers">
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute financial advice.</p>
+                    <details class="disclaimer-details">
+                        <summary>Read full disclaimer</summary>
+                        <div class="disclaimer-expanded">
+                            <p>This calculator provides a generalized projection based on a 5% conservative annual return and current legislated contribution rates. It does not account for Employer Superannuation Contribution Tax (ESCT), fund management fees, investment volatility, inflation, or your current fund balance.</p>
+                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of or reliance on this calculator. For personalized advice, consult a registered financial advisor.</p>
+                        </div>
+                    </details>
+                </div>
             </section>
         </div>""",
             "faqs": [
                 ("How much does my employer have to contribute?", "If you are a KiwiSaver member and contributing from your pay, your employer must generally contribute at least 3.5% of your gross pay (as of April 2026), provided you are between 18 and 65 years old."),
-                ("What is the Government contribution?", "If you are 18 or older and live in NZ, the government will contribute 50 cents for every dollar you contribute, up to a maximum of $260.72 per year (starting 2026)."),
-                ("Can I stop my KiwiSaver contributions?", "Yes. After you've been a member for 12 months, you can apply for a 'savings suspension' for between 3 months and 1 year via your myIR account."),
-                ("Can I use my KiwiSaver to buy my first home?", "Yes! If you've been a member for at least 3 years, you can usually withdraw almost all of your balance (leaving $1,000) to help with a deposit."),
-                ("What happens if I move overseas permanently?", "If you move to a country other than Australia, you can usually withdraw your funds after living abroad for 1 year, though you won't get the government's contributions."),
-                ("Is my money safe in KiwiSaver?", "Your funds are held by private providers (like banks or investment firms), not the government. While markets can go up and down, these providers are strictly regulated.")
+                ("Can I temporarily lower my contribution rate?", "Yes. If your rate is 3.5%, you can apply for a 'temporary rate reduction' to 3% for a period of 3 to 12 months. You can apply for this via your myIR account."),
+                ("Can I opt out if I was automatically enrolled?", "Yes. If you were automatically enrolled in a new job, you have a window between day 14 and day 56 of your employment to submit a KS10 opt-out form."),
+                ("What if I am under 18?", "You can join KiwiSaver at any age! However, if you are under 18, you cannot be automatically enrolled and must join by contracting directly with a KiwiSaver provider."),
+                ("What is the Government contribution in 2026?", "The government will contribute 50 cents for every dollar you put in, up to a maximum of $260.72 per year (provided you are 18+ and live in New Zealand)."),
+                ("Is KiwiSaver deducted from my redundancy payout?", "No. According to the KS4 2026 guide, redundancy payments are specifically excluded from 'gross salary or wages' for KiwiSaver calculation purposes."),
+                ("Can I use my KiwiSaver for a first home?", "Yes! If you've been a member for at least 3 years, you can usually withdraw your savings (leaving a $1,000 balance) to help with a deposit on your first home."),
+                ("Can I stop my contributions if I'm struggling?", "After being a member for 12 months, you can apply for a 'savings suspension' for between 3 months and 1 year. If you're in significant financial hardship, you can apply earlier.")
             ]
         },
         "redundancy.html": {
@@ -455,6 +484,16 @@ def generate():
                     <span class="net-label">Estimated Net Redundancy</span>
                     <span class="net-value" id="res-net-payout">$0.00</span>
                 </div>
+                <div class="disclaimers">
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute financial, tax, or legal advice.</p>
+                    <details class="disclaimer-details">
+                        <summary>Read full disclaimer</summary>
+                        <div class="disclaimer-expanded">
+                            <p>Redundancy compensation is not a statutory requirement in New Zealand; it depends entirely on the terms of your individual or collective employment agreement.</p>
+                            <p>This tool estimates the tax on a "redundancy payment" (lump sum) based on standard IRD "extra pay" rates, which may differ if you have other income sources or specific tax hurdles (like student loans or child support). We accept no liability for any loss, damage, or discrepancy arising from the use of this tool. Always verify with your employer or a qualified professional.</p>
+                        </div>
+                    </details>
+                </div>
             </section>
         </div>""",
             "faqs": [
@@ -477,11 +516,13 @@ def generate():
             "calc_html": None, # Special extraction logic below
             "faqs": [
                 ("What is the ACC levy in 2026?", "The ACC earners' levy for the 2025/26 year is 1.75% of your gross income, capped at a maximum liable income of $156,641."),
-                ("Does this accountant for Student Loans?", "Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week)."),
-                ("What is the Independent Earner Tax Credit (IETC)?", "It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other benefits."),
-                ("Why does my first pay look lower than expected?", "New employees are often on an 'Emergency' or 'Standard' tax code until their details are fully processed. Ensure you've submitted your IR330 form correctly."),
-                ("Is my 'Gross Pay' different from my 'Taxable Pay'?", "Yes, sometimes. Certain deductions like KiwiSaver are taken out after tax, whereas other specific allowances might be non-taxable."),
-                ("Does this calculator handle the 3.5% KiwiSaver rate?", "Yes. We have updated the calculations to reflect the mandatory 3.5% employer contribution rate coming into effect in April 2026.")
+                ("Does this account for Student Loans?", "Yes. If selected, the calculator applies the 12% deduction on everything you earn over the weekly threshold ($464 per week)."),
+                ("What is the Independent Earner Tax Credit (IETC)?", "It is a tax credit of up to $10 per week for people earning between $24,000 and $70,000 who don't receive other government benefits."),
+                ("What tax code should I use for my main job?", "For your primary source of income, you typically use the 'M' tax code. If you have a student loan, it's 'M SL'."),
+                ("How does secondary tax work if I have two jobs?", "If you have a second job, you must use a secondary tax code (like S, SB, or SH) to ensure you don't underpay tax. This calculator can help estimate your total combined take-home pay."),
+                ("What is the highest tax rate in New Zealand?", "For the 2025/2026 tax year, the top marginal tax rate is 39% on any income earned over $180,000."),
+                ("Why is my take-home pay lower than my gross salary partitioned by 52?", "Your 'Gross' salary is before any deductions. Your 'Net' take-home pay is what's left after PAYE Income Tax, the ACC Levy, and KiwiSaver are removed."),
+                ("Does this calculator include the 2026 tax bracket changes?", "Yes, we have updated the logic to reflect the latest IRD tax thresholds and the mandatory 3.5% employer contribution rate.")
             ]
         }
     }

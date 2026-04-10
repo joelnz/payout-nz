@@ -102,20 +102,20 @@
                         <label for="baseSalary">Current Annual Salary (Gross NZD) *</label>
                         <div class="input-wrapper">
                             <span class="prefix material-symbols-outlined">attach_money</span>
-                            <input type="text" id="baseSalary" class="has-prefix" placeholder="0">
+                            <input type="text" id="baseSalary" class="has-prefix" placeholder="0" max="10000000">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="yearsService">Years of Service</label>
-                        <input type="number" id="yearsService" value="1" min="0">
+                        <input type="number" id="yearsService" value="1" min="0" max="100">
                     </div>
                     <div class="form-group">
                         <label for="weeksPerYear">Weeks of Pay per Year</label>
-                        <input type="number" id="weeksPerYear" value="4" min="0" step="0.5">
+                        <input type="number" id="weeksPerYear" value="4" min="0" max="52" step="0.5">
                     </div>
                     <div class="form-group">
                         <label for="noticePay">Notice Period to be Paid Out (Weeks) <span class="tooltip-icon" data-tip="If your employer is paying you 'in lieu of notice' rather than having you work your notice period, enter how many weeks of notice you are being paid for.">?</span></label>
-                        <input type="number" id="noticePay" value="0" min="0" step="1">
+                        <input type="number" id="noticePay" value="0" min="0" max="52" step="1">
                     </div>
                     <div class="form-group">
                         <label for="taxBracket">Your Tax Bracket (for Lump Sum)</label>
@@ -157,6 +157,16 @@
                 <div class="net-total-box">
                     <span class="net-label">Estimated Net Redundancy</span>
                     <span class="net-value" id="res-net-payout">$0.00</span>
+                </div>
+                <div class="disclaimers">
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute financial, tax, or legal advice.</p>
+                    <details class="disclaimer-details">
+                        <summary>Read full disclaimer</summary>
+                        <div class="disclaimer-expanded">
+                            <p>Redundancy compensation is not a statutory requirement in New Zealand; it depends entirely on the terms of your individual or collective employment agreement.</p>
+                            <p>This tool estimates the tax on a "redundancy payment" (lump sum) based on standard IRD "extra pay" rates, which may differ if you have other income sources or specific tax hurdles (like student loans or child support). We accept no liability for any loss, damage, or discrepancy arising from the use of this tool. Always verify with your employer or a qualified professional.</p>
+                        </div>
+                    </details>
                 </div>
             </section>
         </div>

@@ -112,7 +112,7 @@
                         <label for="hourlyRate">Your Hourly Rate (NZD) *</label>
                         <div class="input-wrapper">
                             <span class="prefix material-symbols-outlined">attach_money</span>
-                            <input type="number" id="hourlyRate" class="has-prefix" placeholder="0" min="0" step="0.01">
+                            <input type="number" id="hourlyRate" class="has-prefix" placeholder="0" min="0" max="5000" step="0.01">
                         </div>
                     </div>
                     <div class="form-group">
@@ -147,7 +147,14 @@
                     </div>
                 </div>
                 <div class="disclaimers">
-                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an estimate based on April 2026 minimum wage figures. Rates typically change every April.</p>
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute legal or financial advice.</p>
+                    <details class="disclaimer-details">
+                        <summary>Read full disclaimer</summary>
+                        <div class="disclaimer-expanded">
+                            <p>Minimum wage rates are reviewed annually by the New Zealand government and typically change on April 1st. While we strive for accuracy, this tool does not account for complex deductions (like board and lodgings), specific exemptions for disabled workers, or the unique legal requirements of "Starting-out" or "Training" wage categories.</p>
+                            <p>We accept no liability or responsibility for any loss, damage, or discrepancy arising from the use of this tool. For official confirmation of your entitlements, visit <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a> or contact the Labour Inspectorate.</p>
+                        </div>
+                    </details>
                 </div>
             </section>
         </div>

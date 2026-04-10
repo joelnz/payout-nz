@@ -112,7 +112,7 @@
                             <label for="grossEarnings">Total Gross Earnings (NZD) <span class="tooltip-icon" data-tip="Enter your total before-tax earnings for the period. Holiday pay is 8% of this total.">?</span></label>
                             <div class="input-wrapper">
                                 <span class="prefix material-symbols-outlined">attach_money</span>
-                                <input type="text" id="grossEarnings" class="has-prefix" placeholder="0">
+                                <input type="text" id="grossEarnings" class="has-prefix" placeholder="0" max="10000000">
                             </div>
                             <small class="hint">Your total pay before tax during the employment period</small>
                         </div>
@@ -139,6 +139,16 @@
                         <span class="net-label" id="status-label">Enter Start Date</span>
                         <span class="net-value" id="status-date" style="font-size: 2rem; margin-top: 0.5rem;">➖</span>
                     </div>
+                </div>
+                <div class="disclaimers">
+                    <p><strong>⚠️ Legal Disclaimer:</strong> This tool provides an <strong>estimate only</strong> and does not constitute financial, tax, or legal advice.</p>
+                    <details class="disclaimer-details">
+                        <summary>Read full disclaimer</summary>
+                        <div class="disclaimer-expanded">
+                            <p>Holidays and leave calculations in New Zealand are governed by the Holidays Act 2003. This tool simplifies complex rules regarding "Ordinary Weekly Pay" and "Average Weekly Pay".</p>
+                            <p>Note that "Accrued Leave" (8% of gross earnings) is legally distinct from "Entitled Leave" (4 weeks). This calculator provides a general estimate. We accept no liability for any loss, damage, or discrepancy arising from the use of this tool. Always verify with your specific employment agreement or contact <a href="https://www.employment.govt.nz/" target="_blank" rel="noopener">Employment New Zealand</a>.</p>
+                        </div>
+                    </details>
                 </div>
             </section>
         </div>
