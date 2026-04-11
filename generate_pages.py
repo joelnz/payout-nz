@@ -69,6 +69,7 @@ def generate():
         "index.html": {
             "title": "NZ Final Pay Calculator | New Zealand Holiday Pay Estimate",
             "description": "Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.",
+            "canonical": "https://payout.nz/",
             "h1": "NZ Final Pay Calculator",
             "subtitle": "Estimate your final pay when leaving a job in New Zealand. See how much you're owed for unused leave and public holidays.",
             "assurance": "Based on the <strong>NZ Holidays Act 2003</strong>",
@@ -93,6 +94,7 @@ def generate():
         "minimum-wage.html": {
             "title": "NZ Minimum Wage Checker 2026",
             "description": "Check if you are being paid the correct New Zealand minimum wage (Adult, Training, or Starting-out) for 2026.",
+            "canonical": "https://payout.nz/minimum-wage.html",
             "h1": "NZ Minimum Wage Checker",
             "subtitle": "Quickly check if your hourly rate meets New Zealand minimum wage laws (Updated for 2026 rates).",
             "assurance": "Based on the <strong>Minimum Wage Act 1983</strong>",
@@ -171,13 +173,14 @@ def generate():
                 ("What if I'm on a salary, not an hourly rate?", "Even if you are salaried, your total pay divided by the hours you work must meet the legal minimum for every hour. If you are doing significant overtime that drops your effective rate below minimum wage, your employer is likely in breach."),
                 ("Does minimum wage apply to commission or piece-rates?", "Yes. If you work on commission or 'per unit', your employer must still ensure your total take-home pay for the pay period at least equals the minimum wage for the number of hours you worked."),
                 ("Does the rate include tax?", "No. The legal minimum wage rates ($23.95 for adults) are 'Gross' amounts, meaning before PAYE tax, ACC, and KiwiSaver deductions are taken out."),
-                ("What if my boss says they can't afford the new 2026 rate?", "Economic hardship does not exempt an employer from the Minimum Wage Act. They are legally required to pay the current rate. If they don't, you can contact Employment New Zealand for assistance."),
+                ("What if my boss says they can't afford the new 2026 rate?", "Economic hardship does not exempt an employer from the Minimum Wage Act. They are required to pay the current rate. If they don't, you can contact Employment New Zealand for assistance."),
                 ("Does this apply to contractors or freelancers?", "Minimum wage laws only apply to 'employees'. However, if your boss controls your hours and tools, you might legally be an employee regardless of what your contract says.")
             ]
         },
         "leave-entitlement.html": {
             "title": "NZ Holiday Pay & Annual Leave Calculator",
             "description": "Calculate your NZ holiday pay (8% of gross) or find your annual leave entitlement date. Essential for casual workers.",
+            "canonical": "https://payout.nz/leave-entitlement.html",
             "h1": "NZ Holiday Pay & Leave",
             "subtitle": "Calculate your 8% holiday pay payout or check when you become entitled to 4 weeks of annual leave.",
             "assurance": "Based on the <strong>NZ Holidays Act 2003</strong>",
@@ -257,6 +260,7 @@ def generate():
         "kiwisaver.html": {
             "title": "NZ KiwiSaver Contribution Estimator",
             "description": "Estimate your KiwiSaver weekly/monthly contributions and projected balance at retirement age in New Zealand.",
+            "canonical": "https://payout.nz/kiwisaver.html",
             "h1": "NZ KiwiSaver Estimator",
             "subtitle": "Calculate your personal and employer KiwiSaver contributions and see a simple projected balance by age 65.",
             "assurance": "Based on standard guidance from the <strong>KiwiSaver Act 2006</strong>",
@@ -458,6 +462,7 @@ def generate():
         "redundancy.html": {
             "title": "NZ Redundancy Pay Calculator | Compensation Estimate",
             "description": "Estimate your NZ redundancy payout including compensation weeks, notice period pay, and tax on lump sum payments.",
+            "canonical": "https://payout.nz/redundancy.html",
             "h1": "NZ Redundancy Pay Calculator",
             "subtitle": "Calculate your estimated redundancy compensation and see the tax impact on your lump sum payout.",
             "assurance": "Based on standard <strong>NZ Employment Law</strong> & IRD Tax Rules",
@@ -555,6 +560,7 @@ def generate():
         "pay-calculator.html": {
             "title": "NZ Take-Home Pay Calculator | 2026 Tax Estimate",
             "description": "Calculate your NZ weekly take-home pay for 2026. Includes PAYE tax, ACC, and student loans.",
+            "canonical": "https://payout.nz/pay-calculator.html",
             "h1": "NZ Take-Home Pay Calculator",
             "subtitle": "See exactly how much lands in your bank account after PAYE, ACC, and student loans.",
             "assurance": "Updated for <strong>2026 IRD Tax Rates</strong>",
@@ -604,6 +610,12 @@ def generate():
         # replacements
         head = head.replace("<title>NZ Final Pay Calculator | New Zealand Holiday Pay Estimate</title>", f"<title>{data['title']}</title>")
         head = head.replace("<meta name=\"description\" content=\"Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.\">", f"<meta name=\"description\" content=\"{data['description']}\">")
+        
+        # SEO & OG Fixes
+        head = head.replace('<link rel="canonical" href="https://payout.nz/">', f'<link rel="canonical" href="{data["canonical"]}">')
+        head = head.replace('<meta property="og:title" content="NZ Final Pay Calculator | New Zealand Holiday Pay Estimate">', f'<meta property="og:title" content="{data["title"]}">')
+        head = head.replace('<meta property="og:description" content="Helps estimate your final pay when leaving a job in New Zealand. Includes unused leave, public holiday payouts, and estimated tax.">', f'<meta property="og:description" content="{data["description"]}">')
+        
         head = head.replace("<h1>NZ Final Pay Calculator</h1>", f"<h1>{data['h1']}</h1>")
         head = head.replace("<p class=\"subtitle\">Estimate your final pay when leaving a job in New Zealand. See how much you're owed for unused leave and public holidays.</p>", f"<p class=\"subtitle\">{data['subtitle']}</p>")
         head = head.replace("Based on the <strong>NZ Holidays Act 2003</strong>", data['assurance'])
