@@ -53,7 +53,7 @@ def generate():
 
     # --- SHARED NAVIGATION ---
     nav_html = """
-                <a href="index.html" class="nav-pill">Final Pay</a>
+                <a href="/" class="nav-pill">Final Pay</a>
                 <a href="pay-calculator.html" class="nav-pill">Take-Home Pay</a>
                 <a href="leave-entitlement.html" class="nav-pill">Holiday Pay & Leave</a>
                 <a href="kiwisaver.html" class="nav-pill">KiwiSaver</a>
@@ -63,6 +63,12 @@ def generate():
     base_head = re.sub(r'<div class="nav-links" id="nav-links">.*?</div>', 
                        f'<div class="nav-links" id="nav-links">{nav_html}</div>', 
                        base_head, flags=re.DOTALL)
+
+    # Make logo a link to root
+    base_head = base_head.replace(
+        '<div class="logo" style="font-weight: 800; color: var(--accent-primary); letter-spacing: -0.05em; font-size: 1.25rem;">PAYOUT<span style="color: var(--accent-secondary);">.NZ</span></div>',
+        '<a href="/" class="logo" style="font-weight: 800; color: var(--accent-primary); letter-spacing: -0.05em; font-size: 1.25rem; text-decoration: none;">PAYOUT<span style="color: var(--accent-secondary);">.NZ</span></a>'
+    )
 
     # --- PAGE DEFINITIONS ---
     PAGES = {

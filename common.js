@@ -48,7 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const navPills = document.querySelectorAll('.nav-pill');
     navPills.forEach(pill => {
         const href = pill.getAttribute('href');
-        if (href === currentPath || (currentPath === '' && href === 'index.html')) {
+        const normalizedHref = (href === '/') ? 'index.html' : href;
+        
+        if (normalizedHref === currentPath) {
             pill.classList.add('active');
         } else {
             pill.classList.remove('active');
